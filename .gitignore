@@ -1,0 +1,4 @@
+/backend/vendor
+/backend/.env.test
+/backend/.env.local
+/frontend/node_modules
