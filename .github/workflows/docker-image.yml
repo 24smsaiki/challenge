@@ -37,7 +37,6 @@ jobs:
           php-version: '8.2'
       - uses: actions/checkout@v3
       - name: APT UPDATE and INSTALL SSHPASS
-        with:
         run: 
           sudo apt update && sudo apt install sshpass &&  sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd domains/moon-factory.fr/public_html/api-challenge/ &&
