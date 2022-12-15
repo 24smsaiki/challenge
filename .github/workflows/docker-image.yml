@@ -8,7 +8,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-     env:
+    env:
       SSHPASS: ${{ secrets.APP_PASS }}
     steps:
       - name: Login to DockerHub
