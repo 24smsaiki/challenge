@@ -3,16 +3,30 @@ name: Docker Image CI
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
+    
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build ./backend --file backend/Dockerfile --tag my-image-name:$(date +%s)
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build ./backend --file backend/Dockerfile --tag my-image-name:$(date +%s)
+  
+  deploy: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: APT UPDATE and INSTALL SSHPASS
+        run: 
+          sudo apt update && sudo apt install sshpass
+          
+      - name: deploy
+        run: 
+          sshpass -e ssh -o stricthostkeychecking=no u498310695@212.107.17.39
+          "cd moon-factory.fr/public_html/api-challenge/ &&
+          git pull &&
+          composer install &&
+          php bin/console d:m:m -n"
+
+
