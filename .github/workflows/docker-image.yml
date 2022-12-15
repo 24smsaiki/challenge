@@ -23,6 +23,8 @@ jobs:
           port: 65002
           source: "backend/,!vendor"
           target: "domains/moon-factory.fr/public_html/api-challenge/"
+          strip_components: 1
+
   
   # deploy: 
   #   runs-on: ubuntu-latest
