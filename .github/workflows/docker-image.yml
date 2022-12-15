@@ -13,6 +13,17 @@ jobs:
       - name: Build the Docker image
         run: docker build ./backend --file backend/Dockerfile --tag my-image-name:$(date +%s)
   
+      - uses: actions/checkout@master
+      - name: Copy files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.APP_HOST }}
+          username: ${{ secrets.APP_USER }}
+          password: ${{ secrets.APP_PASS }}
+          port: 65002
+          source: "backend/.,!vendor"
+          target: "domains/moon-factory.fr/public_html/api-challenge/"
+  
   deploy: 
     runs-on: ubuntu-latest
     env:
