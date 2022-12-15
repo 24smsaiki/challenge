@@ -21,7 +21,7 @@ jobs:
           username: ${{ secrets.APP_USER }}
           password: ${{ secrets.APP_PASS }}
           port: 65002
-          source: "./backend/*,!vendor"
+          source: "backend/*,!vendor"
           target: "domains/moon-factory.fr/public_html/api-challenge/"
   
   # deploy: 
