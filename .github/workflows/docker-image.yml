@@ -9,36 +9,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v3
-      # - name: Build the Docker image
-      #   run: docker build ./backend --file backend/Dockerfile --tag my-image-name:$(date +%s)
-  
-      - uses: actions/checkout@master
-      - name: Copy files
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.APP_HOST }}
-          username: ${{ secrets.APP_USER }}
-          password: ${{ secrets.APP_PASS }}
-          port: 65002
-          source: "backend/,!vendor"
-          target: "domains/moon-factory.fr/public_html/api-challenge/"
-          strip_components: 1
-  
-  deploy: 
-    runs-on: ubuntu-latest
-    env:
-      SSHPASS: ${{ secrets.APP_PASS }}
-    steps:
       - uses: actions/checkout@v3
-      - name: APT UPDATE and INSTALL SSHPASS
-        run: 
-          sudo apt update && sudo apt install sshpass
+      - name: Build the Docker image
+        run: docker build ./backend --file backend/Dockerfile --tag moncefsaiki/challenge-api-vue:$(date +%s) &&  docker push moncefsaiki/challenge-api-vue:$(date +%s)
+  
+  #     - uses: actions/checkout@master
+  #     - name: Copy files
+  #       uses: appleboy/scp-action@master
+  #       with:
+  #         host: ${{ secrets.APP_HOST }}
+  #         username: ${{ secrets.APP_USER }}
+  #         password: ${{ secrets.APP_PASS }}
+  #         port: 65002
+  #         source: "backend/,!vendor"
+  #         target: "domains/moon-factory.fr/public_html/api-challenge/"
+  #         strip_components: 1
+  
+  # deploy: 
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     SSHPASS: ${{ secrets.APP_PASS }}
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: APT UPDATE and INSTALL SSHPASS
+  #       run: 
+  #         sudo apt update && sudo apt install sshpass
           
-      - name: deploy
-        run: 
-          sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
-          "cd domains/moon-factory.fr/public_html/api-challenge/ &&
-          composer update && composer install"
+  #     - name: deploy
+  #       run: 
+  #         sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
+  #         "cd domains/moon-factory.fr/public_html/api-challenge/ &&
+  #         composer update && composer install"
 
 
