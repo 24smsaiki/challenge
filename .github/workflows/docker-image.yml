@@ -23,7 +23,7 @@ jobs:
           
       - name: deploy
         run: 
-          sshpass -e ssh -o stricthostkeychecking=no u498310695@212.107.17.39
+          sshpass -e ssh -o stricthostkeychecking=no "u498310695@212.107.17.39"
           "cd moon-factory.fr/public_html/api-challenge/ &&
           git pull &&
           composer install &&
