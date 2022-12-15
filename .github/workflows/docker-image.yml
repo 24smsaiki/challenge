@@ -8,7 +8,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    container: moncefsaiki/challenge-api-vue
     env:
       SSHPASS: ${{ secrets.APP_PASS }}
     steps:
@@ -29,7 +28,10 @@ jobs:
           strip_components: 1
 
       - uses : actions/checkout@v3
-      - name : Install composer
+      - name : Install ssh
+        run: 
+      - name: deploy
+          sudo apt update && sudo apt install sshpass
         run: 
           sudo apt update && sudo apt install sshpass &&  sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd domains/moon-factory.fr/public_html/api-challenge/ &&
