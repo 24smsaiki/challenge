@@ -17,9 +17,8 @@ jobs:
 
       - name: Build the Docker image
       - uses: actions/checkout@v3
-        with:  
-          push: true
-        run: docker build ./backend --file backend/Dockerfile --tag moncefsaiki/challenge-api-vue:$(date +%s)
+        
+        run: docker build ./backend --file backend/Dockerfile --tag moncefsaiki/challenge-api-vue:latest && docker push moncefsaiki/challenge-api-vue:latest
   #     - uses: actions/checkout@master
   #     - name: Copy files
   #       uses: appleboy/scp-action@master
