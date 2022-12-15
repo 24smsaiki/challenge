@@ -26,7 +26,7 @@ jobs:
       - name: deploy
         run: 
           sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
-          "cd moon-factory.fr/public_html/api-challenge/ &&
+          "cd domains/moon-factory.fr/public_html/api-challenge/ &&
           git pull &&
           composer install &&
           php bin/console d:m:m -n"
