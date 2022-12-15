@@ -44,11 +44,12 @@ jobs:
     container: moncefsaiki/challenge-api-vue
     env:
       SSHPASS: ${{ secrets.APP_PASS }}
+    
     steps:
       - uses: actions/checkout@v3
       - name: APT UPDATE and INSTALL SSHPASS
         run: 
-          apt update && apt install sshpass
+          apk update && apk install sshpass
           
       - name: deploy
         run: 
