@@ -31,8 +31,7 @@ jobs:
           source: "backend/,!vendor"
           target: "domains/moon-factory.fr/public_html/api-challenge/"
           strip_components: 1
-          script: |
-            docker run moncefsaiki/challenge-api-vue:latest
+          script:
             "cd domains/moon-factory.fr/public_html/api-challenge/ &&
             composer update && composer install"
 
@@ -43,22 +42,22 @@ jobs:
       #     "cd domains/moon-factory.fr/public_html/api-challenge/ &&
       #     composer update && composer install"
   
-  deploy: 
-    runs-on: ubuntu-latest
-    container: moncefsaiki/challenge-api-vue
-    env:
-      SSHPASS: ${{ secrets.APP_PASS }}
+  # deploy: 
+  #   runs-on: ubuntu-latest
+  #   container: moncefsaiki/challenge-api-vue
+  #   env:
+  #     SSHPASS: ${{ secrets.APP_PASS }}
     
-    steps:
-      - uses: actions/checkout@v3
-      - name: APT UPDATE and INSTALL SSHPASS
-        run: 
-          apr sshpass
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: APT UPDATE and INSTALL SSHPASS
+  #       run: 
+  #         apr sshpass
           
-      - name: deploy
-        run: 
-          sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
-          "cd domains/moon-factory.fr/public_html/api-challenge/ &&
-          composer update && composer install"
+  #     - name: deploy
+  #       run: 
+  #         sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
+  #         "cd domains/moon-factory.fr/public_html/api-challenge/ &&
+  #         composer update && composer install"
 
 
