@@ -32,7 +32,7 @@ jobs:
           target: "domains/moon-factory.fr/public_html/api-challenge/"
           strip_components: 1
 
-      - uses: moncefsaiki/challenge-api-vue:latest
+      - uses: moncefsaiki/challenge-api-vue
       - name: APT UPDATE and INSTALL SSHPASS
         run: 
           sudo apt update && sudo apt install sshpass &&  sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
