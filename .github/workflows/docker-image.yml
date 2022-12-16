@@ -31,16 +31,12 @@ jobs:
           source: "backend/,!vendor"
           target: "domains/moon-factory.fr/public_html/api-challenge/"
           strip_components: 1
-     
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
       - uses: actions/checkout@v3
       - name: APT UPDATE and INSTALL SSHPASS
         run: 
           sudo apt update && sudo apt install sshpass &&  sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd domains/moon-factory.fr/public_html/api-challenge/ &&
-          composer update && composer install"
+          composer COMPOSER_MEMORY_LIMIT=-1 update && composer COMPOSER_MEMORY_LIMIT=-1 install"
       
 
       # - uses: actions/checkout@v3
