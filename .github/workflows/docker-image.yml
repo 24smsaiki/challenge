@@ -40,11 +40,11 @@ jobs:
           source: "backend/,!vendor"
           target: "domains/moon-factory.fr/public_html/api-challenge/"
           strip_components: 1
-          
+
       - uses: actions/checkout@v3
       - name: Deploy Api
         run: 
-          sudo apt update && apt install sshpass &&  sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
+          apt update && apt install sshpass &&  sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd domains/moon-factory.fr/public_html/api-challenge/ &&
           composer2 update --ignore-platform-reqs && composer2 install --ignore-platform-reqs"
 
