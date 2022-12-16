@@ -8,6 +8,7 @@
 /var/
 /vendor/
 /mysql/
+/.env
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
