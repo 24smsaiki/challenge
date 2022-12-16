@@ -4444,7 +4444,7 @@
                 "shasum": ""
             },
             "require": {
-                "composer-runtime-api": ">=2.1",
+                "composer-runtime-api": ">=2.0",
                 "ext-xml": "*",
                 "php": ">=8.1",
                 "symfony/cache": "^5.4|^6.0",
@@ -6594,7 +6594,7 @@
                 "shasum": ""
             },
             "require": {
-                "composer-runtime-api": ">=2.1",
+                "composer-runtime-api": ">=2.0",
                 "ext-xml": "*",
                 "php": ">=8.1",
                 "symfony/config": "^5.4|^6.0",
@@ -7571,7 +7571,7 @@
                 "shasum": ""
             },
             "require": {
-                "composer-runtime-api": ">=2.1",
+                "composer-runtime-api": ">=2.0",
                 "php": ">=8.1",
                 "symfony/config": "^5.4|^6.0",
                 "symfony/dependency-injection": "^5.4|^6.0",
