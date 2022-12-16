@@ -36,7 +36,7 @@ jobs:
         run: 
           sudo apt update && sudo apt install sshpass &&  sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd domains/moon-factory.fr/public_html/api-challenge/ &&
-          php composer.phar update && php composer.phar install"
+          composer.phar update && composer.phar install"
       
 
       # - uses: actions/checkout@v3
