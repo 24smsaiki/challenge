@@ -21,25 +21,29 @@ jobs:
       - name: Build the Docker image
         run: docker build ./backend --file backend/Dockerfile --tag moncefsaiki/challenge-api-vue:latest && docker push moncefsaiki/challenge-api-vue:latest
     
-    deploy-api :
-      - uses: actions/checkout@master
-      - name: Copy files
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.APP_HOST }}
-          username: ${{ secrets.APP_USER }}
-          password: ${{ secrets.APP_PASS }}
-          port: 65002
-          source: "backend/,!vendor"
-          target: "domains/moon-factory.fr/public_html/api-challenge/"
-          strip_components: 1
+    deploy-api : 
+      runs-on: ubuntu-latest
+      env:
+        SSHPASS: ${{ secrets.APP_PASS }}
+      steps:
+        - uses: actions/checkout@master
+        - name: Copy files
+          uses: appleboy/scp-action@master
+          with:
+            host: ${{ secrets.APP_HOST }}
+            username: ${{ secrets.APP_USER }}
+            password: ${{ secrets.APP_PASS }}
+            port: 65002
+            source: "backend/,!vendor"
+            target: "domains/moon-factory.fr/public_html/api-challenge/"
+            strip_components: 1
 
-      - uses: actions/checkout@v3
-      - name: Deploy Api
-        run: 
-          sudo apt update && sudo apt install sshpass &&  sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
-          "cd domains/moon-factory.fr/public_html/api-challenge/ &&
-          composer2 update --ignore-platform-reqs && composer2 install --ignore-platform-reqs"
+        - uses: actions/checkout@v3
+        - name: Deploy Api
+          run: 
+            sudo apt update && sudo apt install sshpass &&  sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
+            "cd domains/moon-factory.fr/public_html/api-challenge/ &&
+            composer2 update --ignore-platform-reqs && composer2 install --ignore-platform-reqs"
 
 
 
