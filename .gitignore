@@ -1,4 +1,5 @@
 /backend/vendor
 /backend/.env.test
 /backend/.env.local
+# /backend/mysql
 /frontend/node_modules
