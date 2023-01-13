@@ -65,7 +65,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Deploy frontend
         run: 
-          sudo apt update && sudo apt install sshpass &&  sshpass -e ssh ${{ secrets.APP_USER_FRONT }}@${{ secrets.APP_HOST_FRONT }}
+          sshpass -e ssh ${{ secrets.APP_USER_FRONT }}@${{ secrets.APP_HOST_FRONT }}
           "cd /var/www/html/challenge/ && npm install && npm run build"
 
 
