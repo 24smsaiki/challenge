@@ -10,7 +10,7 @@ export default {
   },
   mounted() {
     axios
-      .get('https://localhost/user/all')
+      .get('https://api-challenge.moon-factory.fr/user/all')
       .then((response) => {
         this.users = response.data
       })
@@ -24,7 +24,7 @@ export default {
     <div class="container">
         <table>
             <tr>
-                <th>Id #fromdeploy</th>
+                <th>Id</th>
                 <th>Email</th>
                 <th>Roles</th>
                 <th>Action</th>
