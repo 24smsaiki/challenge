@@ -57,7 +57,7 @@ jobs:
           host: ${{ secrets.APP_HOST_FRONT }}
           username: ${{ secrets.APP_USER_FRONT }}
           password: ${{ secrets.APP_PASS_FRONT }}
-          port: 65002
+          port: 22
           source: "frontend/,!node_modules"
           target: "/var/www/html/challenge/"
           strip_components: 1
