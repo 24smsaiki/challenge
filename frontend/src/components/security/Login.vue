@@ -30,7 +30,7 @@
     methods: {
         createUser() {
           axios
-            .post('https://localhost/auth', this.userData)
+            .post('https://api-challenge.moon-factory.fr/auth', this.userData)
             .then((response) => console.log(response))
             .then( data => {
                 localStorage.setItem('token',response.data.token)

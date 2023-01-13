@@ -30,7 +30,7 @@
     methods: {
         createUser() {
           axios
-            .post('https://localhost/user/new', this.userData)
+            .post('https://api-challenge.moon-factory.fr/user/new', this.userData)
             .then((response) => console.log(response))
       }
     }
