@@ -44,6 +44,29 @@ jobs:
           sudo apt update && sudo apt install sshpass &&  sshpass -e ssh -p 65002 -o stricthostkeychecking=no ${{ secrets.APP_USER }}@${{ secrets.APP_HOST }}
           "cd domains/moon-factory.fr/public_html/api-challenge/ &&
           composer2 update --ignore-platform-reqs && composer2 install --ignore-platform-reqs"
+  
+  deploy-front : 
+    runs-on: ubuntu-latest
+    env:
+      SSHPASS: ${{ secrets.APP_PASS_FRONT }}
+    steps:
+      - uses: actions/checkout@master
+      - name: Copy files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.APP_HOST_FRONT }}
+          username: ${{ secrets.APP_USER_FRONT }}
+          password: ${{ secrets.APP_PASS_FRONT }}
+          port: 65002
+          source: "frontend/,!node_modules"
+          target: "/var/www/html/challenge/"
+          strip_components: 1
+
+      - uses: actions/checkout@v3
+      - name: Deploy frontend
+        run: 
+          sudo apt update && sudo apt install sshpass &&  sshpass -e ssh ${{ secrets.APP_USER_FRONT }}@${{ secrets.APP_HOST_FRONT }}
+          "cd /var/www/html/challenge/ && npm install && npm run build"
 
 
 
