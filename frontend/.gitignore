@@ -2,6 +2,7 @@
 /backend/.env.test
 /backend/.env.local
 /backend/.env
+/.env.local
 # /backend/mysql
 
 /node_modules
