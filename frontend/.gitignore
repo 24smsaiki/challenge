@@ -4,4 +4,4 @@
 /backend/.env
 # /backend/mysql
 
-/frontend/node_modules
+/node_modules
