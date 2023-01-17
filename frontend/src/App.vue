@@ -1,15 +1,13 @@
 <script setup>
-import UsersList from "./components/security/UsersList.vue";
-// import RegisterForm from './components/security/RegisterForm.vue'
-// import Login from './components/security/Login.vue'
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-	<main>
-		<UsersList />
-		<!-- <RegisterForm/> -->
-	</main>
-	<Login />
+  <header>
+    <nav>
+      <RouterLink to="/">Home</RouterLink>
+      <RouterLink to="/about">About</RouterLink>
+    </nav>
+  </header>
+  <RouterView />
 </template>
-
-<style scoped></style>
