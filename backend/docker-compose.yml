@@ -79,7 +79,14 @@ services:
       MYSQL_DATABASE: app
       MYSQL_USER: symfony
       MYSQL_PASSWORD: ChangeMe
-
+  frontend:
+      image: node:alpine
+      volumes:
+        - ../frontend:/app
+      working_dir: /app
+      command: sh -c "npm install && npm run serve"
+      ports:
+        - 3000:3000
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
 volumes:
