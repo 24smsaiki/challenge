@@ -37,13 +37,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Length(min: 8)]
     private ?string $plainPassword = null;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Statistic::class)]
-    private Collection $pokemons;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class)]
+    private Collection $addresses;
 
     public function __construct()
     {
-        $this->pokemons = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
+
+   
 
     public function getId(): ?int
     {
@@ -139,32 +141,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Statistic>
+     * @return Collection<int, Address>
      */
-    public function getPokemons(): Collection
+    public function getAddresses(): Collection
     {
-        return $this->pokemons;
+        return $this->addresses;
     }
 
-    public function addPokemon(Statistic $pokemon): self
+    public function addAddress(Address $address): self
     {
-        if (!$this->pokemons->contains($pokemon)) {
-            $this->pokemons->add($pokemon);
-            $pokemon->setOwner($this);
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->setUser($this);
         }
 
         return $this;
     }
 
-    public function removePokemon(Statistic $pokemon): self
+    public function removeAddress(Address $address): self
     {
-        if ($this->pokemons->removeElement($pokemon)) {
+        if ($this->addresses->removeElement($address)) {
             // set the owning side to null (unless already changed)
-            if ($pokemon->getOwner() === $this) {
-                $pokemon->setOwner(null);
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
             }
         }
 
         return $this;
     }
+
+    
 }
