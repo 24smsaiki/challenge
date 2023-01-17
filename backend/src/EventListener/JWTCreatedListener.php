@@ -43,23 +43,16 @@ public function __construct(RequestStack $requestStack, UserRepository $userRepo
  */
 public function onJWTCreated(JWTCreatedEvent $event)
 {
-    # retreive the request object
     $request = $this->requestStack->getCurrentRequest();
-    $content = $request->getContent();
-    # format the result to have the email of the current user
-    $tmp = explode("\n",$content)[1];
-    $emailCurrentUser = substr($tmp,14,12);
-    # get the current user by email
-    $currentUser = $this->userRepository->findByEmail($emailCurrentUser)[0];
-    # set the token payload
-    $payload       = $event->getData();
-    $payload['ip'] = $request->getClientIp();
-    // add id of the current user on the payload
+    $content = json_decode($request->getContent(), true);
+
+    $currentUser = $this->userRepository->findOneBy(['email'=>$content["email"]]);
+    $payload = $event->getData();
     $payload['id'] = $currentUser->getId();
 
     $event->setData($payload);
 
-    $header        = $event->getHeader();
+    $header = $event->getHeader();
     $header['cty'] = 'JWT';
 
     $event->setHeader($header);
