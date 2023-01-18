@@ -154,51 +154,6 @@
           this.windowSize = "desktop";
         }
       },
-    //   gallerySrc(index) {
-    //     if (index === "first") {
-    //       if (this.windowSize === "mobile") {
-    //         return require(`../${this.currentProduct.gallery.first.mobile.slice(
-    //           2
-    //         )}`);
-    //       } else if (this.windowSize === "tablet") {
-    //         return require(`../${this.currentProduct.gallery.first.tablet.slice(
-    //           2
-    //         )}`);
-    //       } else {
-    //         return require(`../${this.currentProduct.gallery.first.desktop.slice(
-    //           2
-    //         )}`);
-    //       }
-    //     } else if (index === "second") {
-    //       if (this.windowSize === "mobile") {
-    //         return require(`../${this.currentProduct.gallery.second.mobile.slice(
-    //           2
-    //         )}`);
-    //       } else if (this.windowSize === "tablet") {
-    //         return require(`../${this.currentProduct.gallery.second.tablet.slice(
-    //           2
-    //         )}`);
-    //       } else {
-    //         return require(`../${this.currentProduct.gallery.second.desktop.slice(
-    //           2
-    //         )}`);
-    //       }
-    //     } else {
-    //       if (this.windowSize === "mobile") {
-    //         return require(`../${this.currentProduct.gallery.third.mobile.slice(
-    //           2
-    //         )}`);
-    //       } else if (this.windowSize === "tablet") {
-    //         return require(`../${this.currentProduct.gallery.third.tablet.slice(
-    //           2
-    //         )}`);
-    //       } else {
-    //         return require(`../${this.currentProduct.gallery.third.desktop.slice(
-    //           2
-    //         )}`);
-    //       }
-    //     }
-    //   },
     },
     created() {
       this.setWindowSize();
@@ -212,15 +167,6 @@
           .slice()
           .find((product) => product.slug === this.$route.params.product);
       },
-    //   editSrc() {
-    //     if (this.windowSize === "mobile") {
-    //       return require(`../${this.currentProduct.image.mobile.slice(2)}`);
-    //     } else if (this.windowSize === "tablet") {
-    //       return require(`../${this.currentProduct.image.tablet.slice(2)}`);
-    //     } else {
-    //       return require(`../${this.currentProduct.image.desktop.slice(2)}`);
-    //     }
-    //   },
       editedText() {
         const paragraphs = [];
         let myString = this.currentProduct.features;
