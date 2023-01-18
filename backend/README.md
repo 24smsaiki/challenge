@@ -13,9 +13,11 @@ A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony
 7. Run `docker compose logs -f` to display current logs, `docker compose logs -f [CONTAINER_NAME]` to display specific container's current logs
 
 ## Commandes utiles
+
 Lister l'ensemble des commandes existances `docker compose exec php bin/console`
 
 #### Création de fichier vierge
+
 Controller `docker compose exec php bin/console make:controller`
 
 FormType `docker compose exec php bin/console make:form`
@@ -23,20 +25,23 @@ FormType `docker compose exec php bin/console make:form`
 CRUD `docker compose exec php bin/console make:crud`
 
 #### Debug
-Supprimer le cache du navigateur 
+
+Supprimer le cache du navigateur
 
 `docker compose exec php bin/console cache:clear`
 
 `docker compose exec php bin/console c:c`
 
-Voir les routes actives 
+Voir les routes actives
 
 `docker compose exec php bin/console make:crud`
 
 ## Gestion des routes
+
 [https://symfony.com/doc/current/routing.html](https://symfony.com/doc/current/routing.html)
 
 ## Autowiring & ParamConverter
+
 Autowiring [https://symfony.com/doc/current/service_container/autowiring.html](https://symfony.com/doc/current/service_container/autowiring.html)
 
 ParamConverter [https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/converters.html](https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/converters.html)
@@ -44,22 +49,25 @@ ParamConverter [https://symfony.com/bundles/SensioFrameworkExtraBundle/current/a
 ## Gestion de base de données
 
 #### Commandes de création des fichiers entity/repository et d'ajout de champs
+
 `docker compose exec php bin/console make:entity`
 
 Documentation sur les relations entre les entités [https://symfony.com/doc/current/doctrine/associations.html](https://symfony.com/doc/current/doctrine/associations.html)
 
 #### Mise à jour de la base de données via migration
-Generation d'une migration 
+
+Generation d'une migration
 
 `docker compose exec php bin/console make:migration`
 
-Jouer les migrations 
+Jouer les migrations
 
 `docker compose exec php bin/console doctrine:migration:migrate`
 
 `docker compose exec php bin/console d:m:m`
 
 #### Mise à jour de la base de données via update de schema sans migration
+
 Voir les requètes interprétées (sans mise à jour de la DB)
 
 `docker compose exec php bin/console doctrine:schema:update --dump-sql`
@@ -73,6 +81,7 @@ Executer les requètes en DB
 `docker compose exec php bin/console d:s:u --force`
 
 #### Data Fixtures
+
 [https://symfony.com/bundles/DoctrineFixturesBundle/current/index.html](https://symfony.com/bundles/DoctrineFixturesBundle/current/index.html)
 
 `docker compose exec php bin/console doctrine:fixtures:load`
@@ -81,7 +90,7 @@ Executer les requètes en DB
 
 #### Autres commandes utiles liés à doctrine
 
-Suppression de la base de donnée 
+Suppression de la base de donnée
 
 `docker compose exec php bin/console doctrine:database:drop --force`
 
@@ -94,6 +103,7 @@ Création de la base de donnée
 `docker compose exec php bin/console d:d:c`
 
 #### Bundle DoctrineExtension
+
 Installation
 
 `docker compose exec php composer require stof/doctrine-extensions-bundle`
@@ -137,11 +147,12 @@ Gestion de la hiérarchie des rôles [https://symfony.com/doc/current/security.h
 
 Contrôle des accès par rôles (access_control) [https://symfony.com/doc/current/security.html#add-code-to-deny-access](https://symfony.com/doc/current/security.html#add-code-to-deny-access)
 
-#### Sécurité :  Check des permissions utilisateurs pour une resource donnée (Voter)
+#### Sécurité : Check des permissions utilisateurs pour une resource donnée (Voter)
 
 [https://symfony.com/doc/current/security/voters.html](https://symfony.com/doc/current/security/voters.html)
 
 #### Sécurité : expression via attributes
+
 [https://symfony.com/doc/current/security/expressions.html](https://symfony.com/doc/current/security/expressions.html)
 
 [https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/security.html#security](https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/security.html#security)
@@ -156,9 +167,11 @@ Documentation [https://symfony.com/doc/current/forms.html](https://symfony.com/d
 Types [https://symfony.com/doc/current/reference/forms/types.html](https://symfony.com/doc/current/reference/forms/types.html)
 
 #### Contrainte de validation (Sécurité des formulaires : Assert)
+
 [https://symfony.com/doc/current/validation.html](https://symfony.com/doc/current/validation.html)
 
 Exemple d'utilisation
+
 ```
     #[ORM\Column(length: 50)]
     #[NotBlank(message: 'Cette valeur ne peut pas être vide.')]
@@ -182,9 +195,11 @@ Documentation [https://symfony.com/doc/current/forms.html](https://symfony.com/d
 Types [https://symfony.com/doc/current/reference/forms/types.html](https://symfony.com/doc/current/reference/forms/types.html)
 
 #### Contrainte de validation (Sécurité des formulaires : Assert)
+
 [https://symfony.com/doc/current/validation.html](https://symfony.com/doc/current/validation.html)
 
 Exemple d'utilisation
+
 ```
     #[ORM\Column(length: 50)]
     #[NotBlank(message: 'Cette valeur ne peut pas être vide.')]
