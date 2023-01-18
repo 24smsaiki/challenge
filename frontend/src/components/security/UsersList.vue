@@ -1,5 +1,6 @@
 <script>
-import axios from "axios";
+import axios from 'axios'
+import * as Request from '../../services/request';
 
 export default {
   data() {
@@ -8,33 +9,34 @@ export default {
     };
   },
   mounted() {
-    axios
-      .get("https://api-challenge.moon-factory.fr/user/all")
+    Request.make('get', 'user/all')
       .then((response) => {
-        this.users = response.data;
-      });
-  },
-};
+        this.users = response;
+      }
+      )
+  }
+}
 </script>
 
 <template>
-  <div class="container">
-    <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    <table>
-      <tr>
-        <th>Id</th>
-        <th>Email</th>
-        <th>Roles</th>
-        <th>Action</th>
-      </tr>
-      <tr v-for="user in users" :key="user.id">
-        <td>{{ user.id }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.roles }}</td>
-        <td>A venir</td>
-      </tr>
-    </table>
-  </div>
+    <div class="container">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Action</th>
+            </tr>
+            <tr v-for="user in users" :key="user.id">
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles }}</td>
+                <td>A venir</td>
+            </tr>
+      
+        </table>
+
+    </div>
 </template>
 
 <style scoped>
