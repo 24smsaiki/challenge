@@ -88,7 +88,7 @@ services:
       ports:
         - 3000:3000
       environment:
-      - VITE_API_URL=http://127.0.0.1:3000
+      - VITE_API_URL=http://localhost
       - CLIENT_PORT=3000
       - CLIENT_HOST=0.0.0.0
 ###> symfony/mercure-bundle ###
