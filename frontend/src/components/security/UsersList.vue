@@ -1,6 +1,7 @@
 
 <script>
 import axios from 'axios'
+import * as Request from '../../services/request';
 
 export default {
   data() {
@@ -9,11 +10,11 @@ export default {
     }
   },
   mounted() {
-    axios
-      .get('https://api-challenge.moon-factory.fr/user/all')
+    Request.make('get', 'user/all')
       .then((response) => {
-        this.users = response.data
-      })
+        this.users = response;
+      }
+      )
   }
 }
 </script>
