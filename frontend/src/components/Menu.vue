@@ -1,7 +1,7 @@
 <template>
   <div :class="['overlay', show ? 'showElement' : 'hideElement']"></div>
   <div :class="['menu', show ? 'showElement' : 'hideElement']" ref="mobileMenu">
-    <section class="categories">
+    <!-- <section class="categories">
       <Category
         product="headphones"
         :show="show"
@@ -17,7 +17,7 @@
         :show="show"
         @toggle-menu-show="$emit('toggle-menu-show', $event)"
       />
-    </section>
+    </section> -->
   </div>
 </template>
 

@@ -2,7 +2,6 @@
   <Menu
     :show="showMenu"
     :scrollTop="scrollTop"
-    @toggle-menu-show="toggleMenu"
     ref="mobileMenu"
   />
   <Cart
@@ -12,12 +11,6 @@
     @empty-cart="emptyCart"
     @toggle-menu-show="toggleMenu"
   />
-  <div
-    :class="[
-      'wrapper',
-      showMenu || showCart || showConfirmation ? 'stop-scroll' : '',
-    ]"
-  >
     <router-view
       @toggle-menu-show="toggleMenu"
       @add-to-cart="addToCart"
@@ -26,7 +19,6 @@
       :showConfirmation="showConfirmation"
     />
     <Footer />
-  </div>
 </template>
 
 <script>
