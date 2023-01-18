@@ -53,7 +53,6 @@ export default {
   methods: {
     editSrc(product) {
       return product.image.mobile.slice(2);
-
     },
     separator(numb) {
       var str = numb.toString().split(".");

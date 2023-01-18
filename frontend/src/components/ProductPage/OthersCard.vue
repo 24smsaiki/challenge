@@ -39,7 +39,6 @@ export default {
   computed: {
     editSrc() {
       return this.product.image.desktop.slice(2);
-      
     },
   },
   created() {
