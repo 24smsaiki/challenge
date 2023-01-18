@@ -2,7 +2,7 @@ import axios from "axios";
 import LocalStorage from "./localStorage";
 
 const request = axios.create({
-    baseURL: "http://localhost",
+    baseURL: import.meta.env.VITE_API_URL,
     headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
