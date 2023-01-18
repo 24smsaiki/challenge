@@ -21,7 +21,13 @@
         <router-link to="/category/speakers">Speakers</router-link>
         <router-link to="/category/earphones">Earphones</router-link>
       </li>
+     
     </ul>
+    <div>
+      <li class="navbar__desktop-menu__link">
+        <router-link to="/login">Login</router-link>
+      </li>
+    </div>
     <button
       class="navbar__cart-btn"
       @click="$emit('toggle-menu-show', 'cart')"
