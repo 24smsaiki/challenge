@@ -34,7 +34,7 @@ const onSubmit = async () => {
 
 <template>
   <form @submit.prevent="onSubmit">
-    <h3>Login Here</h3>
+    <h3>Login</h3>
 
     <label for="email">Email</label>
     <input type="text" placeholder="Email or Phone" id="email" v-model="form.email" />
@@ -44,16 +44,29 @@ const onSubmit = async () => {
 
     <button type="submit">Log In</button>
     <div class="social">
-      <div class="go"><i class="fab fa-google"></i> Google</div>
-      <div class="fb"><i class="fab fa-facebook"></i> Facebook</div>
+      <div class="error" v-if="error">{{ error }}</div>
     </div>
-    <!-- afficher erreur -->
-    <div class="error" v-if="error">{{ error }}</div>
+    <!-- Déjà inscrit ? -->
+    <div class="signup">
+      <p>Vous n'avez pas de compte ?</p>
+      <router-link to="/register" class="underline" >Inscrivez-vous</router-link>
+    </div>
 
+  
   </form>
 </template>
 
 <style scoped>
+
+.underline {
+  text-decoration: underline;
+}
+.signup {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+
+}
 .error {
   color: red;
   font-size: 12px;
