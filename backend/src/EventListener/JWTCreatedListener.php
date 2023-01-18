@@ -10,15 +10,9 @@ use Doctrine\ORM\Events;
 use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\Validator\Constraints\Length;
 
-class JWTCreatedListener implements EventSubscriberInterface
+class JWTCreatedListener
 {
-    public function getSubscribedEvents(): array
-    {
-        return [
-            Events::prePersist,
-            Events::preUpdate,
-        ];
-    }
+    
 /**
  * @var RequestStack
  */
