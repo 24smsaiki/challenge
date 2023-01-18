@@ -43,7 +43,7 @@ public function onJWTCreated(JWTCreatedEvent $event)
     $currentUser = $this->userRepository->findOneBy(['email'=>$content["email"]]);
     $payload = $event->getData();
     $payload['id'] = $currentUser->getId();
-
+    
     $event->setData($payload);
 
     $header = $event->getHeader();

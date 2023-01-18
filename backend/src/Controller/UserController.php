@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/user')]
@@ -28,10 +29,42 @@ class UserController extends AbstractController
         }
         $reponse = new Response();
         $reponse->setContent(json_encode($listUsers));
-        $reponse->headers->set("Content-Type", "application/json");
-        $reponse->headers->set("Access-Control-Allow-Origin", "*");
-        return $reponse;
         
+        return $this->setResponseHeaders($reponse);;
+        
+    }
+    #[Route('/register', name: 'registerNewUser', methods: ['POST'])]
+    public function register(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher) : Response
+    {
+        $user = new User();
+
+        $body = json_decode($request->getContent(), true);
+        $email = $body['email'];
+        $password = $body['password'];
+        $password2 = $body['password2'];
+
+        # check if user exists
+        $existingUser = $userRepository->findOneBy(['email'=>$email]);
+        if($existingUser)
+        {
+            return new Response('cet email existe déjà kemirawowooooo');
+        }
+
+        if($password == $password2){
+
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $password
+            );
+        }
+        
+        $user->setEmail($email);
+        $user->setRoles(["ROLE_USER"]);
+        $user->setPassword($hashedPassword);
+        $userRepository->save($user, true);
+        $response = new Response('added successfully');
+
+        return $this->setResponseHeaders($response);
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET','POST'])]
@@ -113,5 +146,16 @@ class UserController extends AbstractController
         $reponse->headers->set("Access-Control-Allow-Origin", "*");
 
         return $reponse;
+    }
+
+
+
+
+    # Add Private function here
+    private function setResponseHeaders(Response $response) : Response
+    {
+        $response->headers->set("Content-Type", "application/json");
+        $response->headers->set("Access-Control-Allow-Origin", "*");
+        return $response;   
     }
 }
