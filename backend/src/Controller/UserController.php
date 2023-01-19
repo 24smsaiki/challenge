@@ -39,7 +39,7 @@ class UserController extends AbstractController
         return $this->setResponseHeaders($reponse);
         
     }
-    
+
     #[Route('/register', name: 'registerNewUser', methods: ['POST'])]
     public function register(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher) : Response
     {
