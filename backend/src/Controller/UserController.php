@@ -30,7 +30,7 @@ class UserController extends AbstractController
         $reponse = new Response();
         $reponse->setContent(json_encode($listUsers));
         
-        return $this->setResponseHeaders($reponse);;
+        return $this->setResponseHeaders($reponse);
         
     }
     #[Route('/register', name: 'registerNewUser', methods: ['POST'])]
@@ -163,12 +163,17 @@ class UserController extends AbstractController
 
 
     # Add Private function here
-    private function setResponseHeaders(Response $response, int $statusCode, string $message) : Response
+    private function setResponseHeaders(Response $response, ?int $statusCode=0, ?string $message="") : Response
     {
         $response->headers->set("Content-Type", "application/json");
         $response->headers->set("Access-Control-Allow-Origin", "*");
-        $response->setStatusCode($statusCode);
-        $response->headers->set('error message',$message);
+        if($statusCode){
+            $response->setStatusCode($statusCode);
+        }
+        if($message){
+            $response->headers->set('error message',$message);
+        }
+        
         return $response;   
     }
 }
