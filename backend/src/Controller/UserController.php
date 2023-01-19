@@ -80,7 +80,7 @@ class UserController extends AbstractController
             ));
 
 
-        return $this->setResponseHeaders($response, 204, "user created");
+        return $this->setResponseHeaders($response, 201, "user created");
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET','POST'])]
