@@ -37,7 +37,8 @@ class UserController extends AbstractController
     public function register(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher) : Response
     {
         $user = new User();
-
+        $errorMessage = "";
+        $response = new Response();
         $body = json_decode($request->getContent(), true);
         $email = $body['email'];
         $password = $body['password'];
@@ -45,18 +46,21 @@ class UserController extends AbstractController
 
         # check if email is empty
         if(isset($email)){
-            return new Response('renseignez un email');
+            $errorMessage = "email is empty";
+            return $this->setResponseHeaders($response,422,$errorMessage);
         }
 
         # check if user exists
         $existingUser = $userRepository->findOneBy(['email'=>$email]);
         if($existingUser)
         {
-            return new Response('cet email existe déjà kemirawowooooo');
+            $errorMessage = "user already exist";
+            return $this->setResponseHeaders($response, 422,$errorMessage);
         }
         # check if password equal to password2
         if($password != $password2){
-            return new Response('vérifier les password sont différents');
+            $errorMessage = "password1 not equal to password2";
+            return $this->setResponseHeaders($response, 422,$errorMessage);
           
         }
 
@@ -71,7 +75,7 @@ class UserController extends AbstractController
         $userRepository->save($user, true);
         $response = new Response('added successfully');
 
-        return $this->setResponseHeaders($response);
+        return $this->setResponseHeaders($response, 204, "user created");
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET','POST'])]
@@ -159,10 +163,12 @@ class UserController extends AbstractController
 
 
     # Add Private function here
-    private function setResponseHeaders(Response $response) : Response
+    private function setResponseHeaders(Response $response, int $statusCode, string $message) : Response
     {
         $response->headers->set("Content-Type", "application/json");
         $response->headers->set("Access-Control-Allow-Origin", "*");
+        $response->setStatusCode($statusCode);
+        $response->headers->set('error message',$message);
         return $response;   
     }
 }
