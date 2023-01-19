@@ -1,9 +1,5 @@
 <template>
-  <Menu
-    :show="showMenu"
-    :scrollTop="scrollTop"
-    ref="mobileMenu"
-  />
+  <Menu :show="showMenu" :scrollTop="scrollTop" ref="mobileMenu" />
   <Cart
     :show="showCart"
     :cart="cart"
@@ -11,14 +7,14 @@
     @empty-cart="emptyCart"
     @toggle-menu-show="toggleMenu"
   />
-    <router-view
-      @toggle-menu-show="toggleMenu"
-      @add-to-cart="addToCart"
-      @empty-cart="emptyCart"
-      :cart="cart"
-      :showConfirmation="showConfirmation"
-    />
-    <Footer />
+  <router-view
+    @toggle-menu-show="toggleMenu"
+    @add-to-cart="addToCart"
+    @empty-cart="emptyCart"
+    :cart="cart"
+    :showConfirmation="showConfirmation"
+  />
+  <Footer />
 </template>
 
 <script>
