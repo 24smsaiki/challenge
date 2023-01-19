@@ -5,12 +5,13 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Mime\Message;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/user')]
@@ -74,7 +75,10 @@ class UserController extends AbstractController
         $user->setRoles(["ROLE_USER"]);
         $user->setPassword($hashedPassword);
         $userRepository->save($user, true);
-        $response = new Response('added successfully');
+        $response = new JsonResponse(array(
+            "message" => "user created"
+            ));
+
 
         return $this->setResponseHeaders($response, 204, "user created");
     }
