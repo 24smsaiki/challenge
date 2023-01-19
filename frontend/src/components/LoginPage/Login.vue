@@ -65,7 +65,6 @@ const onSubmit = async () => {
   margin-top: 20px;
   text-align: center;
   font-size: 14px;
-
 }
 .error {
   color: red;

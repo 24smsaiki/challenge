@@ -1,5 +1,5 @@
 <script setup>
-import Login from '../components/security/Login.vue';
+import Login from '../components/LoginPage/Login.vue';
 import Header from '../components/Header.vue';
 
 </script>
