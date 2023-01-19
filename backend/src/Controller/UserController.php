@@ -75,11 +75,7 @@ class UserController extends AbstractController
         $user->setRoles(["ROLE_USER"]);
         $user->setPassword($hashedPassword);
         $userRepository->save($user, true);
-        $response = new JsonResponse(array(
-            "message" => "user created"
-            ));
-
-
+        
         return $this->setResponseHeaders($response, 201, "user created");
     }
 
@@ -103,7 +99,7 @@ class UserController extends AbstractController
         $reponse = new Response('added successfully');
         $reponse->headers->set("Content-Type", "application/json");
         $reponse->headers->set("Access-Control-Allow-Origin", "*");
-     
+        
         return $reponse;
        
     }
@@ -176,8 +172,10 @@ class UserController extends AbstractController
             $response->setStatusCode($statusCode);
         }
         if($message){
-            $response->headers->set('error message',$message);
+            $response->setContent(json_encode($message));
         }
-        return $response;   
+        # build the response as you want
+        
+        return $response;
     }
 }
