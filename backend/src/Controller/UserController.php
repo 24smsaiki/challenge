@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -30,33 +31,44 @@ class UserController extends AbstractController
         $reponse = new Response();
         $reponse->setContent(json_encode($listUsers));
         
-        return $this->setResponseHeaders($reponse);;
+        return $this->setResponseHeaders($reponse);
         
     }
     #[Route('/register', name: 'registerNewUser', methods: ['POST'])]
     public function register(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher) : Response
     {
         $user = new User();
-
+        $errorMessage = "";
+        $response = new Response();
         $body = json_decode($request->getContent(), true);
         $email = $body['email'];
         $password = $body['password'];
         $password2 = $body['password2'];
 
+        # check if email is empty
+        if(!$email){
+            $errorMessage = "email is empty";
+            return $this->setResponseHeaders($response,422,$errorMessage);
+        }
+
         # check if user exists
         $existingUser = $userRepository->findOneBy(['email'=>$email]);
         if($existingUser)
         {
-            return new Response('cet email existe déjà kemirawowooooo');
+            $errorMessage = "user already exist";
+            return $this->setResponseHeaders($response, 422,$errorMessage);
+        }
+        # check if password equal to password2
+        if($password != $password2){
+            $errorMessage = "password1 not equal to password2";
+            return $this->setResponseHeaders($response, 422,$errorMessage);
+          
         }
 
-        if($password == $password2){
-
-            $hashedPassword = $passwordHasher->hashPassword(
-                $user,
-                $password
-            );
-        }
+        $hashedPassword = $passwordHasher->hashPassword(
+            $user,
+            $password
+        );
         
         $user->setEmail($email);
         $user->setRoles(["ROLE_USER"]);
@@ -64,7 +76,7 @@ class UserController extends AbstractController
         $userRepository->save($user, true);
         $response = new Response('added successfully');
 
-        return $this->setResponseHeaders($response);
+        return $this->setResponseHeaders($response, 204, "user created");
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET','POST'])]
@@ -152,10 +164,16 @@ class UserController extends AbstractController
 
 
     # Add Private function here
-    private function setResponseHeaders(Response $response) : Response
+    private function setResponseHeaders(Response $response, ?int $statusCode=0, ?string $message="") : Response
     {
         $response->headers->set("Content-Type", "application/json");
         $response->headers->set("Access-Control-Allow-Origin", "*");
+        if($statusCode){
+            $response->setStatusCode($statusCode);
+        }
+        if($message){
+            $response->headers->set('error message',$message);
+        }
         return $response;   
     }
 }
