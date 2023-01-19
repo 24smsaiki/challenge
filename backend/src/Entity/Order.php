@@ -41,6 +41,10 @@ class Order
     #[ORM\OneToMany(mappedBy: 'myOrder', targetEntity: OrderDetails::class)]
     private Collection $orderDetails;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?Address $delivery = null;
+
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -164,4 +168,18 @@ class Order
 
         return $this;
     }
+
+    public function getDelivery(): ?Address
+    {
+        return $this->delivery;
+    }
+
+    public function setDelivery(?Address $delivery): self
+    {
+        $this->delivery = $delivery;
+
+        return $this;
+    }
+
+    
 }
