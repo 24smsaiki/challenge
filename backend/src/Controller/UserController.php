@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -45,7 +46,7 @@ class UserController extends AbstractController
         $password2 = $body['password2'];
 
         # check if email is empty
-        if(isset($email)){
+        if(!$email){
             $errorMessage = "email is empty";
             return $this->setResponseHeaders($response,422,$errorMessage);
         }
@@ -173,6 +174,7 @@ class UserController extends AbstractController
         if($message){
             $response->headers->set('error message',$message);
         }
+        dd($response->setContent($message));
         
         return $response;   
     }
