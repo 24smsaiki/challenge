@@ -174,8 +174,6 @@ class UserController extends AbstractController
         if($message){
             $response->headers->set('error message',$message);
         }
-        dd($response->setContent($message));
-        
         return $response;   
     }
 }
