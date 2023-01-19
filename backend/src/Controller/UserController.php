@@ -43,20 +43,27 @@ class UserController extends AbstractController
         $password = $body['password'];
         $password2 = $body['password2'];
 
+        # check if email is empty
+        if(isset($email)){
+            return new Response('renseignez un email');
+        }
+
         # check if user exists
         $existingUser = $userRepository->findOneBy(['email'=>$email]);
         if($existingUser)
         {
             return new Response('cet email existe déjà kemirawowooooo');
         }
-
-        if($password == $password2){
-
-            $hashedPassword = $passwordHasher->hashPassword(
-                $user,
-                $password
-            );
+        # check if password equal to password2
+        if($password != $password2){
+            return new Response('vérifier les password sont différents');
+          
         }
+
+        $hashedPassword = $passwordHasher->hashPassword(
+            $user,
+            $password
+        );
         
         $user->setEmail($email);
         $user->setRoles(["ROLE_USER"]);
