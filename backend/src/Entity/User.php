@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Post]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Cet email est déjà utilisé')]
 # CUSTOM METHODS
 
 #[ApiResource(operations: [
@@ -54,13 +54,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Veuillez renseigner l\'email'), Assert\Email(message: 'Veuillez renseigner un email valide')]
     private ?string $email = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $roles = [];
     #[ApiProperty(security: "is_granted('ROLE_ADMIN')", securityPostDenormalize: "is_granted('UPDATE', object)")]
     #[ORM\Column]
+    #[Assert\EqualTo(propertyPath: 'plainPassword', message: 'Les mots de passe ne correspondent pas'), 
+    Assert\NotBlank(message: 'Veuillez renseigner un mot de passe'),
+    Assert\Length(min: 8, minMessage: 'Le mot de passe doit contenir au moins 8 caractères')]
     private ?string $password = null;
 
     #[Length(min: 8)]

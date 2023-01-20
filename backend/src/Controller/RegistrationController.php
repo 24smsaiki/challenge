@@ -30,41 +30,32 @@ class RegistrationController extends AbstractController
         
         $email = $body->email;
         $password = $body->password;
-        $password2 = $body->password2;
-        # check if email is empty
-        if(!$email){
-            return new JsonResponse(['message' => '"veuillez renseigner l\'email"', 'status' => 'error'], 422);
-        }
-        # check if user exists
-        $existingUser = $em->getRepository(User::class)->findOneBy(['email' => $email]);
-        if($existingUser){
-            return new JsonResponse(['message' => 'Un compte existe déjà', 'status' => 'error'], 422);
-        }
-        #check if password equal to password2
-        if($password != $password2){
-            return new JsonResponse(['message' => 'Les mots de passes ne correspondent pas', 'status' => 'error'], 422);
-        }                                                                                                                               
+        $plainPassword = $body->plainPassword;
         
+
         $user = new User();
         $hashedPassword = $this->passwordHasher->hashPassword(
             $user,
             $password
         );
-
         $user->setEmail($email);
         $user->setRoles(["ROLE_USER"]);
         $user->setPassword($hashedPassword);
-        $em->getRepository(User::class)->save($user, true);
         $errors = $this->validator->validate($user);
+    
         if(count($errors) > 0){
             $errors = array_map(function($error){
                 return [
-                    'field' => $error->getPropertPath(),
                     "message" => $error->getMessage()
                 ];
+                
             }, iterator_to_array($errors));
-            return new JsonResponse(['status' => 'error', 'errors' => $errors], 400);
+            return new JsonResponse(['status' => 'error', 'errors' => $errors], 422);
+
         }
+       
+        $em->getRepository(User::class)->save($user, true);
+       
         
         return new JsonResponse(['message' => 'utilisateur crée', 'status' => 'success'], 201);
         
