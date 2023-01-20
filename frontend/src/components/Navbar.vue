@@ -1,3 +1,10 @@
+<script setup>
+import { ref, reactive, inject, defineEmits } from 'vue';
+
+const isAuth = inject('ProviderisAuth');
+defineEmits(['toggle-menu-show']);
+</script>
+
 <template>
   <nav class="navbar">
     <button
@@ -20,25 +27,18 @@
         <router-link to="/category/headphones">Headphones</router-link>
         <router-link to="/category/speakers">Speakers</router-link>
         <router-link to="/category/earphones">Earphones</router-link>
-        <router-link to="/login">Login</router-link>
+        <router-link v-if="!isAuth" to="/login" >Login</router-link>
+        <router-link v-if="isAuth" to="/account">Account</router-link>
       </li>
     </ul>
     <button
+      v-if="isAuth"
       class="navbar__cart-btn"
       @click="$emit('toggle-menu-show', 'cart')"
     ></button>
+    
   </nav>
 </template>
-
-<script>
-export default {
-  name: "Navbar",
-  data() {
-    return { myVar: "hello" };
-  },
-  emits: ["toggle-menu-show"],
-};
-</script>
 
 <style lang="scss" scoped>
 .navbar {
