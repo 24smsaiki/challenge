@@ -70,6 +70,7 @@ const onSubmit = async () => {
   color: red;
   font-size: 12px;
   margin-top: 10px;
+  text-align: center;
 }
 *,
 *:before,
@@ -106,7 +107,6 @@ body {
   bottom: -80px;
 }
 form {
-  height: 520px;
   width: 400px;
   background-color: black;
   margin: 20px auto;
@@ -159,27 +159,5 @@ button {
   font-weight: 600;
   border-radius: 5px;
   cursor: pointer;
-}
-.social {
-  margin-top: 30px;
-  display: flex;
-}
-.social div {
-  background: red;
-  width: 150px;
-  border-radius: 3px;
-  padding: 5px 10px 10px 5px;
-  background-color: rgba(255, 255, 255, 0.27);
-  color: #eaf0fb;
-  text-align: center;
-}
-.social div:hover {
-  background-color: rgba(255, 255, 255, 0.47);
-}
-.social .fb {
-  margin-left: 25px;
-}
-.social i {
-  margin-right: 4px;
 }
 </style>
