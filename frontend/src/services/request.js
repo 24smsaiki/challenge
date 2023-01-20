@@ -8,7 +8,7 @@ const request = axios.create({
         "Accept": "application/json",
     },
 });
-
+console.log("request.js: ", import.meta.env.VITE_API_URL);
 request.interceptors.request.use(
     (config) => {
         const token = LocalStorage.get("token");

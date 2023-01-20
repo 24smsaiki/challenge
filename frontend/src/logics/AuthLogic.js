@@ -6,13 +6,8 @@ export default class AuthLogic {
 
     static async register(body) {
         const result = await AuthRepository.register(body);
-        if (result.response.status === 422) {
-            
-            const errors = result.response.data;
-            const errorsArray = Object.values(errors);
-            throw new Error(errorsArray);
-        }
-        return result.response.data;
+        console.log("result: ", result);
+        return result.message;
     }
 
     static async login(body) {

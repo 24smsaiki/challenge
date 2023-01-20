@@ -3,7 +3,6 @@ import { ref, reactive, inject, defineEmits } from 'vue';
 
 const isAuth = inject('ProviderisAuth');
 defineEmits(['toggle-menu-show']);
-console.log(isAuth.value);
 </script>
 
 <template>
