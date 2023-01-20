@@ -61,9 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?array $roles = [];
     #[ApiProperty(security: "is_granted('ROLE_ADMIN')", securityPostDenormalize: "is_granted('UPDATE', object)")]
     #[ORM\Column]
-    #[Assert\EqualTo(propertyPath: 'plainPassword', message: 'Les mots de passe ne correspondent pas'), 
-    Assert\NotBlank(message: 'Veuillez renseigner un mot de passe'),
-    Assert\Length(min: 8, minMessage: 'Le mot de passe doit contenir au moins 8 caractères')]
+    #[Assert\NotBlank(message: 'Le mot de passe ne peut pas être vide')]
     private ?string $password = null;
 
     #[Length(min: 8)]
