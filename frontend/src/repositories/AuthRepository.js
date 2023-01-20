@@ -6,22 +6,7 @@ export default class AuthRepository {
     }
 
     static async register(body) {
-        return await Request.make('post', '/user/register', {...body});
-    }
-
-    static async logout() {
-        return await Request.make('post', '/logout');
-    }
-
-    static async refresh() {
-        return await Request.make('post', '/refresh');
-    }
-
-    static async me() {
-        return await Request.make('get', '/me', { params: { include: 'roles' } });
-    }
-    static refreshToken(refreshToken) {
-        return Request.make('post', '/oauth/token', { refresh_token: refreshToken });
+        return await Request.make('post', '/api/user/register', {...body});
     }
 
 }
