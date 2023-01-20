@@ -18,6 +18,9 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Validator\Constraints\MinimalProperties; 
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ApiResource(security: "is_granted('ROLE_USER')")]
 #[Get]
@@ -51,6 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank]
     private ?string $email = null;
 
     #[ORM\Column(nullable: true)]

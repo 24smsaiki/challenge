@@ -9,6 +9,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[AsController]
 class RegistrationController extends AbstractController
@@ -16,7 +17,8 @@ class RegistrationController extends AbstractController
     public function __construct(
         private RequestStack $requestStack,
         private ManagerRegistry $managerRegistry,
-        private UserPasswordHasherInterface $passwordHasher
+        private UserPasswordHasherInterface $passwordHasher,
+        private ValidatorInterface $validator
     ) {}
 
     public function __invoke()
@@ -53,6 +55,16 @@ class RegistrationController extends AbstractController
         $user->setRoles(["ROLE_USER"]);
         $user->setPassword($hashedPassword);
         $em->getRepository(User::class)->save($user, true);
+        $errors = $this->validator->validate($user);
+        if(count($errors) > 0){
+            $errors = array_map(function($error){
+                return [
+                    'field' => $error->getPropertPath(),
+                    "message" => $error->getMessage()
+                ];
+            }, iterator_to_array($errors));
+            return new JsonResponse(['status' => 'error', 'errors' => $errors], 400);
+        }
         
         return new JsonResponse(['message' => 'utilisateur crée', 'status' => 'success'], 201);
         
