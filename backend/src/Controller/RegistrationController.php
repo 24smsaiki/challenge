@@ -45,10 +45,10 @@ class RegistrationController extends AbstractController
         $errors = $this->validator->validate($user);
 
         if($password !== $plainPassword){
-            $errors->add(new ConstraintViolation('Les mots de passe ne correspondent pas', null, [], null, 'plainPassword', null));
+            $errors->add(new ConstraintViolation('Les mots de passe ne correspondent pas.', null, [], null, 'plainPassword', null));
         }
         if(strlen($password) < 8){
-            $errors->add(new ConstraintViolation('Le mot de passe doit contenir au moins 8 caractères', null, [], null, 'password', null));
+            $errors->add(new ConstraintViolation('Le mot de passe doit contenir au moins 8 caractères.', null, [], null, 'password', null));
         }
         if(count($errors) > 0){
             $errors = array_map(function($error){
@@ -65,7 +65,7 @@ class RegistrationController extends AbstractController
         $em->getRepository(User::class)->save($user, true);
        
         
-        return new JsonResponse(['message' => 'utilisateur crée', 'status' => 'success'], 201);
+        return new JsonResponse(['message' => 'Votre inscription a bien été effectué.', 'status' => 'success'], 201);
         
 }
 }
