@@ -39,6 +39,7 @@ class UserController extends AbstractController
         return $this->setResponseHeaders($reponse);
         
     }
+
     #[Route('/register', name: 'registerNewUser', methods: ['POST'])]
     public function register(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher) : Response
     {
@@ -51,6 +52,7 @@ class UserController extends AbstractController
         $password2 = $body['password2'];
 
         # check if email is empty
+        # note that the headers have been sets(when we call buildResponseError) but never used yet because we send anthor new Response to the front every time
         if(!$email){
             $errorerrorMessage = "email is empty";
             $error = $this->buildResponseError($response, 422, $errorerrorMessage);
@@ -121,8 +123,7 @@ class UserController extends AbstractController
         $user->setPassword($hashedPassword);
         $userRepository->save($user, true);
         $reponse = new Response('added successfully');
-        $reponse->headers->set("Content-Type", "application/json");
-        $reponse->headers->set("Access-Control-Allow-Origin", "*");
+        $this->setResponseHeaders($reponse);
         
         return $reponse;
        
@@ -139,8 +140,7 @@ class UserController extends AbstractController
         
         $reponse = new Response();
         $reponse->setContent(json_encode($listUser));
-        $reponse->headers->set("Content-Type", "application/json");
-        $reponse->headers->set("Access-Control-Allow-Origin", "*");
+        $this->setResponseHeaders($reponse);
         return $reponse;
     }
 
@@ -169,8 +169,7 @@ class UserController extends AbstractController
                 'password' => $user->getPassword()
                 ))
         );
-        $reponse->headers->set("Content-Type", "application/json");
-        $reponse->headers->set("Access-Control-Allow-Origin", "*");
+        $this->setResponseHeaders($reponse);
         return $reponse;
     }
 
