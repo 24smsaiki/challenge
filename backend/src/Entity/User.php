@@ -54,14 +54,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Assert\NotBlank(message: 'Veuillez renseigner l\'email'), Assert\Email(message: 'Veuillez renseigner un email valide')]
+    #[Assert\NotBlank(message: 'Veuillez renseigner l\'email'), Assert\Email(message: 'Veuillez renseigner un email valide.')]
     private ?string $email = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $roles = [];
     #[ApiProperty(security: "is_granted('ROLE_ADMIN')", securityPostDenormalize: "is_granted('UPDATE', object)")]
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'Le mot de passe ne peut pas être vide')]
+    #[Assert\NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
     private ?string $password = null;
 
     #[Length(min: 8)]

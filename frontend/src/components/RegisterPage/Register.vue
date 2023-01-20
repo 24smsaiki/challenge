@@ -11,7 +11,7 @@ const isLoading = ref(false);
 const form = reactive({
   email: '',
   password: '',
-  password2: '',
+  plainPassword: '',
 });
 
 const error = ref('');
@@ -23,7 +23,7 @@ const onSubmit = async () => {
     error.value = '';
     redirectToHome();
   } catch (err) {
-    error.value = err.response.data.message;
+    error.value = err.response.data.errors[0].message;
   } finally {
     isLoading.value = false;
   }
@@ -43,7 +43,7 @@ const onSubmit = async () => {
     <input type="password" placeholder="Password" id="password" v-model="form.password" />
 
     <label for="password">Confirm password</label>
-    <input type="password" placeholder="Confirm password" id="password" v-model="form.password2" />
+    <input type="password" placeholder="Confirm password" id="password" v-model="form.plainPassword" />
 
     <button type="submit">Log In</button>
       <div class="error" v-if="error">{{ error }}</div>
