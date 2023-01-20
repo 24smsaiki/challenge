@@ -3,33 +3,43 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\Controller\RegistrationController;
+use App\Controller\TestController;
 use App\Entity\Traits\TimestampableTrait;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource]
+#[ApiResource(security: "is_granted('ROLE_USER')")]
+#[Get]
+#[Post]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 # CUSTOM METHODS
+
 #[ApiResource(operations: [
     new Post(
         name: 'register', 
         uriTemplate: '/user/register', 
         controller: RegistrationController::class
+    ),
+    new Get(
+        name: 'user', 
+        uriTemplate: '/user/{id}', 
+        controller: TestController::class
     )
 ])]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableTrait;
@@ -39,23 +49,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-        
+
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $roles = [];
-
-    #[Groups(['hackathon_read', 'hackathon_write'])]
+    #[ApiProperty(security: "is_granted('ROLE_ADMIN')", securityPostDenormalize: "is_granted('UPDATE', object)")]
     #[ORM\Column]
     private ?string $password = null;
 
     #[Length(min: 8)]
     private ?string $plainPassword = null;
-
+    
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class)]
     private Collection $addresses;
-
+    
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
     private Collection $orders;
 
