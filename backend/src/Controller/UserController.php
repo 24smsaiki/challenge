@@ -5,11 +5,18 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Symfony\Component\Mime\errorMessage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\objectEquals;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -28,10 +35,74 @@ class UserController extends AbstractController
         }
         $reponse = new Response();
         $reponse->setContent(json_encode($listUsers));
-        $reponse->headers->set("Content-Type", "application/json");
-        $reponse->headers->set("Access-Control-Allow-Origin", "*");
-        return $reponse;
         
+        return $this->setResponseHeaders($reponse);
+        
+    }
+
+    #[Route('/register', name: 'registerNewUser', methods: ['POST'])]
+    public function register(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher) : Response
+    {
+        $user = new User();
+        $errorerrorMessage = "";
+        $response = new Response();
+        $body = json_decode($request->getContent(), true);
+        $email = $body['email'];
+        $password = $body['password'];
+        $password2 = $body['password2'];
+
+        # check if email is empty
+        # note that the headers have been sets(when we call buildResponseError) but never used yet because we send anthor new Response to the front every time
+        if(!$email){
+            $errorerrorMessage = "email is empty";
+            $error = $this->buildResponseError($response, 422, $errorerrorMessage);
+            return new Response(json_encode(
+                array(
+                    "StatusCode" => $error->getStatusCode(),
+                    "MessageError" => $error->getContent()
+                )
+            ));
+        }
+
+        # check if user exists
+        $existingUser = $userRepository->findOneBy(['email'=>$email]);
+        if($existingUser)
+        {
+            $errorerrorMessage = "user already exist";
+            $error = $this->buildResponseError($response, 422, $errorerrorMessage);
+            return new Response(json_encode(
+                array(
+                    "StatusCode" => $error->getStatusCode(),
+                    "MessageError" => $error->getContent()
+                )
+            ));
+        }
+        # check if password equal to password2
+        if($password != $password2){
+            $errorerrorMessage = "password1 not equal to password2";
+            $error = $this->buildResponseError($response, 422, $errorerrorMessage);
+            return new Response(json_encode(
+                array(
+                    "StatusCode" => $error->getStatusCode(),
+                    "MessageError" => $error->getContent()
+                )));
+        }
+
+        $hashedPassword = $passwordHasher->hashPassword(
+            $user,
+            $password
+        );
+        
+        $user->setEmail($email);
+        $user->setRoles(["ROLE_USER"]);
+        $user->setPassword($hashedPassword);
+        $userRepository->save($user, true);
+        $this->setResponseHeaders($response);
+        
+        return new Response(json_encode(array(
+            "SatusCode" => 201,
+            "Message" => "user created"
+        )));
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET','POST'])]
@@ -52,9 +123,8 @@ class UserController extends AbstractController
         $user->setPassword($hashedPassword);
         $userRepository->save($user, true);
         $reponse = new Response('added successfully');
-        $reponse->headers->set("Content-Type", "application/json");
-        $reponse->headers->set("Access-Control-Allow-Origin", "*");
-     
+        $this->setResponseHeaders($reponse);
+        
         return $reponse;
        
     }
@@ -70,8 +140,7 @@ class UserController extends AbstractController
         
         $reponse = new Response();
         $reponse->setContent(json_encode($listUser));
-        $reponse->headers->set("Content-Type", "application/json");
-        $reponse->headers->set("Access-Control-Allow-Origin", "*");
+        $this->setResponseHeaders($reponse);
         return $reponse;
     }
 
@@ -100,8 +169,7 @@ class UserController extends AbstractController
                 'password' => $user->getPassword()
                 ))
         );
-        $reponse->headers->set("Content-Type", "application/json");
-        $reponse->headers->set("Access-Control-Allow-Origin", "*");
+        $this->setResponseHeaders($reponse);
         return $reponse;
     }
 
@@ -113,5 +181,30 @@ class UserController extends AbstractController
         $reponse->headers->set("Access-Control-Allow-Origin", "*");
 
         return $reponse;
+    }
+
+
+
+
+    # Add Private function here
+    private function buildResponseError(Response $response, ?int $statusCode=0, ?string $errorMessage="") : Response
+    {
+        if($statusCode && $statusCode != 0){
+            $response->setStatusCode(json_encode($statusCode));
+        }
+        if($errorMessage && isEmpty($errorMessage) != ""){
+            $response->setContent(json_encode($errorMessage));
+        }
+        $this->setResponseHeaders($response);
+        return $response;
+
+    }
+
+    private function setResponseHeaders(Response $result) : Response
+    {
+        $result->headers->set("Content-Type", "application/json");
+        $result->headers->set("Access-Control-Allow-Origin", "*");
+        
+        return $result;
     }
 }
