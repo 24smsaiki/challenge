@@ -2,14 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\OrderRepository;
+use ApiPlatform\Metadata\Post;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Controller\TestController;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+#[ApiResource()]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
+
+#[ApiResource(operations: [
+    new Post(
+        name: 'newOrder', 
+        uriTemplate: '/order/new', 
+        controller: TestController::class
+    )    
+])]
+
 class Order
 {
     #[ORM\Id]
