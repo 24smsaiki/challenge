@@ -6,7 +6,6 @@ export default class AuthLogic {
 
     static async register(body) {
         const result = await AuthRepository.register(body);
-        console.log("result: ", result);
         return result.message;
     }
 

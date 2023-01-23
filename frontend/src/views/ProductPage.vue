@@ -115,6 +115,7 @@ import Header from "../components/ProductPage/Header.vue";
 import ProductPageNavigation from "../components/ProductPageNavigation.vue";
 import data from "../data.json";
 import OthersCard from "../components/ProductPage/OthersCard.vue";
+import { useCartStore } from "../stores/CartStore.js";
 export default {
   name: "ProductPage",
   components: { Header, ProductPageNavigation, OthersCard },
@@ -123,7 +124,6 @@ export default {
     return {
       total: 1,
       products: data,
-      windowSize: null,
       justAdded: false,
     };
   },
@@ -142,26 +142,14 @@ export default {
         productId: this.currentProduct.id,
         addedQuantity: this.total,
       };
-      this.$emit("add-to-cart", data);
+      useCartStore().addProduct(data);
     },
     resetTotal() {
       this.total = 1;
       this.justAdded = false;
-    },
-    setWindowSize() {
-      let windowWidth = window.innerWidth;
-      if (windowWidth < 768) {
-        this.windowSize = "mobile";
-      } else if (windowWidth < 1205) {
-        this.windowSize = "tablet";
-      } else {
-        this.windowSize = "desktop";
-      }
-    },
+    }
   },
   created() {
-    this.setWindowSize();
-    window.addEventListener("resize", this.setWindowSize);
     window.scrollTo(0, 0);
     console.log(this.currentProduct, "current product");
   },

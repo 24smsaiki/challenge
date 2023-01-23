@@ -45,6 +45,13 @@ export const useCartStore = defineStore({
         clearCart() {
             this.cart = [];
         },
+        changeQuantity(data) {
+            if(data.operation === 'substract') {
+                this.removeProduct(data.productId);
+            } else if(data.operation === 'add') {
+                this.addProduct(data);
+            }
+        }
     },
 });
 
