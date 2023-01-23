@@ -1,3 +1,65 @@
+<script setup>
+import { ref, defineEmits, computed } from "vue";
+import Header from "../components/ProductPage/Header.vue";
+import ProductPageNavigation from "../components/ProductPageNavigation.vue";
+import data from "../data.json";
+import OthersCard from "../components/ProductPage/OthersCard.vue";
+import { useProductStore } from "../stores/ProductStore.js";
+import { useCartStore } from "../stores/CartStore.js";
+
+// define emits
+defineEmits(["toggle-menu-show", "add-to-cart"]);
+
+const cartStore = useCartStore();
+const productStore = useProductStore();
+const total = ref(1);
+const justAdded = ref(false);
+const products = productStore.products;
+
+const currentProduct = computed(() => {
+  console.log(products)
+  if(products.length === 0) return null;
+  return products.find((product) => product.slug === $route.params.slug);
+});
+
+const increaseTotal = () => {
+     total.value++;
+    };
+const decreaseTotal = () => {
+     if(total.value > 1) {
+       total.value--;
+     }
+    };
+const addToCartHandler = () => {
+      justAdded.value = true;
+     const data = {
+      productId: currentProduct.id,
+      addedQuantity: total.value,
+     };
+      cartStore.addToCart(data);
+    };
+
+const resetTotal = () => {
+     total.value = 1;
+     justAdded.value = false;
+    }
+const editedText = computed(() => {
+  const paragraphs = [];
+      let myString = this.currentProduct.features;
+      while (myString.includes("\n\n")) {
+        let index = myString.indexOf("\n\n");
+        paragraphs.push(myString.slice(0, index));
+        myString = myString.slice(index + 2);
+      }
+      if (paragraphs.length > 0) {
+        paragraphs.push(myString);
+      } else {
+        paragraphs.push(this.currentProduct.features);
+      }
+      return paragraphs;
+    });
+</script>
+
 <template>
   <Header @toggle-menu-show="$emit('toggle-menu-show', $event)" />
   <main>
@@ -110,12 +172,8 @@
   </main>
 </template>
 
-<script>
-import Header from "../components/ProductPage/Header.vue";
-import ProductPageNavigation from "../components/ProductPageNavigation.vue";
-import data from "../data.json";
-import OthersCard from "../components/ProductPage/OthersCard.vue";
-import { useCartStore } from "../stores/CartStore.js";
+<!-- <script>
+
 export default {
   name: "ProductPage",
   components: { Header, ProductPageNavigation, OthersCard },
@@ -123,14 +181,12 @@ export default {
   data() {
     return {
       total: 1,
-      products: data,
+      products: useCartStore().products,
       justAdded: false,
     };
   },
   methods: {
-    increaseTotal() {
-      this.total++;
-    },
+    
     decreaseTotal() {
       if (this.total > 1) {
         this.total--;
@@ -148,10 +204,9 @@ export default {
       this.total = 1;
       this.justAdded = false;
     }
-  },
-  created() {
-    window.scrollTo(0, 0);
-    console.log(this.currentProduct, "current product");
+  }
+  mounted() {
+    this.$emit("toggle-menu-show", false);
   },
   computed: {
     currentProduct() {
@@ -160,23 +215,11 @@ export default {
         .find((product) => product.slug === this.$route.params.product);
     },
     editedText() {
-      const paragraphs = [];
-      let myString = this.currentProduct.features;
-      while (myString.includes("\n\n")) {
-        let index = myString.indexOf("\n\n");
-        paragraphs.push(myString.slice(0, index));
-        myString = myString.slice(index + 2);
-      }
-      if (paragraphs.length > 0) {
-        paragraphs.push(myString);
-      } else {
-        paragraphs.push(this.currentProduct.features);
-      }
-      return paragraphs;
+     
     },
   },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 main {
