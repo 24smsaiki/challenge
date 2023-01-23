@@ -1,4 +1,5 @@
 import {defineStore } from 'pinia';
+import ProductsLogic from '../logics/ProductsLogic';
 
 export const useProductStore = defineStore({
     id: 'product',
@@ -26,7 +27,7 @@ export const useProductStore = defineStore({
         async fetchProducts() {
             this.loading = true;
             try {
-                const response = await fetch('http://localhost:3000/products');
+                const response = await ProductsLogic.getProducts();
                 this.products = await response.json();
             }
             catch (error) {
@@ -39,7 +40,7 @@ export const useProductStore = defineStore({
         async fetchProduct(id) {
             this.loading = true;
             try {
-                const response = await fetch(`http://localhost:3000/products/${id}`);
+                const response = await ProductsLogic.getProduct(id);
                 this.product = await response.json();
             }
             catch (error) {
