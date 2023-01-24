@@ -163,7 +163,6 @@ export default {
     this.setWindowSize();
     window.addEventListener("resize", this.setWindowSize);
     window.scrollTo(0, 0);
-    console.log(this.currentProduct, "current product");
   },
   computed: {
     currentProduct() {

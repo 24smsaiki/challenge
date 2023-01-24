@@ -8,10 +8,14 @@ import AuthLogic from "../../logics/AuthLogic";
 import router from "../../router";
 
 const login = (form) => {
-  return AuthLogic.login({ ...form }).then((data) => {
-    isAuth.value = !isAuth.value;
-    user.value = data;
-  });
+  return AuthLogic.login({ ...form })
+    .then((data) => {
+      isAuth.value = !isAuth.value;
+      user.value = data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 const logout = () => {

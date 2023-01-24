@@ -30,7 +30,7 @@ export const make = async (method, url, data) => {
       return response?.data;
     })
     .catch((error) => {
-      throw error;
+      console.error(error);
     });
 
   return res;
