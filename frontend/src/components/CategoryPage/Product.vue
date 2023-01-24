@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="$router.push(`/product/${product.slug}`) ">
           <div class="card-img">
             <img
               src="https://m.media-amazon.com/images/I/71wzZxJ0dZL._AC_SX679_.jpg"
