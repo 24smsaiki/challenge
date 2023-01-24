@@ -25,11 +25,15 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\Extension\CurrentUserExtension:
-        tags:
-            - { name: api_platform.doctrine.orm.query_extension.item }     
-            - { name: api_platform.doctrine.orm.query_extension.collection }   
-        
+    # 'App\Extension\CurrentUserExtension':
+    #     arguments:
+    #         - '@security.authorization_checker'
+    #     tags:
+    #         - { name: api_platform.doctrine.orm.query_extension.collection, priority: 9 }
+    #         - { name: api_platform.doctrine.orm.query_extension.item }
+    # arguments:
+        #     - '@security.authorization_checker'    
+    # App\Extension\CurrentUserExtension    
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
