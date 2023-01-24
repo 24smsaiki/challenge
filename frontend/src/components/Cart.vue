@@ -52,7 +52,7 @@ export default {
   props: { show: Boolean, cart: Array },
   methods: {
     editSrc(product) {
-      return product.image.mobile.slice(2);
+      return product.image.slice(2);
     },
     separator(numb) {
       var str = numb.toString().split(".");

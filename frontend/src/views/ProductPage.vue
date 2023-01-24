@@ -8,7 +8,7 @@ import { useProductStore } from "../stores/ProductStore.js";
 import { useCartStore } from "../stores/CartStore.js";
 
 // define emits
-defineEmits(["toggle-menu-show", "add-to-cart"]);
+const emit = defineEmits(["toggle-menu-show", "add-to-cart"]);
 
 const cartStore = useCartStore();
 const productStore = useProductStore();
@@ -35,10 +35,11 @@ const decreaseTotal = () => {
 const addToCartHandler = () => {
       justAdded.value = true;
      const data = {
-      productId: currentProduct.id,
+      productId: currentProduct.value.id,
       addedQuantity: total.value,
      };
-      cartStore.addToCart(data);
+      cartStore.addProduct(data);
+      emit("add-to-cart", data);
     };
 
 const resetTotal = () => {
