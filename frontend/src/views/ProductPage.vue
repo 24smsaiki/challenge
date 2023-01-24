@@ -1,8 +1,8 @@
 <script setup>
-import { ref, defineEmits, computed } from "vue";
+import { ref, defineEmits, computed, onMounted } from "vue";
 import Header from "../components/ProductPage/Header.vue";
 import ProductPageNavigation from "../components/ProductPageNavigation.vue";
-import data from "../data.json";
+import router from "../router";
 import OthersCard from "../components/ProductPage/OthersCard.vue";
 import { useProductStore } from "../stores/ProductStore.js";
 import { useCartStore } from "../stores/CartStore.js";
@@ -12,14 +12,16 @@ defineEmits(["toggle-menu-show", "add-to-cart"]);
 
 const cartStore = useCartStore();
 const productStore = useProductStore();
+// productStore.fetchProducts();
 const total = ref(1);
 const justAdded = ref(false);
 const products = productStore.products;
 
+
 const currentProduct = computed(() => {
-  console.log(products)
   if(products.length === 0) return null;
-  return products.find((product) => product.slug === $route.params.slug);
+  return products.find((product) => product.slug === router.currentRoute._value.params.product);
+  
 });
 
 const increaseTotal = () => {
@@ -45,7 +47,7 @@ const resetTotal = () => {
     }
 const editedText = computed(() => {
   const paragraphs = [];
-      let myString = this.currentProduct.features;
+      let myString = currentProduct.value.features;
       while (myString.includes("\n\n")) {
         let index = myString.indexOf("\n\n");
         paragraphs.push(myString.slice(0, index));
@@ -54,7 +56,7 @@ const editedText = computed(() => {
       if (paragraphs.length > 0) {
         paragraphs.push(myString);
       } else {
-        paragraphs.push(this.currentProduct.features);
+        paragraphs.push(currentProduct.features);
       }
       return paragraphs;
     });
@@ -66,15 +68,15 @@ const editedText = computed(() => {
     <p class="back-link" @click="$router.back()">Go back</p>
     <section class="overview">
       <img
-        :src="currentProduct.image.desktop"
-        :alt="currentProduct.name"
+        :src="currentProduct.image"
+        :alt="currentProduct.title"
         class="overview__image"
       />
       <div class="overview__text">
         <p class="overview__text__tag" v-show="currentProduct.new">
           New product
         </p>
-        <h2 class="overview__text__title">{{ currentProduct.name }}</h2>
+        <h2 class="overview__text__title">{{ currentProduct.title }}</h2>
         <p class="overview__text__description">
           {{ currentProduct.description }}
         </p>
@@ -141,19 +143,19 @@ const editedText = computed(() => {
       <div class="gallery__left">
         <img
           :src="currentProduct.gallery.first"
-          :alt="`${currentProduct.name} presentation image`"
+          :alt="`${currentProduct.title} presentation image`"
           class="gallery__left__first"
         />
         <img
           :src="currentProduct.gallery.second"
-          :alt="`${currentProduct.name} presentation image`"
+          :alt="`${currentProduct.title} presentation image`"
           class="gallery__left__second"
         />
       </div>
       <div class="gallery__right">
         <img
           :src="currentProduct.gallery.third"
-          :alt="`${currentProduct.name} presentation image`"
+          :alt="`${currentProduct.title} presentation image`"
         />
       </div>
     </section>
@@ -162,7 +164,7 @@ const editedText = computed(() => {
       <div class="others__container">
         <OthersCard
           v-for="product in currentProduct.others"
-          :key="product.name"
+          :key="product.id"
           :product="product"
           @reset-total="resetTotal"
         />

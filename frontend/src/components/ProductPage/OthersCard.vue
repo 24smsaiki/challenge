@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     editSrc() {
-      return this.product.image.desktop.slice(2);
+      return this.product.image.slice(2);
     },
   },
   created() {

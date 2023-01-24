@@ -1,10 +1,11 @@
 import {defineStore } from 'pinia';
 import ProductsLogic from '../logics/ProductsLogic';
+import data from '../data.json';
 
 export const useProductStore = defineStore({
     id: 'product',
     state: () => ({
-        products: [],
+        products: data,
         currentProduct: {},
         loading: false,
         error: null,
@@ -28,6 +29,7 @@ export const useProductStore = defineStore({
             this.loading = true;
             try {
                 const response = await ProductsLogic.getProducts();
+                console.log(response)
                 this.products = await response.json();
             }
             catch (error) {
