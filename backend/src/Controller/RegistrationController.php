@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsController]
 class RegistrationController extends AbstractController
@@ -16,7 +18,8 @@ class RegistrationController extends AbstractController
     public function __construct(
         private RequestStack $requestStack,
         private ManagerRegistry $managerRegistry,
-        private UserPasswordHasherInterface $passwordHasher
+        private UserPasswordHasherInterface $passwordHasher,
+        private ValidatorInterface $validator
     ) {}
 
     public function __invoke()
@@ -28,33 +31,41 @@ class RegistrationController extends AbstractController
         
         $email = $body->email;
         $password = $body->password;
-        $password2 = $body->password2;
-        # check if email is empty
-        if(!$email){
-            return new JsonResponse(['message' => '"veuillez renseigner l\'email"', 'status' => 'error'], 422);
-        }
-        # check if user exists
-        $existingUser = $em->getRepository(User::class)->findOneBy(['email' => $email]);
-        if($existingUser){
-            return new JsonResponse(['message' => 'Un compte existe déjà', 'status' => 'error'], 422);
-        }
-        #check if password equal to password2
-        if($password != $password2){
-            return new JsonResponse(['message' => 'Les mots de passes ne correspondent pas', 'status' => 'error'], 422);
-        }                                                                                                                               
+        $plainPassword = $body->plainPassword;
         
+
         $user = new User();
         $hashedPassword = $this->passwordHasher->hashPassword(
             $user,
             $password
         );
-
         $user->setEmail($email);
         $user->setRoles(["ROLE_USER"]);
         $user->setPassword($hashedPassword);
+        $errors = $this->validator->validate($user);
+
+        if($password !== $plainPassword){
+            $errors->add(new ConstraintViolation('Les mots de passe ne correspondent pas.', null, [], null, 'plainPassword', null));
+        }
+        if(strlen($password) < 8){
+            $errors->add(new ConstraintViolation('Le mot de passe doit contenir au moins 8 caractères.', null, [], null, 'password', null));
+        }
+        if(count($errors) > 0){
+            $errors = array_map(function($error){
+                return [
+                    "message" => $error->getMessage()
+                ];
+                
+            }, iterator_to_array($errors));
+            
+            return new JsonResponse(['status' => 'error', 'errors' => $errors], 422);
+
+        }
+       
         $em->getRepository(User::class)->save($user, true);
+       
         
-        return new JsonResponse(['message' => 'utilisateur crée', 'status' => 'success'], 201);
+        return new JsonResponse(['message' => 'Votre inscription a bien été effectué.', 'status' => 'success'], 201);
         
 }
 }

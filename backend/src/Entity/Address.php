@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AddressRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ApiResource(security: "is_granted('ROLE_USER')")]
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 class Address
 {

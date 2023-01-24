@@ -18,13 +18,16 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use App\Validator\Constraints\MinimalProperties; 
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ApiResource(security: "is_granted('ROLE_USER')")]
 #[Get]
 #[Post]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Cet email est déjà utilisé')]
 # CUSTOM METHODS
 
 #[ApiResource(operations: [
@@ -51,12 +54,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: 'Veuillez renseigner l\'email'), Assert\Email(message: 'Veuillez renseigner un email valide.')]
     private ?string $email = null;
 
     #[ORM\Column(nullable: true)]
     private ?array $roles = [];
     #[ApiProperty(security: "is_granted('ROLE_ADMIN')", securityPostDenormalize: "is_granted('UPDATE', object)")]
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
     private ?string $password = null;
 
     #[Length(min: 8)]
