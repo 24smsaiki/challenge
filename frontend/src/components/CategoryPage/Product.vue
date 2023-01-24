@@ -41,7 +41,7 @@ export default {
   props: { product: Object },
   computed: {
     editSrc() {
-      return this.product.categoryImage.desktop.slice(2);
+      return this.product.categoryimage.slice(2);
     },
   },
   data() {
