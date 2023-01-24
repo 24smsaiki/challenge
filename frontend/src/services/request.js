@@ -8,7 +8,6 @@ const request = axios.create({
     Accept: "application/json",
   },
 });
-console.log("request.js: ", import.meta.env.VITE_API_URL);
 request.interceptors.request.use((config) => {
   const token = LocalStorage.get("token");
   if (token) {
@@ -26,11 +25,13 @@ export const make = async (method, url, data) => {
     data,
   };
 
-  await request(config)
+  const res = await request(config)
     .then((response) => {
-      return response.data;
+      return response?.data;
     })
     .catch((error) => {
       throw error;
     });
+
+  return res;
 };
