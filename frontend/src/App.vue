@@ -180,7 +180,7 @@ button {
 }
 
 .stop-scroll {
-  max-height: calc(100vh - 9.1rem);
+  max-height: calc(100vh - 9.9rem);
   overflow: hidden;
 }
 </style>
