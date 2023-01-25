@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, inject } from "vue";
-import router from "../../router";
+import router from "../../router/Router";
 
 const form = reactive({
   email: "",
