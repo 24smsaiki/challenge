@@ -1,8 +1,8 @@
 <script setup>
-import { ref, reactive, inject, defineEmits } from 'vue';
+import { inject, defineEmits } from "vue";
 
-const isAuth = inject('ProviderisAuth');
-defineEmits(['toggle-menu-show']);
+const isAuth = inject("ProviderIsAuth");
+defineEmits(["toggle-menu-show"]);
 </script>
 
 <template>
@@ -27,7 +27,7 @@ defineEmits(['toggle-menu-show']);
         <router-link to="/category/headphones">Headphones</router-link>
         <router-link to="/category/speakers">Speakers</router-link>
         <router-link to="/category/earphones">Earphones</router-link>
-        <router-link v-if="!isAuth" to="/login" >Login</router-link>
+        <router-link v-if="!isAuth" to="/login">Login</router-link>
         <router-link v-if="isAuth" to="/account">Account</router-link>
       </li>
     </ul>
@@ -36,7 +36,6 @@ defineEmits(['toggle-menu-show']);
       class="navbar__cart-btn"
       @click="$emit('toggle-menu-show', 'cart')"
     ></button>
-    
   </nav>
 </template>
 

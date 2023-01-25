@@ -8,7 +8,11 @@ import ProductPage from "../views/ProductPage.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: "/", name: "Home", component: Home },
+    {
+      path: "/",
+      name: "Home",
+      component: Home,
+    },
     {
       path: "/category/:category",
       name: "CategoryPage",
@@ -21,22 +25,22 @@ const router = createRouter({
     },
     {
       path: "/checkout",
-      name: "Checkout",
+      name: "CheckoutPage",
       component: Checkout,
     },
     {
       path: "/users",
-      name: "users",
+      name: "UsersPage",
       component: () => import("../components/security/UsersList.vue"),
     },
     {
       path: "/login",
-      name: "login",
+      name: "LoginPage",
       component: () => import("../views/LoginPage.vue"),
     },
     {
       path: "/register",
-      name: "register",
+      name: "RegisterPage",
       component: () => import("../views/RegisterPage.vue"),
     },
   ],

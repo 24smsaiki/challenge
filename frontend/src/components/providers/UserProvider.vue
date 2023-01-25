@@ -31,8 +31,8 @@ const register = (form) => {
 let isAuth = ref(AuthLogic.isAuth());
 const user = reactive({});
 
-provide("Providerlogout", logout);
-provide("ProviderisAuth", isAuth);
+provide("ProviderLogout", logout);
+provide("ProviderIsAuth", isAuth);
 provide("ProviderLogin", login);
 provide("ProviderRegister", register);
 </script>

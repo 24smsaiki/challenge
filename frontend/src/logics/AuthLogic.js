@@ -41,6 +41,7 @@ export default class AuthLogic {
   static clear() {
     LocalStorage.clear();
   }
+
   static async refreshToken(refreshToken) {
     this.deleteRefreshToken();
     const response = await AuthRepository.refresh(refreshToken);
