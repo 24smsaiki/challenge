@@ -32,7 +32,7 @@
           <li class="count">4,326</li>
         </ul>
       </div>
-      <a href="#" class="cart">Add to Cart</a>
+      <a href="#" class="cart">Ajouter au panier</a>
     </div>
   </div>
 </template>

@@ -1,16 +1,18 @@
 <template>
   <section class="hero">
-    <p class="hero__product-tag">New product</p>
-    <h1 class="hero__product-name">XX99 Mark II HeadphoneS</h1>
+    <p class="hero__product-tag">Nouveau produit</p>
+    <h1 class="hero__product-name">XX99 Mark II</h1>
     <p class="hero__product-description">
-      Experience natural, lifelike audio and exceptional build quality made for
-      the passionate music enthusiast.
+      Faites l'expérience d'un son naturel et réaliste et d'une qualité de
+      construction exceptionnelle conçue pour le passionné de musique.
     </p>
     <router-link
       class="hero__product-link"
       to="/product/xx99-mark-two-headphones"
     >
-      <button class="hero__product-link__btn default-btn">See product</button>
+      <button class="hero__product-link__btn default-btn">
+        Détail du produit
+      </button>
     </router-link>
   </section>
 </template>

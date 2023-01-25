@@ -6,9 +6,11 @@
     :class="['confirmation', showConfirmation ? 'showElement' : 'hideElement']"
   >
     <i class="fas fa-check-circle confirmation__icon"></i>
-    <h1 class="confirmation__heading">Thank you for your order</h1>
+    <h1 class="confirmation__heading">
+      Nous vous remercions de votre commande
+    </h1>
     <p class="confirmation__text">
-      You will receive an email confirmation shortly.
+      Vous allez bientôt recevoir un mail de confirmation.
     </p>
     <div class="confirmation__order">
       <div class="confirmation__order__left">
@@ -48,7 +50,7 @@
       </div>
       <div class="confirmation__order__right">
         <div class="confirmation__order__right__text">
-          <h2 class="confirmation__order__right__text__heading">Grand total</h2>
+          <h2 class="confirmation__order__right__text__heading">Total</h2>
           <p class="confirmation__order__right__text__total">
             $ {{ separator(total) }}
           </p>
@@ -56,7 +58,7 @@
       </div>
     </div>
     <router-link @click="goHomeHandler" to="/" class="home-link">
-      <button class="home-link__btn default-btn">Back to home</button>
+      <button class="home-link__btn default-btn">Page d'accueil</button>
     </router-link>
   </div>
 </template>
@@ -228,6 +230,7 @@ export default {
     max-height: 10rem;
     overflow: auto;
     padding-right: 1rem;
+
     &::-webkit-scrollbar {
       width: 0.7rem;
     }
@@ -271,6 +274,7 @@ export default {
         object-fit: cover;
         object-position: center;
       }
+
       &__info {
         margin-left: 1.6rem;
 
@@ -289,6 +293,7 @@ export default {
         }
       }
     }
+
     &__quantity {
       color: #797979;
       font-weight: 700;

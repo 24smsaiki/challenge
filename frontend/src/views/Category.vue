@@ -5,7 +5,7 @@
   />
 
   <div class="picks">
-    <h2 class="highlight">Products</h2>
+    <h2 class="highlight">Produits</h2>
     <div class="product-cards">
       <Product
         v-for="product in sortedProducts"

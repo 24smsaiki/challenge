@@ -6,34 +6,47 @@
         <span class="footer__content__first-line__logo">GadgetMarket</span>
         <ul class="footer__content__first-line__link-list">
           <li class="footer__content__first-line__link-list__link">
-            <router-link @click="scrollToTop" to="/">Home</router-link>
+            <router-link @click="scrollToTop" to="/">Accueil</router-link>
+          </li>
+          <li
+            v-if="isAuth"
+            class="footer__content__first-line__link-list__link"
+          >
+            <router-link to="/">Compte</router-link>
           </li>
           <li class="footer__content__first-line__link-list__link">
-            <router-link @click="scrollToTop" to="/category/headphones"
-              >Headphones</router-link
-            >
+            <router-link to="/">Produits</router-link>
           </li>
-          <li class="footer__content__first-line__link-list__link">
-            <router-link @click="scrollToTop" to="/category/speakers"
-              >Speakers</router-link
-            >
+          <li
+            v-if="!isAuth"
+            class="footer__content__first-line__link-list__link"
+          >
+            <router-link to="/register">Inscription</router-link>
           </li>
-          <li class="footer__content__first-line__link-list__link">
-            <router-link @click="scrollToTop" to="/category/earphones"
-              >Earphones</router-link
-            >
+          <li
+            v-if="!isAuth"
+            class="footer__content__first-line__link-list__link"
+          >
+            <router-link to="/login">Connexion</router-link>
+          </li>
+          <li
+            v-if="isAuth"
+            class="footer__content__first-line__link-list__link"
+          >
+            <router-link to="/logout">Déconnexion</router-link>
           </li>
         </ul>
       </div>
       <p class="footer__content__text">
-        Audiophile is an all in one stop to fulfill your audio needs. We're a
-        small team of music lovers and sound specialists who are devoted to
-        helping you get the most out of personal audio. Come and visit our demo
-        facility - we’re open 7 days a week.
+        Audiophile est une solution tout-en-un pour répondre à vos besoins
+        audio. Nous sommes un petite équipe de mélomanes et de spécialistes du
+        son qui se consacrent à vous aidant à tirer le meilleur parti de l'audio
+        personnel. Venez visiter notre démo installation - nous sommes ouverts 7
+        jours sur 7.
       </p>
       <div class="footer__content__copyright-section">
         <p class="footer__content__copyright-section__copyright-text">
-          Copyright 2021. All Rights Reserved
+          Copyright 2023. Tous droits réservés
         </p>
         <ul class="footer__content__copyright-section__social-media-links">
           <li

@@ -3,7 +3,7 @@
     <img :src="editSrc" :alt="product.name" class="card__image" />
     <h4 class="card__title">{{ product.name }}</h4>
     <router-link :to="`/product/${product.slug}`" @click="clickHandler">
-      <button class="card__btn default-btn">See product</button>
+      <button class="card__btn default-btn">Détail du produit</button>
     </router-link>
   </article>
 </template>

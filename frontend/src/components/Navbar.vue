@@ -84,12 +84,6 @@ defineEmits(["toggle-menu-show"]);
     }
   }
 
-  &__homeLink {
-    @media (min-width: 1205px) {
-      margin-left: 0;
-    }
-  }
-
   &__desktop-menu {
     margin-left: 19.7rem;
     display: none;

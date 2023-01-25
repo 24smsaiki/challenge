@@ -3,9 +3,9 @@
 
   <div :class="['cart', show ? 'showElement' : 'hideElement']">
     <div class="cart__header">
-      <h3 class="cart__header__title">Cart({{ cart.length }})</h3>
+      <h3 class="cart__header__title">Panier({{ cart.length }})</h3>
       <button class="cart__header__btn" @click="$emit('empty-cart')">
-        Remove all
+        Vider
       </button>
     </div>
     <div class="products">
@@ -40,7 +40,7 @@
       @click="$emit('toggle-menu-show', 'cart')"
       v-if="cart.length > 0"
       ><button class="cart__router-link__btn default-btn">
-        Checkout
+        Paiement
       </button></router-link
     >
   </div>

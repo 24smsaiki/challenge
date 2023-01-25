@@ -3,15 +3,16 @@
     <div class="about__image"></div>
     <div class="about__text">
       <h2 class="about__text__heading">
-        Bringing you the <span>best</span> audio gear
+        Vous apporter <span>le meilleur</span> équipement audio
       </h2>
       <p class="about__text__description">
-        Located at the heart of New York City, Audiophile is the premier store
-        for high end headphones, earphones, speakers, and audio accessories. We
-        have a large showroom and luxury demonstration rooms available for you
-        to browse and experience a wide range of our products. Stop by our store
-        to meet some of the fantastic people who make Audiophile the best place
-        to buy your portable audio equipment.
+        Situé au cœur de New York, Audiophile est le premier magasin pour
+        casques, écouteurs, haut-parleurs et accessoires audio haut de gamme.
+        Nous avoir une grande salle d'exposition et des salles de démonstration
+        de luxe à votre disposition pour parcourir et découvrir une large gamme
+        de nos produits. Arrêtez-vous dans notre magasin pour rencontrer
+        certaines des personnes fantastiques qui font d'Audiophile le meilleur
+        endroit pour acheter votre équipement audio portable.
       </p>
     </div>
   </section>

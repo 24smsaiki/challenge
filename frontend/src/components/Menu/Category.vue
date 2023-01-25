@@ -3,21 +3,21 @@
     <img
       v-if="product === 'headphones'"
       src="../../assets/shared/desktop/image-category-thumbnail-headphones.png"
-      alt="headphones"
+      alt="Casque"
       class="category__thumbnail"
       id="headphones"
     />
     <img
       v-if="product === 'speakers'"
       src="../../assets/shared/desktop/image-category-thumbnail-speakers.png"
-      alt="speakers"
+      alt="Haut-parleurs"
       class="category__thumbnail"
       id="speakers"
     />
     <img
       v-if="product === 'earphones'"
       src="../../assets/shared/desktop/image-category-thumbnail-earphones.png"
-      alt="earphones"
+      alt="Écouteurs"
       class="category__thumbnail"
       id="earphones"
     />
@@ -27,7 +27,7 @@
       @click="$emit('toggle-menu-show', 'menu')"
       :to="{ name: 'Category', params: { category: `${product}` } }"
     >
-      Shop
+      Détails
       <img
         src="../../assets/shared/desktop/icon-arrow-right.svg"
         class="category__link__icon"
