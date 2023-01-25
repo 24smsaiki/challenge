@@ -3,11 +3,7 @@
     <div class="footer__content">
       <div class="footer__content__deco-bar"></div>
       <div class="footer__content__first-line">
-        <img
-          src="../assets/shared/desktop/logo.svg"
-          alt="audiophile logo"
-          class="footer__content__first-line__logo"
-        />
+        <span class="footer__content__first-line__logo">GadgetMarket</span>
         <ul class="footer__content__first-line__link-list">
           <li class="footer__content__first-line__link-list__link">
             <router-link @click="scrollToTop" to="/">Home</router-link>
@@ -84,6 +80,11 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  .footer__content__first-line__logo {
+    font-size: 2.4rem;
+    margin-bottom: 2.4rem;
+  }
 
   @media (min-width: 768px) {
     align-items: flex-start;

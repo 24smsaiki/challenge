@@ -25,12 +25,12 @@ const router = createRouter({
     },
     {
       path: "/checkout",
-      name: "CheckoutPage",
+      name: "Checkout",
       component: Checkout,
     },
     {
       path: "/users",
-      name: "UsersPage",
+      name: "UsersList",
       component: () => import("../components/security/UsersList.vue"),
     },
     {
@@ -42,6 +42,11 @@ const router = createRouter({
       path: "/register",
       name: "RegisterPage",
       component: () => import("../views/RegisterPage.vue"),
+    },
+    {
+      path: "/logout",
+      name: "LogoutPage",
+      component: () => import("../views/LogoutPage.vue"),
     },
   ],
 });

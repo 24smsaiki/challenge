@@ -4,7 +4,7 @@ import router from "../../router";
 
 const register = inject("ProviderRegister");
 const redirectToHome = () => {
-  router.push({ name: "login" });
+  router.push({ name: "LoginPage" });
 };
 const isLoading = ref(false);
 

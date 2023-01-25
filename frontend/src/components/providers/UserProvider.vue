@@ -21,7 +21,7 @@ const login = (form) => {
 const logout = () => {
   AuthLogic.logout();
   isAuth.value = !isAuth.value;
-  router.push({ name: "home" });
+  router.push({ name: "Home" });
 };
 
 const register = (form) => {
