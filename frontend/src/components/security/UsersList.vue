@@ -1,5 +1,5 @@
 <script>
-import * as Request from "../../services/request";
+import * as Request from "../../services/Request";
 
 export default {
   data() {
