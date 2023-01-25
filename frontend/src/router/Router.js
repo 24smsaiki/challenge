@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import CategoryPage from "../views/CategoryPage.vue";
+import Category from "../views/Category.vue";
 import Checkout from "../views/Checkout.vue";
 import Home from "../views/Home.vue";
-import ProductPage from "../views/ProductPage.vue";
+import Product from "../views/Product.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,13 +15,13 @@ const router = createRouter({
     },
     {
       path: "/category/:category",
-      name: "CategoryPage",
-      component: CategoryPage,
+      name: "Category",
+      component: Category,
     },
     {
       path: "/product/:product",
-      name: "ProductPage",
-      component: ProductPage,
+      name: "Product",
+      component: Product,
     },
     {
       path: "/checkout",
@@ -35,18 +35,18 @@ const router = createRouter({
     },
     {
       path: "/login",
-      name: "LoginPage",
-      component: () => import("../views/LoginPage.vue"),
+      name: "Login",
+      component: () => import("../views/Login.vue"),
     },
     {
       path: "/register",
-      name: "RegisterPage",
-      component: () => import("../views/RegisterPage.vue"),
+      name: "Register",
+      component: () => import("../views/Register.vue"),
     },
     {
       path: "/logout",
-      name: "LogoutPage",
-      component: () => import("../views/LogoutPage.vue"),
+      name: "Logout",
+      component: () => import("../views/Logout.vue"),
     },
   ],
 });

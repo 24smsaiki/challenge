@@ -1,9 +1,9 @@
 <script setup>
-import Login from "../components/LoginPage/Login.vue";
 import Header from "../components/Header.vue";
+import Register from "../components/Register/Register.vue";
 </script>
 
 <template>
   <Header @toggle-menu-show="$emit('toggle-menu-show', $event)" />
-  <Login />
+  <Register />
 </template>

@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import Category from "../components/Homepage/Category.vue";
-import AboutSection from "../components/Homepage/AboutSection.vue";
+import Category from "../components/Home/Category.vue";
+import AboutSection from "../components/Home/AboutSection.vue";
 
 export default {
-  name: "ProductPageNavigation",
+  name: "ProductNavigation",
   components: { Category, AboutSection },
 };
 </script>

@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import Header from "../components/Homepage/Header.vue";
-import Category from "../components/Homepage/Category.vue";
-import AboutSection from "../components/Homepage/AboutSection.vue";
+import Header from "../components/Home/Header.vue";
+import Category from "../components/Home/Category.vue";
+import AboutSection from "../components/Home/AboutSection.vue";
 export default {
   name: "Home",
   components: {

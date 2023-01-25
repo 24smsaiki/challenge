@@ -106,18 +106,18 @@
         />
       </div>
     </section>
-    <ProductPageNavigation />
+    <ProductNavigation />
   </main>
 </template>
 
 <script>
-import Header from "../components/ProductPage/Header.vue";
-import ProductPageNavigation from "../components/ProductPageNavigation.vue";
+import Header from "../components/Product/Header.vue";
+import ProductNavigation from "../components/ProductNavigation.vue";
 import data from "../data.json";
-import OthersCard from "../components/ProductPage/OthersCard.vue";
+import OthersCard from "../components/Product/OthersCard.vue";
 export default {
-  name: "ProductPage",
-  components: { Header, ProductPageNavigation, OthersCard },
+  name: "Product",
+  components: { Header, ProductNavigation, OthersCard },
   emits: ["toggle-menu-show", "add-to-cart"],
   data() {
     return {

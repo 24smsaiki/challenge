@@ -25,7 +25,7 @@
     <router-link
       class="category__link"
       @click="$emit('toggle-menu-show', 'menu')"
-      :to="{ name: 'CategoryPage', params: { category: `${product}` } }"
+      :to="{ name: 'Category', params: { category: `${product}` } }"
     >
       Shop
       <img

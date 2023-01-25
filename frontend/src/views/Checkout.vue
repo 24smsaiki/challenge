@@ -327,7 +327,7 @@
 </template>
 
 <script>
-import Header from "../components/ProductPage/Header.vue";
+import Header from "../components/Product/Header.vue";
 import Confirmation from "../components/Checkout/Confirmation.vue";
 export default {
   name: "Checkout",
