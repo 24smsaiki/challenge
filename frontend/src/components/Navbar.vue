@@ -11,26 +11,19 @@ defineEmits(["toggle-menu-show"]);
       class="navbar__mobile-menu-btn"
       @click="$emit('toggle-menu-show', 'menu')"
     ></button>
-    <router-link
-      @click="$emit('toggle-menu-show', 'logo')"
-      to="/"
-      class="navbar__homeLink"
-    >
-      <img
-        src="../assets/shared/desktop/logo.svg"
-        alt="audiophile logo"
-        class="navbar__homeLink__logo"
-    /></router-link>
-    <ul class="navbar__desktop-menu">
-      <li class="navbar__desktop-menu__link">
-        <router-link to="/">Home</router-link>
-        <router-link to="/category/headphones">Headphones</router-link>
-        <router-link to="/category/speakers">Speakers</router-link>
-        <router-link to="/category/earphones">Earphones</router-link>
-        <router-link v-if="!isAuth" to="/login">Login</router-link>
-        <router-link v-if="isAuth" to="/account">Account</router-link>
-      </li>
-    </ul>
+    <div class="d-flex align-center">
+      <span class="navbar__content__first-line__logo">GadgetMarket</span>
+      <ul class="navbar__desktop-menu ml-30">
+        <li class="navbar__desktop-menu__link">
+          <router-link to="/">Accueil</router-link>
+          <router-link v-if="isAuth" to="/">Compte</router-link>
+          <router-link to="/">Produits</router-link>
+          <router-link v-if="!isAuth" to="/register">Inscription</router-link>
+          <router-link v-if="!isAuth" to="/login">Connexion</router-link>
+          <router-link v-if="isAuth" to="/logout">Déconnexion</router-link>
+        </li>
+      </ul>
+    </div>
     <button
       v-if="isAuth"
       class="navbar__cart-btn"
@@ -40,6 +33,18 @@ defineEmits(["toggle-menu-show"]);
 </template>
 
 <style lang="scss" scoped>
+.d-flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.ml-30 {
+  margin-left: 30px;
+}
+
 .navbar {
   background: transparent;
   display: flex;
@@ -50,8 +55,12 @@ defineEmits(["toggle-menu-show"]);
   border-bottom: 0.1rem solid #353535;
   z-index: 3;
 
+  .navbar__content__first-line__logo {
+    color: #fff;
+    font-size: 2.4rem;
+  }
+
   @media (min-width: 768px) {
-    justify-content: flex-start;
     padding: 3.2rem 0;
     margin: 0 auto;
     width: 68.9rem;
@@ -76,12 +85,6 @@ defineEmits(["toggle-menu-show"]);
   }
 
   &__homeLink {
-    display: flex;
-
-    @media (min-width: 768px) {
-      margin-left: 4.2rem;
-    }
-
     @media (min-width: 1205px) {
       margin-left: 0;
     }
@@ -121,11 +124,6 @@ defineEmits(["toggle-menu-show"]);
     background: url("../assets/shared/desktop/icon-cart.svg");
     width: 2.3rem;
     height: 2rem;
-
-    @media (min-width: 768px) {
-      position: absolute;
-      right: 4rem;
-    }
   }
 }
 </style>

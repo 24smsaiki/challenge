@@ -1,9 +1,19 @@
 <template>
   <div :class="['overlay', show ? 'showElement' : 'hideElement']"></div>
-  <div
-    :class="['menu', show ? 'showElement' : 'hideElement']"
-    ref="mobileMenu"
-  ></div>
+  <div :class="['menu', show ? 'showElement' : 'hideElement']" ref="mobileMenu">
+    <section class="links">
+      <ul class="navbar__desktop-menu ml-30">
+        <li class="navbar__desktop-menu__link">
+          <router-link to="/">Accueil</router-link>
+          <router-link v-if="isAuth" to="/">Compte</router-link>
+          <router-link to="/">Produits</router-link>
+          <router-link v-if="!isAuth" to="/register">Inscription</router-link>
+          <router-link v-if="!isAuth" to="/login">Connexion</router-link>
+          <router-link v-if="isAuth" to="/logout">Déconnexion</router-link>
+        </li>
+      </ul>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -40,31 +50,46 @@ export default {
 .menu {
   position: absolute;
   background: white;
-  width: 100%;
-  top: 9.1rem;
-  padding: 8.4rem 0 3.5rem 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+
+  @media (min-width: 520px) {
+    align-items: center;
+  }
+
+  width: 100%;
+  top: 9.9rem;
+  padding: 3.4rem 0 3.5rem 0;
   z-index: 2;
   opacity: 1;
   max-height: 75vh;
-  overflow-y: auto;
-
-  @media (min-width: 768px) {
-    max-height: auto;
-    padding: 10.8rem 0 6.7rem 0;
-  }
 
   @media (min-width: 1205px) {
     display: none !important;
   }
 }
 
-.categories {
-  @media (min-width: 768px) {
-    display: flex;
-    align-items: center;
+.links {
+  .navbar__desktop-menu__link {
+    a {
+      color: black;
+      font-weight: 700;
+      font-size: 1.3rem;
+      line-height: 2.5rem;
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
+      margin-left: 3.4rem;
+      transition: all 0.3s ease;
+
+      &:hover {
+        color: rgba(216, 125, 74, 1);
+      }
+    }
+
+    @media (max-width: 520px) {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 
