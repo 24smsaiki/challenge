@@ -1,3 +1,13 @@
+<script setup>
+import { inject } from "vue";
+
+const isAuth = inject("ProviderIsAuth");
+
+function scrollToTop() {
+  window.scrollTo(0, 0);
+}
+</script>
+
 <template>
   <footer class="footer">
     <div class="footer__content">
@@ -8,14 +18,23 @@
           <li class="footer__content__first-line__link-list__link">
             <router-link @click="scrollToTop" to="/">Accueil</router-link>
           </li>
+          <li class="footer__content__first-line__link-list__link">
+            <router-link to="/">Produits</router-link>
+          </li>
           <li
             v-if="isAuth"
             class="footer__content__first-line__link-list__link"
           >
             <router-link to="/account">Compte</router-link>
           </li>
+          <li
+            v-if="isAuth"
+            class="footer__content__first-line__link-list__link"
+          >
+            <router-link to="/">Panier</router-link>
+          </li>
           <li class="footer__content__first-line__link-list__link">
-            <router-link to="/">Produits</router-link>
+            <router-link to="/">Contact</router-link>
           </li>
           <li
             v-if="!isAuth"
@@ -52,17 +71,6 @@
     </div>
   </footer>
 </template>
-
-<script>
-export default {
-  name: "Footer",
-  methods: {
-    scrollToTop() {
-      window.scrollTo(0, 0);
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .footer {

@@ -1,3 +1,12 @@
+<script setup>
+import { inject } from "vue";
+
+const isAuth = inject("ProviderIsAuth");
+
+defineProps(["show"]);
+defineEmits(["toggle-menu-show"]);
+</script>
+
 <template>
   <div :class="['overlay', show ? 'showElement' : 'hideElement']"></div>
   <div :class="['menu', show ? 'showElement' : 'hideElement']" ref="mobileMenu">
@@ -5,8 +14,9 @@
       <ul class="navbar__desktop-menu ml-30">
         <li class="navbar__desktop-menu__link">
           <router-link to="/">Accueil</router-link>
-          <router-link v-if="isAuth" to="/account">Compte</router-link>
           <router-link to="/">Produits</router-link>
+          <router-link v-if="isAuth" to="/account">Compte</router-link>
+          <router-link to="/">Contact</router-link>
           <router-link v-if="!isAuth" to="/register">Inscription</router-link>
           <router-link v-if="!isAuth" to="/login">Connexion</router-link>
           <router-link v-if="isAuth" to="/logout">Déconnexion</router-link>
@@ -15,22 +25,6 @@
     </section>
   </div>
 </template>
-
-<script>
-import Category from "../components/Menu/Category.vue";
-
-export default {
-  name: "Menu",
-  components: { Category },
-  props: { show: Boolean, scrollTop: Boolean },
-  emits: ["toggle-menu-show"],
-  watch: {
-    scrollTop() {
-      this.$refs.mobileMenu.scrollTo(0, 0);
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 .overlay {
@@ -53,7 +47,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  @media (min-width: 520px) {
+  @media (min-width: 640px) {
     align-items: center;
   }
 
@@ -86,7 +80,7 @@ export default {
       }
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 640px) {
       display: flex;
       flex-direction: column;
     }
