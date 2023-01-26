@@ -24,7 +24,7 @@ import Footer from "./components/Footer.vue";
 import Menu from "./components/Menu.vue";
 import Cart from "./components/Cart.vue";
 import data from "./data.json";
-import UserProvider from "./components/providers/UserProvider.vue";
+import UserProvider from "./components/Providers/UserProvider.vue";
 
 export default {
   name: "App",

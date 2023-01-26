@@ -1,9 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import Account from "../components/Account/Account.vue";
 import Category from "../views/Category.vue";
 import Checkout from "../views/Checkout.vue";
 import Home from "../views/Home.vue";
+import Login from "../views/Login.vue";
+import Logout from "../views/Logout.vue";
 import Product from "../views/Product.vue";
+import Register from "../views/Register.vue";
+import UsersList from "../components/Security/UsersList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,22 +36,27 @@ const router = createRouter({
     {
       path: "/users",
       name: "UsersList",
-      component: () => import("../components/security/UsersList.vue"),
+      component: UsersList,
     },
     {
       path: "/login",
       name: "Login",
-      component: () => import("../views/Login.vue"),
+      component: Login,
     },
     {
       path: "/register",
       name: "Register",
-      component: () => import("../views/Register.vue"),
+      component: Register,
     },
     {
       path: "/logout",
       name: "Logout",
-      component: () => import("../views/Logout.vue"),
+      component: Logout,
+    },
+    {
+      path: "/account",
+      name: "Account",
+      component: Account,
     },
   ],
 });

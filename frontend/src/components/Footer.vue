@@ -12,7 +12,7 @@
             v-if="isAuth"
             class="footer__content__first-line__link-list__link"
           >
-            <router-link to="/">Compte</router-link>
+            <router-link to="/account">Compte</router-link>
           </li>
           <li class="footer__content__first-line__link-list__link">
             <router-link to="/">Produits</router-link>
@@ -48,29 +48,6 @@
         <p class="footer__content__copyright-section__copyright-text">
           Copyright 2023. Tous droits réservés
         </p>
-        <ul class="footer__content__copyright-section__social-media-links">
-          <li
-            class="footer__content__copyright-section__social-media-links__link"
-          >
-            <router-link to="#" aria-label="Go to our Facebook"
-              ><i class="fab fa-facebook fa-2x"></i
-            ></router-link>
-          </li>
-          <li
-            class="footer__content__copyright-section__social-media-links__link"
-          >
-            <router-link to="#" aria-label="Go to our Twitter"
-              ><i class="fab fa-twitter fa-2x"></i
-            ></router-link>
-          </li>
-          <li
-            class="footer__content__copyright-section__social-media-links__link"
-          >
-            <router-link to="#" aria-label="Go to our Instagram"
-              ><i class="fab fa-instagram fa-2x"></i
-            ></router-link>
-          </li>
-        </ul>
       </div>
     </div>
   </footer>
@@ -101,7 +78,7 @@ export default {
 
   @media (min-width: 768px) {
     align-items: flex-start;
-    padding: 0 4rem 4.6rem 4rem;
+    padding: 0 4rem 22px 4rem;
   }
 
   * {
@@ -217,6 +194,7 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-bottom: 10px;
 
       @media (min-width: 768px) {
         flex-direction: row;
@@ -229,32 +207,6 @@ export default {
         font-weight: 700;
         font-size: 1.5rem;
         line-height: 2.5rem;
-      }
-
-      &__social-media-links {
-        display: flex;
-        align-items: center;
-        margin: 4.8rem 0 3.8rem 0;
-
-        @media (min-width: 768px) {
-          margin: 0;
-        }
-
-        &__link {
-          margin-right: 1.6rem;
-
-          & i {
-            transition: all 0.3s ease;
-          }
-
-          &:hover i {
-            color: #d87d4a;
-          }
-
-          &:last-child {
-            margin-right: 0;
-          }
-        }
       }
     }
   }
