@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use Assert\Email;
-use Assert\NotBlank;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -11,10 +9,10 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Controller\RegisterController;
 use Doctrine\Common\Collections\Collection;
-use App\Controller\UpdatePasswordController;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
@@ -47,19 +45,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ApiProperty(security: "is_granted('ROLE_ADMIN')", securityPostDenormalize: "is_granted('UPDATE', object)")]
+    #[ApiProperty(security: "is_granted('ROLE_ADMIN')")]
     #[ORM\Column]
     #[NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
     private ?string $password;
     
     #[Length(min: 8)]
     private ?string $plainPassword;
-
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Address::class)]
-    private Collection $Address;
-
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Order::class)]
-    private Collection $orders;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $token;

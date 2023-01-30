@@ -28,10 +28,7 @@ class Product
 
     #[ORM\Column(nullable: true)]
     private ?float $price = null;
-    #[ORM\Column(nullable: true)]
-    private ?float $testProperty = null;
     
-
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: OrderDetails::class)]
     private Collection $orderDetails;
 

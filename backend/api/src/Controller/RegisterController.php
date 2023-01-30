@@ -25,7 +25,6 @@ class RegisterController extends AbstractController
     public function __invoke()
     {
         $request = $this->requestStack->getCurrentRequest();
-        dd($request);
         $em = $this->managerRegistry->getManager();
 
         $body = json_decode($request->getContent());
