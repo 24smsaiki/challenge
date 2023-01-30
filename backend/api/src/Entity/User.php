@@ -2,32 +2,44 @@
 
 namespace App\Entity;
 
+use Assert\Email;
+use Assert\NotBlank;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use App\Controller\ResetPasswordController;
+use App\Controller\RegisterController;
 use Doctrine\Common\Collections\Collection;
 use App\Controller\UpdatePasswordController;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ApiResource(mercure: true)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[ApiResource(operations: [
+    new Post(
+        name: 'register', 
+        uriTemplate: '/register', 
+        controller: RegisterController::class
+    )
+])]
+
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
-
+    private ?int $id;
+    
+    #[NotBlank(message: 'Veuillez renseigner l\'email'), Email(message: 'Veuillez renseigner un email valide.')]
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    private ?string $email;
 
     #[ORM\Column]
     private array $roles = [];
@@ -35,8 +47,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
+    #[ApiProperty(security: "is_granted('ROLE_ADMIN')", securityPostDenormalize: "is_granted('UPDATE', object)")]
     #[ORM\Column]
-    private ?string $password = null;
+    #[NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
+    private ?string $password;
+    
+    #[Length(min: 8)]
+    private ?string $plainPassword;
 
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Address::class)]
     private Collection $Address;
@@ -45,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $orders;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $token = null;
+    private ?string $token;
 
    
     public function __construct()
@@ -114,6 +131,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string|null $plainPassword
+     * @return User
+     */
+    public function setPlainPassword(?string $plainPassword): User
+    {
+        $this->plainPassword = $plainPassword;
+        return $this;
+    }
+
 
     /**
      * @see UserInterface

@@ -28,6 +28,9 @@ class Product
 
     #[ORM\Column(nullable: true)]
     private ?float $price = null;
+    #[ORM\Column(nullable: true)]
+    private ?float $testProperty = null;
+    
 
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: OrderDetails::class)]
     private Collection $orderDetails;
@@ -81,6 +84,18 @@ class Product
     public function setPrice(?float $price): self
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getTestProperty(): ?float
+    {
+        return $this->testProperty;
+    }
+
+    public function setTestProperty(?float $test): self
+    {
+        $this->testProperty = $test;
 
         return $this;
     }
