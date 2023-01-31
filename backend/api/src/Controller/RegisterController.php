@@ -31,7 +31,8 @@ class RegisterController extends AbstractController
         
         $email = $body->email;
         $password = $body->password;
-        $plainPassword = $body->plainPassword;
+        $passwordConfirmation = $body->passwordConfirmation;
+        
         
 
         $user = new User();
@@ -44,7 +45,7 @@ class RegisterController extends AbstractController
         $user->setPassword($hashedPassword);
         $errors = $this->validator->validate($user);
 
-        if($password !== $plainPassword){
+        if($password !== $passwordConfirmation){
             $errors->add(new ConstraintViolation('Les mots de passe ne correspondent pas.', null, [], null, 'plainPassword', null));
         }
         if(strlen($password) < 8){
