@@ -32,6 +32,7 @@ class ResetPasswordController extends AbstractController
         }
 
         $user->setToken(bin2hex(random_bytes(32)));
+        $user->setIsPasswordRequest(true);
         $em->flush();
         $content = "<h3>Vous avez demandé un nouveau mot de passe voici le lien"." https://localhost/update/password/".$user->getToken()."</h3>";
         $this->mail->send($email,'Reset password',$content);

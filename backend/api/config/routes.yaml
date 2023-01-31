@@ -26,3 +26,8 @@ order_fail:
     path: /order/payment/fail/{CHECKOUT_SESSION_ID}
     controller: App\Controller\OrderFailController::__invoke
     methods: ['GET']
+
+activation_user:
+    path: /user/activation/{token}
+    controller: App\Controller\ActivationUserController::__invoke
+    methods: ['GET']
