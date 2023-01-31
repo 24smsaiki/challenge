@@ -36,17 +36,16 @@ class OrderController extends AbstractController
         $request = $this->requestStack->getCurrentRequest();
         $em = $this->managerRegistry->getManager();
         $body = json_decode($request->getContent(),true);
-        dd($currentUser);   
         $date = new \DateTime();
         $order = new Order();
         $reference = $date->format('dmY').'-'.uniqid();
         $order->setReference($reference);
         $order->setCustomer($currentUser);
         $order->setCreatedAt($date);
-        // $delivery = $em->getRepository(Address::class)->findOneById($body['deliveryId']);
-        // $carrier =  $em->getRepository(Carrier::class)->findOneById($body['carrierId']);
-        // $order->setDelivery($delivery);
-        // $order->setCarrier($carrier);
+        $delivery = $em->getRepository(Address::class)->findOneById($body['deliveryId']);
+        $carrier =  $em->getRepository(Carrier::class)->findOneById($body['carrierId']);
+        $order->setDelivery($delivery);
+        $order->setCarrier($carrier);
         $order->setIsPaid(0);
         $order->setState(0);
 
@@ -54,7 +53,7 @@ class OrderController extends AbstractController
         $total = 0;
         $products_for_stripe =[];
 
-        foreach ($body['orderDetails'] as $item)
+        foreach ($body['orderItems'] as $item)
         {
             $findItem = $em->getRepository(Product::class)->findOneById($item['itemId']);
             $orderDetails = new OrderDetails;

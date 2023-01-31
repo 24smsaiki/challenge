@@ -21,7 +21,6 @@ class UserService
     {
 
         $token = $this->tokenStorage->getToken();
-        dd($token);
         if (!$token) {
             return null;
         }
