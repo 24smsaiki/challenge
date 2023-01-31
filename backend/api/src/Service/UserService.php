@@ -19,9 +19,7 @@ class UserService
     
     public function getCurrent()
     {
-
         $token = $this->tokenStorage->getToken();
-        dd($token);
         if (!$token) {
             return null;
         }

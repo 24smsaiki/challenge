@@ -36,7 +36,6 @@ class OrderController extends AbstractController
         $request = $this->requestStack->getCurrentRequest();
         $em = $this->managerRegistry->getManager();
         $body = json_decode($request->getContent(),true);
-        dd($currentUser);   
         $date = new \DateTime();
         $order = new Order();
         $reference = $date->format('dmY').'-'.uniqid();
