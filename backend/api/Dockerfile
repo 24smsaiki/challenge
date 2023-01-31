@@ -30,8 +30,12 @@ RUN set -eux; \
 
 ###> recipes ###
 ###> doctrine/doctrine-bundle ###
-RUN set -eux; \
-    install-php-extensions pdo_pgsql
+
+RUN apk add --no-cache --virtual .mysql-deps mysql; \
+docker-php-ext-install -j$(nproc) pdo pdo_mysql; \
+apk add --no-cache --virtual .mysql-rundeps libmysqlclient-dev; \
+apk del .mysql-deps
+
 ###< doctrine/doctrine-bundle ###
 ###< recipes ###
 

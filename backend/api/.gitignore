@@ -8,6 +8,8 @@
 /public/bundles/
 /var/
 /vendor/
+/mysql/
+../mysql/
 ###< symfony/framework-bundle ###
 
 ###> friendsofphp/php-cs-fixer ###
