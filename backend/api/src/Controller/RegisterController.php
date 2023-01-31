@@ -33,6 +33,7 @@ class RegisterController extends AbstractController
         
         $email = $body->email;
         $password = $body->password;
+        $passwordConfirmation = $body->passwordConfirmation;
         
         
 
@@ -53,6 +54,9 @@ class RegisterController extends AbstractController
 
         $errors = $this->validator->validate($user);
 
+        if($password !== $passwordConfirmation){
+            $errors->add(new ConstraintViolation('Les mots de passe ne correspondent pas.', null, [], null, 'plainPassword', null));
+        }
         if(strlen($password) < 8){
             $errors->add(new ConstraintViolation('Le mot de passe doit contenir au moins 8 caractères.', null, [], null, 'password', null));
         }
