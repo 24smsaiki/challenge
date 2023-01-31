@@ -7,10 +7,9 @@ use Stripe\Checkout\Session;
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Controller\OrderController;
+use App\Controller\NewOrderController;
 use App\Repository\OrderRepository;
 use ApiPlatform\Metadata\ApiResource;
-use App\Controller\CreateStripeSessionController;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -22,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/order/pass',
-        controller: OrderController::class,
+        controller: NewOrderController::class,
         name: 'order'  
     )
 ])]

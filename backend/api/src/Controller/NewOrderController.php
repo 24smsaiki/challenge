@@ -9,7 +9,6 @@ use App\Entity\Product;
 use App\Entity\OrderDetails;
 use App\Service\StripeService;
 use App\Service\UserService;
-use Stripe\Checkout\Session;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -18,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[AsController]
-class OrderController extends AbstractController
+class NewOrderController extends AbstractController
 {
     public function __construct(
         private RequestStack $requestStack,
@@ -42,10 +41,10 @@ class OrderController extends AbstractController
         $order->setReference($reference);
         $order->setCustomer($currentUser);
         $order->setCreatedAt($date);
-        // $delivery = $em->getRepository(Address::class)->findOneById($body['deliveryId']);
-        // $carrier =  $em->getRepository(Carrier::class)->findOneById($body['carrierId']);
-        // $order->setDelivery($delivery);
-        // $order->setCarrier($carrier);
+        $delivery = $em->getRepository(Address::class)->findOneById($body['deliveryId']);
+        $carrier =  $em->getRepository(Carrier::class)->findOneById($body['carrierId']);
+        $order->setDelivery($delivery);
+        $order->setCarrier($carrier);
         $order->setIsPaid(0);
         $order->setState(0);
 
