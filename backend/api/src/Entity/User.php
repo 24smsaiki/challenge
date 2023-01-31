@@ -33,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id;
+    private ?int $id = null;
     
     #[NotBlank(message: 'Veuillez renseigner l\'email'), Email(message: 'Veuillez renseigner un email valide.')]
     #[ORM\Column(length: 180, unique: true)]
@@ -50,11 +50,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
     private ?string $password;
     
-    #[Length(min: 8)]
-    private ?string $plainPassword;
+
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $token;
+
+    
+    #[ORM\Column(nullable: true)]
+    private ?bool $isPasswordRequest = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isActif = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lastname = null;
 
    
     public function __construct()
@@ -123,25 +135,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    /**
-     * @return string|null
-     */
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    /**
-     * @param string|null $plainPassword
-     * @return User
-     */
-    public function setPlainPassword(?string $plainPassword): User
-    {
-        $this->plainPassword = $plainPassword;
-        return $this;
-    }
-
 
     /**
      * @see UserInterface
@@ -222,6 +215,56 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         
         $this->token = $token;
        
+        return $this;
+    }
+
+    
+
+    public function getIsPasswordRequest(): ?bool
+    {
+        return $this->isPasswordRequest;
+    }
+
+    public function setIsPasswordRequest(?bool $isPasswordRequest): self
+    {
+        $this->isPasswordRequest = $isPasswordRequest;
+
+        return $this;
+    }
+
+    public function getIsActif(): ?bool
+    {
+        return $this->isActif;
+    }
+
+    public function setIsActif(?bool $isActif): self
+    {
+        $this->isActif = $isActif;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(?string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(?string $lastname): self
+    {
+        $this->lastname = $lastname;
+
         return $this;
     }
     

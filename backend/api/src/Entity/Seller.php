@@ -134,7 +134,7 @@ class Seller implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsActif(): ?bool
+    public function getIsActif(): ?bool
     {
         return $this->isActif;
     }
@@ -146,7 +146,7 @@ class Seller implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsRequested(): ?bool
+    public function getIsRequested(): ?bool
     {
         return $this->isRequested;
     }
@@ -203,7 +203,7 @@ class Seller implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsDeclined(): ?bool
+    public function getIsDeclined(): ?bool
     {
         return $this->isDeclined;
     }

@@ -52,7 +52,7 @@ class NewOrderController extends AbstractController
         $total = 0;
         $products_for_stripe =[];
 
-        foreach ($body['orderDetails'] as $item)
+        foreach ($body['orderItems'] as $item)
         {
             $findItem = $em->getRepository(Product::class)->findOneById($item['itemId']);
             $orderDetails = new OrderDetails;
