@@ -34,8 +34,23 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+    role_hierarchy:
+        ROLE_SELLER: ROLE_USER
+        ROLE_ADMIN: ROLE_ADMIN
+
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/carriers, roles: ROLE_ADMIN }
+        - { path: ^/orders, roles: ROLE_ADMIN }
+        - { path: ^/sellers, roles: ROLE_ADMIN }
+        - { path: ^/order_returns, roles: ROLE_ADMIN }
+        - { path: ^/seller/request/answer, roles: ROLE_ADMIN }
+
+        - { path: ^/shop, roles: ROLE_SELLER }
+        - { path: ^/products, roles: [ROLE_SELLER,ROLE_ADMIN] }
+        
+        - { path: ^/order/create/return, roles: ROLE_USER }
+        - { path: ^/order/pass, roles: ROLE_USER }
         - { path: ^/addresses, roles: ROLE_USER }
 
 when@test:

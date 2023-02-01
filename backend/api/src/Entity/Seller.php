@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ApiResource(operations: [
     new Post(
-        uriTemplate: '/seller/{id}/request/answer',
+        uriTemplate: '/seller/request/answer/{id}',
         controller: SellerRequestAnswerController::class,
         name: 'seller_request_answer',
         
