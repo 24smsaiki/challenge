@@ -31,3 +31,13 @@ activation_user:
     path: /user/activation/{token}
     controller: App\Controller\ActivationUserController::__invoke
     methods: ['GET']
+
+orders_by_seller:
+    path: /shop/orders
+    controller: App\Controller\OrdersBySellerController::__invoke
+    methods: ['GET']
+
+products_by_order_seller:
+    path: /shop/orders/show/{reference}
+    controller: App\Controller\OrdersProductsBySellerController::__invoke
+    methods: ['GET']

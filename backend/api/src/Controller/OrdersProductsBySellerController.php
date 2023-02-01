@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Controller;
+
+use Stripe\Stripe;
+use App\Entity\Order;
+use App\Entity\Seller;
+use App\Entity\Address;
+use App\Entity\Carrier;
+use App\Entity\Product;
+use App\Entity\OrderReturn;
+use App\Entity\OrderDetails;
+use App\Service\UserService;
+use Stripe\Checkout\Session;
+use App\Entity\OrderDetailsReturn;
+use ApiPlatform\Serializer\JsonEncoder;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\HttpKernel\Attribute\AsController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+#[AsController]
+class OrdersProductsBySellerController extends AbstractController
+{
+    public function __construct(
+        private RequestStack $requestStack,
+        private ManagerRegistry $managerRegistry,
+        private ValidatorInterface $validator,
+        private UserService $userService,
+        private Security $security
+    ) {}
+
+    #[IsGranted('ROLE_SELLER')]
+    public function __invoke($reference)
+    {
+        $seller = $this->managerRegistry->getManager()->getRepository(Seller::class)->findOneByUserId($this->security->getUser()->getId());
+        
+       
+        $queryBuilder = $this->managerRegistry->getManager()->createQueryBuilder('o');
+        $queryBuilder->select('p')
+            ->from(Product::class, 'p')
+            ->leftJoin('p.seller','s')
+            ->leftJoin('p.orderDetails','od')
+            ->leftJoin('od.myOrder','o')
+            ->where('p.seller = :seller')
+            ->andWhere('o.reference = :reference')
+            ->andWhere('o.isPaid = true')
+            ->setParameter('seller', $seller)  
+            ->setParameter('reference', $reference)
+        ;
+
+        $query = $queryBuilder->getQuery();
+        $products = $query->getResult();
+        
+        dd($products);
+        
+       
+        
+        
+    }
+}
