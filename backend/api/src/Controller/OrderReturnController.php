@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\OrderReturn;
@@ -28,6 +29,7 @@ class OrderReturnController extends AbstractController
         $request = $this->requestStack->getCurrentRequest();
         $em = $this->managerRegistry->getManager();
         $body = json_decode($request->getContent(),true);
+        $now = new DateTime();
 
         $order = $this->managerRegistry->getManager()->getRepository(Order::class)->findOneByReference($body['orderReference']);
         if($order->getState() === 5 && $order->getIsPaid() === true ){
@@ -35,6 +37,7 @@ class OrderReturnController extends AbstractController
             $returnOrder = new OrderReturn();
             $returnOrder->setReference('return-'.uniqid());
             $returnOrder->setMyOrder($order);
+            $returnOrder->setCreatedAt($now);
             
             foreach ($body['itemsToReturn'] as $item)
             {
