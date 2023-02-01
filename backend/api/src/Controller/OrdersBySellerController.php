@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use Stripe\Stripe;
 use App\Entity\Order;
+use App\Entity\Seller;
 use App\Entity\Address;
 use App\Entity\Carrier;
 use App\Entity\Product;
@@ -11,9 +12,9 @@ use App\Entity\OrderDetails;
 use App\Service\UserService;
 use Stripe\Checkout\Session;
 use App\Entity\OrderDetailsReturn;
-use App\Entity\Seller;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -52,10 +53,24 @@ class OrdersBySellerController extends AbstractController
 
         $query = $queryBuilder->getQuery();
         $orderDetails = $query->getResult();
-        
+        $orderArray = array();
+        $total = 0;
+        foreach($orderDetails as $detail) {
+            // $total += $detail->getTotalPrice();
+            if($detail->getId())
+            $orderArray[] = array(
+                'reference' => $detail->getMyOrder()->getReference(),
+                'createdAt' => $detail->getMyOrder()->getCreatedAt(),
+            );
+        }
+        $response = new Response();
+        $response->setContent(json_encode(array("orders"=>$orderArray)));
+        $response->headers->set("Content-Type", "application/json");
+        $response->headers->set("Access-Control-Allow-Origin", "*");
+
+        return $response;
 
         
-        dd($orderDetails);
         
     }
 }
