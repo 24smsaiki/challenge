@@ -21,6 +21,7 @@
         "symfony/expression-language": "6.2.*",
         "symfony/flex": "^2.2",
         "symfony/framework-bundle": "6.2.*",
+        "symfony/http-kernel": "6.2.*",
         "symfony/mercure-bundle": "^0.3.5",
         "symfony/monolog-bundle": "^3.8",
         "symfony/property-access": "6.2.*",
@@ -34,6 +35,9 @@
     },
     "require-dev": {
         "api-platform/schema-generator": "^5.0",
+        "friends-of-behat/mink-browserkit-driver": "^1.6",
+        "friends-of-behat/mink-extension": "^2.7",
+        "friends-of-behat/symfony-extension": "^2.4",
         "symfony/browser-kit": "6.2.*",
         "symfony/css-selector": "6.2.*",
         "symfony/debug-bundle": "6.2.*",
