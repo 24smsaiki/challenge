@@ -50,7 +50,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
     private ?string $password;
     
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Address::class)]
+    private Collection $Address;
 
+    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Order::class)]
+    private Collection $orders;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $token;
