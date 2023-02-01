@@ -29,7 +29,6 @@ class OrdersBySellerController extends AbstractController
         private RequestStack $requestStack,
         private ManagerRegistry $managerRegistry,
         private ValidatorInterface $validator,
-        private UserService $userService,
         private Security $security
     ) {}
 

@@ -1,15 +1,9 @@
 <?php
 namespace App\Controller;
 
-use Stripe\Stripe;
 use App\Entity\Order;
-use App\Entity\Address;
-use App\Entity\Carrier;
 use App\Entity\Product;
 use App\Entity\OrderReturn;
-use App\Entity\OrderDetails;
-use App\Service\UserService;
-use Stripe\Checkout\Session;
 use App\Entity\OrderDetailsReturn;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,7 +19,7 @@ class OrderReturnController extends AbstractController
         private RequestStack $requestStack,
         private ManagerRegistry $managerRegistry,
         private ValidatorInterface $validator,
-        private UserService $userService
+
     ) {}
 
   

@@ -2,24 +2,13 @@
 
 namespace App\Controller;
 
-use Stripe\Stripe;
-use App\Entity\Order;
 use App\Entity\Seller;
-use App\Entity\Address;
-use App\Entity\Carrier;
-use App\Entity\Product;
-use App\Entity\OrderReturn;
 use App\Entity\OrderDetails;
 use App\Service\UserService;
-use Stripe\Checkout\Session;
-use App\Entity\OrderDetailsReturn;
-use ApiPlatform\Serializer\JsonEncoder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -32,7 +21,6 @@ class OrdersProductsBySellerController extends AbstractController
         private RequestStack $requestStack,
         private ManagerRegistry $managerRegistry,
         private ValidatorInterface $validator,
-        private UserService $userService,
         private Security $security
     ) {}
 
