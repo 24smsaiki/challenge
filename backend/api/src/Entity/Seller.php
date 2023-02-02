@@ -19,13 +19,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ApiResource(operations: [
     new Post(
-<<<<<<< HEAD
-        uriTemplate: '/seller/{id}/request/answer',
-        controller: ManageRequestAccountSellerController::class,
-=======
         uriTemplate: '/seller/request/answer/{id}',
-        controller: SellerRequestAnswerController::class,
->>>>>>> 8150f929beb0d867fc2a419d696fff3e5123ce8b
+        controller: ManageRequestAccountSellerController::class,
         name: 'seller_request_answer',
         security: 'is_granted("ROLE_SELLER")',
     )
