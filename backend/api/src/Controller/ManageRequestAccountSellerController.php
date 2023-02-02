@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsController]
-class SellerRequestAnswerController extends AbstractController
+class ManageRequestAccountSellerController extends AbstractController
 {
     public function __construct(
         private RequestStack $requestStack,
@@ -24,7 +24,9 @@ class SellerRequestAnswerController extends AbstractController
     {
         $body = json_decode($this->requestStack->getCurrentRequest()->getContent(),true);
         
-        switch ($body['answer']){
+        switch ($body['answer'])
+        {
+            // TODO : communiquer plus tard avec le front le 'accepted_request' et 'declined_request'
             case 'accepted_request':
                 $em = $this->managerRegistry->getManager();
                 $getSeller = $em->getRepository(Seller::class)->findOneById($id);

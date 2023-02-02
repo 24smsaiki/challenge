@@ -11,7 +11,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\EventListener\SellerListener;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Controller\SellerRequestAnswerController;
+use App\Controller\ManageRequestAccountSellerController;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
@@ -20,9 +20,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/seller/{id}/request/answer',
-        controller: SellerRequestAnswerController::class,
+        controller: ManageRequestAccountSellerController::class,
         name: 'seller_request_answer',
-        
+        security: 'is_granted("ROLE_SELLER")',
     )
 ])]
 #[ORM\EntityListeners([SellerListener::class])]
