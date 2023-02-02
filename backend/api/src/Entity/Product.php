@@ -9,7 +9,7 @@ use App\EventListener\ProductListener;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-#[ApiResource(mercure: true)]
+#[ApiResource(mercure: true,security: "is_granted('ROLE_SELLER')")]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\EntityListeners([ProductListener::class])]
 
@@ -85,17 +85,6 @@ class Product
         return $this;
     }
 
-    public function getTestProperty(): ?float
-    {
-        return $this->testProperty;
-    }
-
-    public function setTestProperty(?float $test): self
-    {
-        $this->testProperty = $test;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, OrderDetails>

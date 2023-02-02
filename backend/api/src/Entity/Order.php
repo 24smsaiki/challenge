@@ -2,8 +2,7 @@
 
 namespace App\Entity;
 
-use Stripe\Stripe;
-use Stripe\Checkout\Session;
+
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -63,8 +62,7 @@ class Order
 
     #[ORM\OneToMany(mappedBy: 'myOrder', targetEntity: OrderDetails::class)]
     #[Groups(['post'])]
-    
-    private Collection $orderDetails;
+    private ?Collection $orderDetails = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $stripeSessionId = null;
@@ -108,7 +106,7 @@ class Order
         return $this;
     }
 
-    public function isIsPaid(): ?bool
+    public function getIsPaid(): ?bool
     {
         return $this->isPaid;
     }

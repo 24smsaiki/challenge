@@ -13,11 +13,14 @@ use App\Repository\OrderReturnRepository;
 
 #[ApiResource(mercure: true,denormalizationContext: ['groups' => ['post']])]
 #[ORM\Entity(repositoryClass: OrderReturnRepository::class)]
-#[Post(
-    uriTemplate: '/order/create/return',
-    controller: OrderReturnController::class,
-    name: 'order_return'
-)]
+
+#[ApiResource(operations: [
+    new Post(
+        uriTemplate: '/order/create/return',
+        controller: OrderReturnController::class,
+        name: 'order_return'
+    )
+])]
 class OrderReturn
 {
     #[ORM\Id]

@@ -1,22 +1,11 @@
 <?php
 namespace App\Controller;
 
-use Stripe\Stripe;
 use App\Entity\Order;
-use App\Entity\Address;
-use App\Entity\Carrier;
-use App\Entity\Product;
-use App\Entity\OrderReturn;
-use App\Entity\OrderDetails;
 use App\Service\MailService;
-use App\Service\UserService;
-use Stripe\Checkout\Session;
-use App\Entity\OrderDetailsReturn;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[AsController]

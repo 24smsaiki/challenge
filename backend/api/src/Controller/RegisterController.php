@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\MailService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -19,7 +20,8 @@ class RegisterController extends AbstractController
         private RequestStack $requestStack,
         private ManagerRegistry $managerRegistry,
         private UserPasswordHasherInterface $passwordHasher,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private MailService $mail
     ) {}
 
     public function __invoke()
@@ -40,9 +42,16 @@ class RegisterController extends AbstractController
             $user,
             $password
         );
+        $user->setFirstname($body->firstname);
+        $user->setLastname($body->lastname);
         $user->setEmail($email);
         $user->setRoles(["ROLE_USER"]);
+        $user->setIsActif(false);
+
+        $user->setIsPasswordRequest(false);
         $user->setPassword($hashedPassword);
+        $user->setToken(bin2hex(random_bytes(32)));
+
         $errors = $this->validator->validate($user);
 
         if($password !== $passwordConfirmation){
@@ -64,9 +73,11 @@ class RegisterController extends AbstractController
         }
        
         $em->getRepository(User::class)->save($user, true);
-       
         
-        return new JsonResponse(['message' => 'Votre inscription a bien été effectué.', 'status' => 'success'], 201);
+        $content = "<h3>voici le lien d'activation de votre compte"." https://localhost/user/activation/".$user->getToken()."</h3>";
+        $this->mail->send($email,'Activation de compte',$content);
+        
+        return new JsonResponse(['message' => "Un mail d'activation vient d'être envoyé à votre mail", 'status' => 'success'], 201);
         
 }
 }

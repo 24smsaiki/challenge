@@ -1,15 +1,14 @@
 <?php
 namespace App\Controller;
 
-use Stripe\Stripe;
 use App\Entity\Order;
 use App\Entity\Address;
 use App\Entity\Carrier;
 use App\Entity\Product;
 use App\Entity\OrderDetails;
 use App\Service\StripeService;
-use App\Service\UserService;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -23,7 +22,7 @@ class NewOrderController extends AbstractController
         private RequestStack $requestStack,
         private ManagerRegistry $managerRegistry,
         private ValidatorInterface $validator,
-        private UserService $userService,
+        private Security $security,
         private StripeService $stripeService
     ) {}
 
@@ -31,7 +30,6 @@ class NewOrderController extends AbstractController
     {
         
 
-        $currentUser = $this->userService->getCurrent();
         $request = $this->requestStack->getCurrentRequest();
         $em = $this->managerRegistry->getManager();
         $body = json_decode($request->getContent(),true);
@@ -39,7 +37,7 @@ class NewOrderController extends AbstractController
         $order = new Order();
         $reference = $date->format('dmY').'-'.uniqid();
         $order->setReference($reference);
-        $order->setCustomer($currentUser);
+        $order->setCustomer($this->security->getUser());
         $order->setCreatedAt($date);
         $delivery = $em->getRepository(Address::class)->findOneById($body['deliveryId']);
         $carrier =  $em->getRepository(Carrier::class)->findOneById($body['carrierId']);
@@ -52,7 +50,7 @@ class NewOrderController extends AbstractController
         $total = 0;
         $products_for_stripe =[];
 
-        foreach ($body['orderDetails'] as $item)
+        foreach ($body['orderItems'] as $item)
         {
             $findItem = $em->getRepository(Product::class)->findOneById($item['itemId']);
             $orderDetails = new OrderDetails;

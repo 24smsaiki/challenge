@@ -19,8 +19,13 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ApiResource(operations: [
     new Post(
+<<<<<<< HEAD
         uriTemplate: '/seller/{id}/request/answer',
         controller: ManageRequestAccountSellerController::class,
+=======
+        uriTemplate: '/seller/request/answer/{id}',
+        controller: SellerRequestAnswerController::class,
+>>>>>>> 8150f929beb0d867fc2a419d696fff3e5123ce8b
         name: 'seller_request_answer',
         security: 'is_granted("ROLE_SELLER")',
     )
@@ -134,7 +139,7 @@ class Seller implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsActif(): ?bool
+    public function getIsActif(): ?bool
     {
         return $this->isActif;
     }
@@ -146,7 +151,7 @@ class Seller implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsRequested(): ?bool
+    public function getIsRequested(): ?bool
     {
         return $this->isRequested;
     }
@@ -203,7 +208,7 @@ class Seller implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsDeclined(): ?bool
+    public function getIsDeclined(): ?bool
     {
         return $this->isDeclined;
     }

@@ -7,7 +7,6 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\OrderDetailsRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']])]
 #[ORM\Entity(repositoryClass: OrderDetailsRepository::class)]
 
 class OrderDetails
@@ -18,19 +17,15 @@ class OrderDetails
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderDetails')]
-    #[Groups(['post'])]
     private ?Order $myOrder = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderDetails')]
-    #[Groups(['post'])]
     private ?Product $item = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['post'])]
     private ?int $quantity = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['post'])]
     private ?float $totalPrice = null;
 
     public function getId(): ?int
