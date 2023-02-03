@@ -47,7 +47,7 @@ class ManageRequestAccountSellerController extends AbstractController
                     $em->persist($getSeller);
                     $em->flush();
                     
-                    return new JsonResponse(['message' => 'sellerAdded', 'status' => 'success'], 201);
+                    return new JsonResponse(['message' => 'seller request accepted', 'status' => 'success'], 201);
                 } else {
                     return new JsonResponse(['message' => 'something went wrong retry', 'status' => 'success'], 201);
                 }

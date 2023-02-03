@@ -16,13 +16,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']])]
-
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/seller/request/answer/{id}',
         controller: ManageRequestAccountSellerController::class,
         name: 'seller_request_answer',
-        security: 'is_granted("ROLE_SELLER")',
+        security: 'is_granted("ROLE_ADMIN")',
     )
 ])]
 #[ORM\EntityListeners([SellerListener::class])]

@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true,denormalizationContext: ['groups' => ['post']])]
+#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 
@@ -33,40 +33,41 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?string $reference = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?bool $isPaid = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?int $state = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?float $total = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?User $customer = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?Address $delivery = null;
 
     #[ORM\OneToMany(mappedBy: 'myOrder', targetEntity: OrderDetails::class)]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?Collection $orderDetails = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $stripeSessionId = null;
 
+    #[Groups(['post', 'get'])]
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Carrier $carrier = null;
 

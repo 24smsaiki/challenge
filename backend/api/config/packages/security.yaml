@@ -41,8 +41,8 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/carriers, roles: ROLE_ADMIN }
-        - { path: ^/orders, roles: ROLE_ADMIN }
-        - { path: ^/sellers, roles: ROLE_ADMIN }
+        - { path: ^/orders, roles: ROLE_USER }
+        #- { path: ^/sellers, roles: ROLE_ADMIN }
         - { path: ^/order_returns, roles: ROLE_ADMIN }
         - { path: ^/seller/request/answer, roles: ROLE_ADMIN }
 
