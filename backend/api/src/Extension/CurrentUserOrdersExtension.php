@@ -14,7 +14,7 @@ use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 /**
  * This extension makes sure normal users can only access their own Orders
  */
-final class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
     private $securityChecker;
     public function __construct(Security $security)
@@ -72,7 +72,7 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
                 ->where('o.isPaid = true')
                 ->andWhere('s.userId = :current_user_id')
                 ->setParameter('current_user_id', $user->getId());
-                
+
                 return;
         }
         
