@@ -35,7 +35,7 @@ class Product
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: OrderDetailsReturn::class)]
     private Collection $orderDetailsReturns;
 
-    #[ORM\ManyToOne(inversedBy: 'items')]
+    #[ORM\ManyToOne(inversedBy: 'item')]
     private ?Seller $seller = null;
 
     public function __construct()

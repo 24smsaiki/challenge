@@ -54,12 +54,35 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Order::class !== $resourceClass || $this->securityChecker ->isGranted('ROLE_ADMIN') || null === $user = $this->securityChecker->getUser()) {
+        if (Order::class !== $resourceClass || $this->securityChecker->isGranted('ROLE_ADMIN') || null === $user = $this->securityChecker->getUser()) {
             return;
         }
         
+        // share operation between user and seller
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere(sprintf('%s.customer = :current_user', $rootAlias));
-        $queryBuilder->setParameter('current_user', $user);           
+        // here the orders concerned by the seller (select only those have at least one product published by the current seller)
+        // make sure also return orders that was payed
+        if ($this->securityChecker ->isGranted('ROLE_SELLER')){
+            $queryBuilder
+                ->select($rootAlias)
+                ->distinct(true)
+                ->innerJoin('o.orderDetails','od')
+                ->innerJoin('od.item','p')
+                ->innerJoin('p.seller','s')
+                ->where('o.isPaid = true')
+                ->andWhere('s.userId = :current_user_id')
+                ->setParameter('current_user_id', $user->getId());
+                
+                return;
+        }
+        
+        // here the orders for the users (select only those passed by the current user)
+        if($this->securityChecker->isGranted('ROLE_USER')){
+            $queryBuilder->andWhere(sprintf('%s.customer = :current_user', $rootAlias));
+            $queryBuilder->setParameter('current_user', $user); 
+            
+            return;
+        }
+
     }
 }
