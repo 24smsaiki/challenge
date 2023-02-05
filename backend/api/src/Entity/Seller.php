@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Product;
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,11 +12,11 @@ use ApiPlatform\Metadata\ApiResource;
 use App\EventListener\SellerListener;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Controller\ManageRequestAccountSellerController;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Controller\ManageRequestAccountSellerController;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']])]
+#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/seller/request/answer/{id}',
@@ -56,12 +57,7 @@ class Seller implements PasswordAuthenticatedUserInterface
     private ?bool $isActif = false;
 
     #[ORM\Column(nullable: true)]
-   
     private ?bool $isRequested = true;
-
-    #[ORM\OneToMany(mappedBy: 'seller', targetEntity: Product::class)]
-    private Collection $items;
-
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['post'])]
@@ -73,10 +69,13 @@ class Seller implements PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?int $userId = null;
 
+    #[ORM\OneToMany(mappedBy: 'publisher', targetEntity: Product::class)]
+    private Collection $products;
+
    
     public function __construct()
     {
-        $this->items = new ArrayCollection();
+        $this->products = new ArrayCollection();
         
     }
 
@@ -156,37 +155,7 @@ class Seller implements PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getItems(): Collection
-    {
-        return $this->items;
-    }
-
-    public function addItem(Product $item): self
-    {
-        if (!$this->items->contains($item)) {
-            $this->items->add($item);
-            $item->setSeller($this);
-        }
-
-        return $this;
-    }
-
-    public function removeItem(Product $item): self
-    {
-        if ($this->items->removeElement($item)) {
-            // set the owning side to null (unless already changed)
-            if ($item->getSeller() === $this) {
-                $item->setSeller(null);
-            }
-        }
-
-        return $this;
-    }
-
+    
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -222,6 +191,36 @@ class Seller implements PasswordAuthenticatedUserInterface
     public function setUserId(?int $userId): self
     {
         $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getPublisher() === $this) {
+                $product->setPublisher(null);
+            }
+        }
 
         return $this;
     }

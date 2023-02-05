@@ -47,7 +47,7 @@ security:
         - { path: ^/seller/request/answer, roles: ROLE_ADMIN }
 
         - { path: ^/shop, roles: ROLE_SELLER }
-        - { path: ^/products, roles: [ROLE_SELLER,ROLE_ADMIN] }
+        - { path: ^/products, roles: ROLE_USER }
         
         - { path: ^/order/create/return, roles: ROLE_USER }
         - { path: ^/order/pass, roles: ROLE_USER }

@@ -8,8 +8,9 @@ use App\Repository\ProductRepository;
 use App\EventListener\ProductListener;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true,security: "is_granted('ROLE_SELLER')")]
+#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\EntityListeners([ProductListener::class])]
 
@@ -18,25 +19,34 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('get')]
     private ?int $id = null;
 
+    #[Groups(['post', 'get'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $label = null;
 
+    #[Groups(['post', 'get'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['post', 'get'])]
     #[ORM\Column(nullable: true)]
     private ?float $price = null;
-    
+
+    #[Groups(['post'])]
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: OrderDetails::class)]
     private Collection $orderDetails;
 
+    #[Groups(['post'])]
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: OrderDetailsReturn::class)]
     private Collection $orderDetailsReturns;
 
-    #[ORM\ManyToOne(inversedBy: 'item')]
-    private ?Seller $seller = null;
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?seller $publisher = null;
+
+    # vérifier le problème l'extension Product ne renvoi pas ce qu'il faut  : message derreur undefined array key 'item'
+
 
     public function __construct()
     {
@@ -154,6 +164,18 @@ class Product
     public function setSeller(?Seller $seller): self
     {
         $this->seller = $seller;
+
+        return $this;
+    }
+
+    public function getPublisher(): ?seller
+    {
+        return $this->publisher;
+    }
+
+    public function setPublisher(?seller $publisher): self
+    {
+        $this->publisher = $publisher;
 
         return $this;
     }
