@@ -55,43 +55,14 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Order::class !== $resourceClass || $this->securityChecker->isGranted('ROLE_ADMIN') || null === $user = $this->securityChecker->getUser()) {
+        if ( Order::class !== $resourceClass 
+        || $this->securityChecker->isGranted('ROLE_ADMIN') 
+        || $this->securityChecker->isGranted('ROLE_SELLER')
+        || null === $user = $this->securityChecker->getUser() ) {
             return;
         }
         
-        // share operation between user and seller
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        // here the orders concerned by the seller (select only those have at least one product published by the current seller)
-        // make sure also return orders that was payed
-        if ($this->securityChecker ->isGranted('ROLE_SELLER')){
-            // first fetch all productIDS published by the current seller
-            // $productIds = $queryBuilder
-            //     ->select('p.id')
-            //     ->distinct(true)
-            //     ->from(Product::class, 'p')
-            //     ->innerJoin('p.seller', 's')
-            //     ->where('s.userId = :current_user_id')
-            //     ->setParameter('current_user_id', $user)
-            //     ->getQuery()
-            //     ->getResult();
-            // $ary = array_map(
-            //     function($product) {
-            //         return $product['id'];
-            //     },
-            //     $productIds
-            // );
-            
-            $queryBuilder
-                ->select($rootAlias, 'pr')
-                ->distinct(true)
-                ->innerJoin('o.orderDetails','od')
-                ->innerJoin('od.item','pr')
-                ->innerJoin('pr.publisher','sl')
-                ->where('sl.userId = :current_user_id')
-                ->andWhere('o.isPaid = true')
-                ->setParameter('current_user_id', $user->getId());
-                return;
-        }
         
         // here the orders for the users (select only those passed by the current user)
         if($this->securityChecker->isGranted('ROLE_USER')){

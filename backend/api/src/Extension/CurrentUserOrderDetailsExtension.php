@@ -9,12 +9,13 @@ use Symfony\Component\Security\Core\Security;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use App\Entity\OrderDetails;
 use App\Entity\Product;
 
 /**
  * This extension makes sure normal users can only access their own Orders
  */
-final class CurrentUserProductsExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+final class CurrentUserOrderDetailsExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
     private $securityChecker;
     public function __construct(Security $security)
@@ -54,7 +55,7 @@ final class CurrentUserProductsExtension implements QueryCollectionExtensionInte
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Product::class !== $resourceClass){
+        if (OrderDetails::class !== $resourceClass){
             return;
         }
 
@@ -65,12 +66,13 @@ final class CurrentUserProductsExtension implements QueryCollectionExtensionInte
         if(null === $user){
             return;
         }
-        // here the orders concerned by the seller (select only those have at least one product published by the current seller)
+        // here select only those product's published by the current seller
         if($this->securityChecker->isGranted('ROLE_SELLER'))
         {
             $queryBuilder
                 ->select($rootAlias)
-                ->innerJoin('o.publisher', 's')
+                ->innerJoin('o.item', 'p')
+                ->innerJoin('p.publisher','s')
                 ->where('s.userId = :current_user_id')
                 ->setParameter('current_user_id', $user->getId())
             ;
