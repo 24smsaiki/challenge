@@ -1,0 +1,43 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+auth:
+    path: /auth
+    methods: ['POST']
+
+update_password:
+    path: /update/password/{token}
+    controller: App\Controller\UpdatePasswordController::__invoke
+    methods: ['POST']
+reset_password:
+    path: /reset/password
+    controller: App\Controller\ResetPasswordController::__invoke
+    methods: ['POST']
+
+order_success:
+    path: /order/payment/success/{CHECKOUT_SESSION_ID}
+    controller: App\Controller\OrderSuccessController::__invoke
+    methods: ['GET']
+
+order_fail:
+    path: /order/payment/fail/{CHECKOUT_SESSION_ID}
+    controller: App\Controller\OrderFailController::__invoke
+    methods: ['GET']
+
+activation_user:
+    path: /user/activation/{token}
+    controller: App\Controller\ActivationUserController::__invoke
+    methods: ['GET']
+
+orders_by_seller:
+    path: /shop/orders
+    controller: App\Controller\OrdersBySellerController::__invoke
+    methods: ['GET']
+
+products_by_order_seller:
+    path: /shop/orders/show/{reference}
+    controller: App\Controller\OrdersProductsBySellerController::__invoke
+    methods: ['GET']
