@@ -9,13 +9,13 @@ use Symfony\Component\Security\Core\Security;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+use App\Entity\Address;
 use App\Entity\OrderDetails;
-use App\Entity\Product;
 
 /**
  * This extension makes sure normal users can only access their own Orders
  */
-final class CurrentUserOrderDetailsExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+final class CurrentUserAddressExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
     private $securityChecker;
     public function __construct(Security $security)
@@ -55,33 +55,25 @@ final class CurrentUserOrderDetailsExtension implements QueryCollectionExtension
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (OrderDetails::class !== $resourceClass){
+        if (Address::class !== $resourceClass 
+        || $this->securityChecker->isGranted('ROLE_ADMIN')){
             return;
         }
 
-        // share operation between user and seller
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $user = $this->securityChecker->getUser();
         
         if(null === $user){
             return;
         }
-        // here select only those product's published by the current seller
-        if($this->securityChecker->isGranted('ROLE_SELLER'))
+        // here select only those addresses published by the current user
+        if($this->securityChecker->isGranted('ROLE_USER'))
         {
             $queryBuilder
                 ->select($rootAlias)    
-                ->distinct(false)
-                ->groupBy('o.myOrder')
-                ->innerJoin('o.item', 'p')
-                ->innerJoin('p.publisher','s')
-                ->where('s.userId = :current_user_id')
-                ->setParameter('current_user_id', $user->getId())
+                ->where('o.customer = :current_user_id')
+                ->setParameter('current_user_id', $user)
             ;
-            return;
-        }
-        
-        if ($this->securityChecker->isGranted('ROLE_ADMIN') ||  $this->securityChecker->isGranted('ROLE_USER')) {
             return;
         }
     }
