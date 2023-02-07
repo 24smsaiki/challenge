@@ -1,24 +1,9 @@
 <template>
   <div :class="['overlay', show ? 'showElement' : 'hideElement']"></div>
-  <div :class="['menu', show ? 'showElement' : 'hideElement']" ref="mobileMenu">
-    <!-- <section class="categories">
-      <Category
-        product="headphones"
-        :show="show"
-        @toggle-menu-show="$emit('toggle-menu-show', $event)"
-      />
-      <Category
-        product="speakers"
-        :show="show"
-        @toggle-menu-show="$emit('toggle-menu-show', $event)"
-      />
-      <Category
-        product="earphones"
-        :show="show"
-        @toggle-menu-show="$emit('toggle-menu-show', $event)"
-      />
-    </section> -->
-  </div>
+  <div
+    :class="['menu', show ? 'showElement' : 'hideElement']"
+    ref="mobileMenu"
+  ></div>
 </template>
 
 <script>

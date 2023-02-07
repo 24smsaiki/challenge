@@ -1,5 +1,5 @@
-import LocalStorage from "../services/LocalStorage";
 import AuthRepository from "../repositories/AuthRepository";
+import LocalStorage from "../services/LocalStorage";
 import jwt_decode from "jwt-decode";
 
 export default class AuthLogic {

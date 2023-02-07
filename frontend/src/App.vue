@@ -1,17 +1,13 @@
 <template>
   <UserProvider>
-  <Menu
-    :show="showMenu"
-    :scrollTop="scrollTop"
-    ref="mobileMenu"
-  />
-  <Cart
-    :show="showCart"
-    :cart="cart"
-    @change-quantity="changeQuantity"
-    @empty-cart="emptyCart"
-    @toggle-menu-show="toggleMenu"
-  />
+    <Menu :show="showMenu" :scrollTop="scrollTop" ref="mobileMenu" />
+    <Cart
+      :show="showCart"
+      :cart="cart"
+      @change-quantity="changeQuantity"
+      @empty-cart="emptyCart"
+      @toggle-menu-show="toggleMenu"
+    />
     <router-view
       @toggle-menu-show="toggleMenu"
       @add-to-cart="addToCart"
@@ -29,7 +25,6 @@ import Menu from "./components/Menu.vue";
 import Cart from "./components/Cart.vue";
 import data from "./data.json";
 import UserProvider from "./components/providers/UserProvider.vue";
-
 
 export default {
   name: "App",

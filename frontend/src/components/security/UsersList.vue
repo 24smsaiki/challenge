@@ -1,6 +1,5 @@
 <script>
-import axios from 'axios'
-import * as Request from '../../services/request';
+import * as Request from "../../services/request";
 
 export default {
   data() {
@@ -9,34 +8,34 @@ export default {
     };
   },
   mounted() {
-    Request.make('get', 'user/all')
+    Request.make("get", "user/all")
       .then((response) => {
         this.users = response;
-      }
-      )
-  }
-}
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  },
+};
 </script>
 
 <template>
-    <div class="container">
-        <table>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>Action</th>
-            </tr>
-            <tr v-for="user in users" :key="user.id">
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles }}</td>
-                <td>A venir</td>
-            </tr>
-      
-        </table>
-
-    </div>
+  <div class="container">
+    <table>
+      <tr>
+        <th>Id</th>
+        <th>Email</th>
+        <th>Roles</th>
+        <th>Action</th>
+      </tr>
+      <tr v-for="user in users" :key="user.id">
+        <td>{{ user.id }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.roles }}</td>
+        <td>A venir</td>
+      </tr>
+    </table>
+  </div>
 </template>
 
 <style scoped>
