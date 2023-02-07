@@ -1,61 +1,63 @@
-import AuthRepository from "../repositories/AuthRepository";
 import LocalStorage from "../services/LocalStorage";
+import AuthRepository from "../repositories/AuthRepository";
 import jwt_decode from "jwt-decode";
 
 export default class AuthLogic {
-  static async register(body) {
-    const result = await AuthRepository.register(body);
-    return result.message;
-  }
 
-  static async login(body) {
-    const result = await AuthRepository.login({ ...body });
-    const res = jwt_decode(result.token);
+    static async register(body) {
+        const result = await AuthRepository.register(body);
+        return result.message;
+    }
 
-    AuthLogic.setToken(result.token);
-    AuthLogic.setStorageUser(res);
+    static async login(body) {
+        const result = await AuthRepository.login({...body});
+        
+        const res = jwt_decode(result.token);
+        
+        AuthLogic.setToken(result.token);
+        AuthLogic.setStorageUser(res);
+        return res;
+        
+    }
 
-    return res;
-  }
+    static logout() {
+        this.clear();
+    }
 
-  static logout() {
-    this.clear();
-  }
+    static isAuth() {
+        return !!this.getToken();
+    }
 
-  static isAuth() {
-    return !!this.getToken();
-  }
+        
+    static getToken() {
+        return LocalStorage.get("token");
+    }
+    
+    static setToken(token) {
+        LocalStorage.set("token", token);
+    }
+    
+    static removetoken() {
+        LocalStorage.remove("token");
+    }
+    
+    static clear() {
+        LocalStorage.clear();
+    }
+    static async refreshToken(refreshToken) {
+        this.deleteRefreshToken();
+        const response = await AuthRepository.refresh(refreshToken);
+        AuthLogic.setToken(response.responseObject());
+        return response.responseObject();
+    }
 
-  static getToken() {
-    return LocalStorage.get("token");
-  }
+    static deleteRefreshToken() {
+        let token = LocalStorage.get("token")
+        delete token.refresh_token
+        AuthLogic.settoken(token)
+      }
 
-  static setToken(token) {
-    LocalStorage.set("token", token);
-  }
-
-  static removetoken() {
-    LocalStorage.remove("token");
-  }
-
-  static clear() {
-    LocalStorage.clear();
-  }
-
-  static async refreshToken(refreshToken) {
-    this.deleteRefreshToken();
-    const response = await AuthRepository.refresh(refreshToken);
-    AuthLogic.setToken(response.responseObject());
-    return response.responseObject();
-  }
-
-  static deleteRefreshToken() {
-    let token = LocalStorage.get("token");
-    delete token.refresh_token;
-    AuthLogic.settoken(token);
-  }
-
-  static setStorageUser(user) {
-    LocalStorage.set("user", user);
-  }
-}
+    static setStorageUser(user) {
+        LocalStorage.set("user", user);
+    }
+    }
