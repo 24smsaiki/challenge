@@ -1,18 +1,83 @@
+<script setup>
+import { ref, defineEmits, computed, onMounted } from "vue";
+import Header from "../components/Product/Header.vue";
+// import ProductPageNavigation from "../components/ProductPageNavigation.vue";
+import router from "../router/Router";
+import OthersCard from "../components/Product/OthersCard.vue";
+import { useProductStore } from "../stores/ProductStore.js";
+import { useCartStore } from "../stores/CartStore.js";
+
+// define emits
+const emit = defineEmits(["toggle-menu-show", "add-to-cart"]);
+
+const cartStore = useCartStore();
+const productStore = useProductStore();
+const total = ref(1);
+const justAdded = ref(false);
+const products = productStore.products;
+
+
+const currentProduct = computed(() => {
+  if(products.length === 0) return null;
+  return products.find((product) => product.slug === router.currentRoute._value.params.product);
+  
+});
+
+const increaseTotal = () => {
+     total.value++;
+    };
+const decreaseTotal = () => {
+     if(total.value > 1) {
+       total.value--;
+     }
+    };
+const addToCartHandler = () => {
+      justAdded.value = true;
+     const data = {
+      productId: currentProduct.value.id,
+      addedQuantity: total.value,
+     };
+      cartStore.addProduct(data);
+      emit("add-to-cart", data);
+    };
+
+const resetTotal = () => {
+     total.value = 1;
+     justAdded.value = false;
+    }
+    
+const editedText = computed(() => {
+  const paragraphs = [];
+      let myString = currentProduct.value.features;
+      while (myString.includes("\n\n")) {
+        let index = myString.indexOf("\n\n");
+        paragraphs.push(myString.slice(0, index));
+        myString = myString.slice(index + 2);
+      }
+      if (paragraphs.length > 0) {
+        paragraphs.push(myString);
+      } else {
+        paragraphs.push(currentProduct.features);
+      }
+      return paragraphs;
+    });
+</script>
+
 <template>
   <Header @toggle-menu-show="$emit('toggle-menu-show', $event)" />
   <main>
     <p class="back-link" @click="$router.back()">Go back</p>
     <section class="overview">
       <img
-        :src="currentProduct.image.desktop"
-        :alt="currentProduct.name"
+        :src="currentProduct.image"
+        :alt="currentProduct.title"
         class="overview__image"
       />
       <div class="overview__text">
         <p class="overview__text__tag" v-show="currentProduct.new">
           New product
         </p>
-        <h2 class="overview__text__title">{{ currentProduct.name }}</h2>
+        <h2 class="overview__text__title">{{ currentProduct.title }}</h2>
         <p class="overview__text__description">
           {{ currentProduct.description }}
         </p>
@@ -79,19 +144,19 @@
       <div class="gallery__left">
         <img
           :src="currentProduct.gallery.first"
-          :alt="`${currentProduct.name} presentation image`"
+          :alt="`${currentProduct.title} presentation image`"
           class="gallery__left__first"
         />
         <img
           :src="currentProduct.gallery.second"
-          :alt="`${currentProduct.name} presentation image`"
+          :alt="`${currentProduct.title} presentation image`"
           class="gallery__left__second"
         />
       </div>
       <div class="gallery__right">
         <img
           :src="currentProduct.gallery.third"
-          :alt="`${currentProduct.name} presentation image`"
+          :alt="`${currentProduct.title} presentation image`"
         />
       </div>
     </section>
@@ -100,7 +165,7 @@
       <div class="others__container">
         <OthersCard
           v-for="product in currentProduct.others"
-          :key="product.name"
+          :key="product.id"
           :product="product"
           @reset-total="resetTotal"
         />
@@ -110,11 +175,8 @@
   </main>
 </template>
 
-<script>
-import Header from "../components/Product/Header.vue";
-import ProductNavigation from "../components/ProductNavigation.vue";
-import data from "../data.json";
-import OthersCard from "../components/Product/OthersCard.vue";
+<!-- <script>
+
 export default {
   name: "Product",
   components: { Header, ProductNavigation, OthersCard },
@@ -122,15 +184,12 @@ export default {
   data() {
     return {
       total: 1,
-      products: data,
-      windowSize: null,
+      products: useCartStore().products,
       justAdded: false,
     };
   },
   methods: {
-    increaseTotal() {
-      this.total++;
-    },
+    
     decreaseTotal() {
       if (this.total > 1) {
         this.total--;
@@ -142,27 +201,15 @@ export default {
         productId: this.currentProduct.id,
         addedQuantity: this.total,
       };
-      this.$emit("add-to-cart", data);
+      useCartStore().addProduct(data);
     },
     resetTotal() {
       this.total = 1;
       this.justAdded = false;
-    },
-    setWindowSize() {
-      let windowWidth = window.innerWidth;
-      if (windowWidth < 768) {
-        this.windowSize = "mobile";
-      } else if (windowWidth < 1205) {
-        this.windowSize = "tablet";
-      } else {
-        this.windowSize = "desktop";
-      }
-    },
-  },
-  created() {
-    this.setWindowSize();
-    window.addEventListener("resize", this.setWindowSize);
-    window.scrollTo(0, 0);
+    }
+  }
+  mounted() {
+    this.$emit("toggle-menu-show", false);
   },
   computed: {
     currentProduct() {
@@ -171,23 +218,11 @@ export default {
         .find((product) => product.slug === this.$route.params.product);
     },
     editedText() {
-      const paragraphs = [];
-      let myString = this.currentProduct.features;
-      while (myString.includes("\n\n")) {
-        let index = myString.indexOf("\n\n");
-        paragraphs.push(myString.slice(0, index));
-        myString = myString.slice(index + 2);
-      }
-      if (paragraphs.length > 0) {
-        paragraphs.push(myString);
-      } else {
-        paragraphs.push(this.currentProduct.features);
-      }
-      return paragraphs;
+     
     },
   },
 };
-</script>
+</script> -->
 
 <style lang="scss" scoped>
 main {

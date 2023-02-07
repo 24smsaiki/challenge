@@ -21,7 +21,7 @@ const onSubmit = async () => {
     await login(form);
     redirectToHome();
   } catch (err) {
-    if (err?.response?.status === 401) {
+    if(err.response.status === 401) {
       error.value = "Vérifiez vos identifiants";
     } else {
       error.value = "Une erreur est survenue";
@@ -62,6 +62,8 @@ const onSubmit = async () => {
         >Inscrivez-vous</router-link
       >
     </div>
+
+  
   </form>
 </template>
 
