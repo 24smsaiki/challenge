@@ -1,4 +1,5 @@
 <template>
+   
   <div class="card">
     <div class="card-img">
       <img
@@ -35,6 +36,7 @@
       <a href="#" class="cart">Ajouter au panier</a>
     </div>
   </div>
+
 </template>
 
 <script>

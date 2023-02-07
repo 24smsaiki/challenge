@@ -8,7 +8,6 @@ import Login from "../views/Login.vue";
 import Logout from "../views/Logout.vue";
 import Product from "../views/Product.vue";
 import Register from "../views/Register.vue";
-import UsersList from "../components/Security/UsersList.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,22 +20,17 @@ const router = createRouter({
     {
       path: "/category/:category",
       name: "Category",
-      component: Category,
+      component: () => import("../views/Category.vue"),
     },
     {
       path: "/product/:product",
       name: "Product",
-      component: Product,
+      component: () => import("../views/Product.vue"),
     },
     {
       path: "/checkout",
       name: "Checkout",
       component: Checkout,
-    },
-    {
-      path: "/users",
-      name: "UsersList",
-      component: UsersList,
     },
     {
       path: "/login",

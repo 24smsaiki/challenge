@@ -11,6 +11,7 @@
         v-for="product in sortedProducts"
         :key="product.id"
         :product="product"
+        @click="redirectToProduct(product)"
       />
     </div>
   </div>
@@ -59,6 +60,11 @@ export default {
     },
     sortedProducts() {
       return this.currentProducts.slice().sort((a, b) => b.new - a.new);
+    },
+  },
+  methods: {
+    redirectToProduct(product) {
+      this.$router.push(`/product/${product.slug}`);
     },
   },
 };
