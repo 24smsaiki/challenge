@@ -18,12 +18,14 @@ const products = productStore.products;
 
 
 const currentProduct = computed(() => {
+
   if(products.length === 0) return null;
   return products.find((product) => product.slug === router.currentRoute._value.params.product);
   
 });
 
 const increaseTotal = () => {
+  console.log(currentProduct.value)
      total.value++;
     };
 const decreaseTotal = () => {
@@ -75,13 +77,13 @@ const editedText = computed(() => {
       />
       <div class="overview__text">
         <p class="overview__text__tag" v-show="currentProduct.new">
-          New product
+          {{ currentProduct.name }}
         </p>
         <h2 class="overview__text__title">{{ currentProduct.title }}</h2>
         <p class="overview__text__description">
           {{ currentProduct.description }}
         </p>
-        <p class="overview__text__price">$ 2,999</p>
+        <p class="overview__text__price">{{ currentProduct.price }} €</p>
         <div class="overview__text__btn-section">
           <div class="overview__text__btn-section__number">
             <button

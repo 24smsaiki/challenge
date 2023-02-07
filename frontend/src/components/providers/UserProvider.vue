@@ -6,7 +6,7 @@
 <script setup>
 import { ref, reactive, provide } from 'vue'
 import AuthLogic from '../../logics/AuthLogic';
-import router from '../../router';
+import router from '../../router/Router';
 
 let isAuth = ref(AuthLogic.isAuth());
 const user = reactive({});

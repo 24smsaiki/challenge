@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, inject } from 'vue';
-import router from '../../router';
+import router from '../../router/Router';
 
 const register = inject('ProviderRegister');
 const redirectToHome = () => {
