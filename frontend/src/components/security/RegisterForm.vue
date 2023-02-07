@@ -31,8 +31,7 @@ export default {
     createUser() {
       axios
         .post("https://api-challenge.moon-factory.fr/user/new", this.userData)
-        .then((response) => console.log(response))
-        .catch((error) => console.error(error));
+        .then((response) => console.log(response));
     },
   },
 };

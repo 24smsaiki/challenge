@@ -21,7 +21,7 @@ const onSubmit = async () => {
     await login(form);
     redirectToHome();
   } catch (err) {
-    if (err?.response?.status === 401) {
+    if(err.response.status === 401) {
       error.value = "Vérifiez vos identifiants";
     } else {
       error.value = "Une erreur est survenue";
@@ -37,20 +37,10 @@ const onSubmit = async () => {
     <h3>Login</h3>
 
     <label for="email">Email</label>
-    <input
-      type="text"
-      placeholder="Email or Phone"
-      id="email"
-      v-model="form.email"
-    />
+    <input type="text" placeholder="Email or Phone" id="email" v-model="form.email" />
 
     <label for="password">Password</label>
-    <input
-      type="password"
-      placeholder="Password"
-      id="password"
-      v-model="form.password"
-    />
+    <input type="password" placeholder="Password" id="password" v-model="form.password" />
 
     <button type="submit">Log In</button>
     <div class="social">
@@ -59,12 +49,15 @@ const onSubmit = async () => {
     <!-- Déjà inscrit ? -->
     <div class="signup">
       <p>Vous n'avez pas de compte ?</p>
-      <router-link to="/register" class="underline">Inscrivez-vous</router-link>
+      <router-link to="/register" class="underline" >Inscrivez-vous</router-link>
     </div>
+
+  
   </form>
 </template>
 
 <style scoped>
+
 .underline {
   text-decoration: underline;
 }

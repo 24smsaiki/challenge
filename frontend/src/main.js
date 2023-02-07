@@ -5,7 +5,7 @@ import './assets/main.css'
 import './index.css';
 import { createPinia } from 'pinia';
 
-const app = createApp(App);
+const app = createApp(App)
 
 app.use(router)
 app.use(createPinia());

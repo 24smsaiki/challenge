@@ -1,68 +1,64 @@
 <script setup>
-import { ref, reactive, inject } from "vue";
-import router from "../../router";
+import { ref, reactive, inject } from 'vue';
+import router from '../../router';
 
-const register = inject("ProviderRegister");
+const register = inject('ProviderRegister');
 const redirectToHome = () => {
-  router.push({ name: "login" });
+  router.push({ name: 'login' });
 };
 const isLoading = ref(false);
 
 const form = reactive({
-  email: "",
-  password: "",
-  plainPassword: "",
+  email: '',
+  password: '',
+  plainPassword: '',
 });
 
-const error = ref("");
+const error = ref('');
 
 const onSubmit = async () => {
   try {
     isLoading.value = true;
     await register(form);
-    error.value = "";
+    error.value = '';
     redirectToHome();
   } catch (err) {
-    error.value = err?.response?.data?.errors[0]?.message;
+    error.value = err.response.data.errors[0].message;
   } finally {
     isLoading.value = false;
   }
 };
+
+
 </script>
 
 <template>
   <form @submit.prevent="onSubmit">
+
     <h3>Inscription</h3>
     <label for="email">Email</label>
     <input type="text" placeholder="Email" id="email" v-model="form.email" />
 
     <label for="password">Password</label>
-    <input
-      type="password"
-      placeholder="Password"
-      id="password"
-      v-model="form.password"
-    />
+    <input type="password" placeholder="Password" id="password" v-model="form.password" />
 
     <label for="password">Confirm password</label>
-    <input
-      type="password"
-      placeholder="Confirm password"
-      id="password"
-      v-model="form.plainPassword"
-    />
+    <input type="password" placeholder="Confirm password" id="password" v-model="form.plainPassword" />
 
     <button type="submit">Log In</button>
-    <div class="error" v-if="error">{{ error }}</div>
+      <div class="error" v-if="error">{{ error }}</div>
     <!-- Déjà inscrit ? -->
-    <div class="signin">
-      <p>Vous avez déjà un compte ?</p>
-      <router-link to="/login" class="underline">Inscrivez-vous</router-link>
-    </div>
+      <div class="signin">
+        <p>Vous avez déjà un compte ?</p>
+        <router-link to="/login" class="underline" >Inscrivez-vous</router-link>
+      </div>
+
+  
   </form>
 </template>
 
 <style scoped>
+
 .underline {
   text-decoration: underline;
 }

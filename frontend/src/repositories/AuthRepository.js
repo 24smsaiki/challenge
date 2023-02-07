@@ -1,11 +1,12 @@
-import * as Request from "../services/request";
+import * as Request from '../services/request';
 
 export default class AuthRepository {
-  static async login({ email, password }) {
-    return await Request.make("post", "/auth", { email, password });
-  }
+    static async login({email, password}) {
+        return await Request.make('post', '/auth', { email, password })
+    }
 
-  static async register(body) {
-    return await Request.make("post", "/api/user/register", { ...body });
-  }
+    static async register(body) {
+        return await Request.make('post', '/api/user/register', {...body});
+    }
+
 }
