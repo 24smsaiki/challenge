@@ -1,2 +1,4 @@
 .DS_Store
 .vscode
+/backend/pwa/node_modules
+/backend/pwa/.next
