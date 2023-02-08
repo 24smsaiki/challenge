@@ -18,12 +18,12 @@ reset_password:
     methods: ['POST']
 
 order_success:
-    path: /order/payment/success/{CHECKOUT_SESSION_ID}
+    path: /order/payment/success/{stripeSessionId}
     controller: App\Controller\OrderSuccessController::__invoke
     methods: ['GET']
 
 order_fail:
-    path: /order/payment/fail/{CHECKOUT_SESSION_ID}
+    path: /order/payment/fail/{stripeSessionId}
     controller: App\Controller\OrderFailController::__invoke
     methods: ['GET']
 
