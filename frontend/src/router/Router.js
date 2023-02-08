@@ -1,13 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Account from "../components/Account/Account.vue";
-import Category from "../views/Category.vue";
+import Addresses from "../components/Account/Addresses.vue";
 import Checkout from "../views/Checkout.vue";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Logout from "../views/Logout.vue";
-import Product from "../views/Product.vue";
+import NotFound from "../views/NotFound.vue";
+import Orders from "../components/Account/Orders.vue";
 import Register from "../views/Register.vue";
+import Settings from "../components/Account/Settings.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +19,7 @@ const router = createRouter({
       name: "Home",
       component: Home,
     },
+    { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
     {
       path: "/category/:category",
       name: "Category",
@@ -57,7 +60,22 @@ const router = createRouter({
       name: "PaymentSuccess",
       // component: () => import("../views/PaymentSuccess.vue"),
       component: () => import("../views/Checkout.vue"),
-    }
+    },
+    {
+      path: "/account/orders",
+      name: "Orders",
+      component: Orders,
+    },
+    {
+      path: "/account/addresses",
+      name: "Addresses",
+      component: Addresses,
+    },
+    {
+      path: "/account/settings",
+      name: "Settings",
+      component: Settings,
+    },
   ],
 });
 
