@@ -9,10 +9,15 @@
   />
   <main class="checkout">
     <p class="back-link" @click="$router.back()">Go back</p>
-    <form class="checkout__form" @submit.prevent="submitHandler" novalidate>
+    <form class="checkout__form" @submit.prevent="onsubmit" novalidate>
+      <stripe-checkout
+      ref="checkoutRef"
+      :pk="publishableKey"
+      :session-id="sessionId"
+    />
       <div class="checkout__form__input">
         <h1 class="checkout__form__input__heading">Checkout</h1>
-        <h2 class="checkout__form__input__subheading">Billing details</h2>
+        <h2 class="checkout__form__input__subheading">Détails de facturation</h2>
 
         <section>
           <div class="checkout__form__input__item">
@@ -23,7 +28,7 @@
                 >Name</label
               >
               <p class="empty-message" v-if="emptyFields.includes('name')">
-                Field can't be empty
+                Le champ de ne peut pas être vide.
               </p>
             </div>
             <input
@@ -42,10 +47,11 @@
               <label
                 for="email"
                 :class="emptyFields.includes('email') ? 'red-label' : ''"
+                
                 >Email address</label
               >
               <p class="empty-message" v-if="emptyFields.includes('email')">
-                Field can't be empty
+                Le champ de ne peut pas être vide.
               </p>
               <p class="empty-message" v-if="invalidEmail">
                 Invalid email address
@@ -57,6 +63,8 @@
               name="email"
               id="email"
               ref="email"
+              :value="user.username"
+              :disabled="user.username"
               :class="emptyFields.includes('email') ? 'empty-border' : ''"
               @click="wipeError('email')"
               @change="wipeError('email')"
@@ -70,7 +78,7 @@
                 >Phone number</label
               >
               <p class="empty-message" v-if="emptyFields.includes('phone')">
-                Field can't be empty
+                Le champ de ne peut pas être vide.
               </p>
             </div>
 
@@ -85,9 +93,10 @@
             />
           </div>
         </section>
-        <h2 class="checkout__form__input__subheading">Shipping info</h2>
+        <h2 class="checkout__form__input__subheading">Adresse de livraison</h2>
 
         <section>
+          <template v-if="newAddress">
           <div class="checkout__form__input__item no-margin full-span">
             <div class="input-texts" id="address-texts">
               <label
@@ -96,7 +105,7 @@
                 >Your address</label
               >
               <p class="empty-message" v-if="emptyFields.includes('address')">
-                Field can't be empty
+                Le champ de ne peut pas être vide.
               </p>
             </div>
 
@@ -118,7 +127,7 @@
                 >ZIP code</label
               >
               <p class="empty-message" v-if="emptyFields.includes('zip')">
-                Field can't be empty
+                Le champ de ne peut pas être vide.
               </p>
             </div>
 
@@ -141,7 +150,7 @@
                 >City</label
               >
               <p class="empty-message" v-if="emptyFields.includes('city')">
-                Field can't be empty
+                Le champ de ne peut pas être vide.
               </p>
             </div>
 
@@ -164,7 +173,7 @@
                 >Country</label
               >
               <p class="empty-message" v-if="emptyFields.includes('country')">
-                Field can't be empty
+                Le champ de ne peut pas être vide.
               </p>
             </div>
 
@@ -179,6 +188,60 @@
               spellcheck="false"
             />
           </div>
+        </template>
+
+        <template v-else>
+          <div class="checkout__form__input__item payment-method">
+            
+            <div class="methods">
+              <div v-for="address in addresses" :key="address.id"
+                :class="[
+                  'radio-container',
+                  picked_address === address.id ? 'orange-border' : '',
+                ]"
+                @click="selectMethodAddress(address.id)"
+              >
+                <input
+                  :type="addresses.length > 1 ? 'radio' : 'checkbox'"
+                  :id=address.id
+                  name="payment-method"
+                  :value="address.id"
+                  v-model="picked_address"
+                  :checked="picked_address === address.id"
+                />
+                <label :for="address.addressField" class="radio-label parent">{{ address.addressField }}
+
+                </label>
+              </div>
+              
+            </div>
+          </div>
+          <div
+            class="checkout__form__input__item no-margin"
+            v-if="picked === 'e-money'"
+          >
+            <div class="input-texts">
+              <label for="emoney-pin" class="no-capitalize">e-Money PIN</label>
+              <p
+                class="empty-message"
+                v-if="emptyFields.includes('emoney-pin')"
+              >
+                Le champ de ne peut pas être vide.
+              </p>
+            </div>
+
+            <input
+              type="number"
+              name="emoney-pin"
+              id="emoney-pin"
+              ref="emoneyPin"
+              :class="emptyFields.includes('emoney-pin') ? 'empty-border' : ''"
+              @click="wipeError('emoney-pin')"
+              @change="wipeError('emoney-pin')"
+            />
+          </div>
+         
+        </template>
         </section>
         <h2 class="checkout__form__input__subheading">Payment details</h2>
 
@@ -186,42 +249,45 @@
           <div class="checkout__form__input__item payment-method">
             <h3 class="label">Payment method</h3>
             <div class="methods">
-              <div
+              <div v-for="carrier in carriers" :key="carrier.id"
                 :class="[
                   'radio-container',
-                  picked === 'e-money' ? 'orange-border' : '',
+                  picked_carrier === carrier.id ? 'orange-border' : '',
                 ]"
-                @click="selectMethod('e-money')"
+                @click="selectMethodCarrier(carrier.id)"
               >
                 <input
                   type="radio"
-                  id="e-money"
+                  :id=carrier.id
                   name="payment-method"
-                  value="e-money"
-                  checked
-                  v-model="picked"
+                  :value="carrier.id"
+                  v-model="picked_carrier"
+                  :checked="picked_carrier === carrier.id"
                 />
-                <label for="e-money" class="radio-label">e-money</label>
+                <label :for="carrier.label" class="radio-label parent">{{ carrier.label }}
+
+                  <span class="carrier-fee">{{ carrier.fees }} €</span>
+                </label>
               </div>
               <div
                 :class="[
                   'radio-container',
-                  picked === 'cash' ? 'orange-border' : '',
+                  picked_carrier === 'cash' ? 'orange-border' : '',
                 ]"
-                @click="selectMethod('cash')"
+                @click="selectMethodCarrier('cash')"
               >
                 <input
                   type="radio"
                   id="cash"
                   name="payment-method"
                   value="cash"
-                  v-model="picked"
+                  v-model="picked_carrier"
                 />
                 <label for="cash" class="radio-label">Cash on Delivery</label>
               </div>
             </div>
           </div>
-          <div class="checkout__form__input__item" v-if="picked === 'e-money'">
+          <div class="checkout__form__input__item" v-if="picked_carrier === 'e-money'">
             <div class="input-texts">
               <label for="emoney-number" class="no-capitalize"
                 >e-Money Number</label
@@ -230,7 +296,7 @@
                 class="empty-message"
                 v-if="emptyFields.includes('emoney-number')"
               >
-                Field can't be empty
+                Le champ de ne peut pas être vide.
               </p>
             </div>
 
@@ -248,7 +314,7 @@
           </div>
           <div
             class="checkout__form__input__item no-margin"
-            v-if="picked === 'e-money'"
+            v-if="picked_carrier === 'e-money'"
           >
             <div class="input-texts">
               <label for="emoney-pin" class="no-capitalize">e-Money PIN</label>
@@ -256,7 +322,7 @@
                 class="empty-message"
                 v-if="emptyFields.includes('emoney-pin')"
               >
-                Field can't be empty
+                Le champ de ne peut pas être vide.
               </p>
             </div>
 
@@ -270,7 +336,7 @@
               @change="wipeError('emoney-pin')"
             />
           </div>
-          <div class="cash-info" v-show="picked === 'cash'">
+          <div class="cash-info" v-show="picked_carrier === 'cash'">
             <i class="fas fa-money-bill-wave cash-info__icon"></i>
             <p class="cash-info__text">
               The ‘Cash on Delivery’ option enables you to pay in cash when our
@@ -280,6 +346,7 @@
           </div>
         </section>
       </div>
+      
       <div class="checkout__form__summary">
         <h2 class="checkout__form__summary__heading">Summary</h2>
         <div class="products">
@@ -329,30 +396,49 @@
 <script>
 import Header from "../components/Product/Header.vue";
 import Confirmation from "../components/Checkout/Confirmation.vue";
+import CarriersLogic from "../logics/CarriersLogic.js";
+import AddressessLogic from "../logics/AddressesLogic.js";
+import OrdersLogic from "../logics/OrdersLogic.js";
+import LocalStorage from "../services/localStorage";
+import { StripeCheckout } from '@vue-stripe/vue-stripe';
+
 export default {
   name: "Checkout",
-  components: { Header, Confirmation },
+  components: { Header, Confirmation, StripeCheckout },
   props: { cart: Array, showConfirmation: Boolean },
   emits: ["toggle-menu-show", "empty-cart"],
   data() {
     return {
-      picked: "e-money",
+      picked_carrier: "cash",
+      picked_address: null,
       shipping: 50,
       emptyFields: [],
       invalidEmail: false,
+      carriers: [],
+      addresses: [],
+      newAddress: null,
+      user: LocalStorage.get("user"),
+      publishableKey: import.meta.env.VITE_PK_STRIPE,
+      loading: false,
+      sessionId: null,
     };
   },
   methods: {
     editSrc(product) {
-      return product.image.slice(2);
+      return product.image;
     },
     separator(numb) {
       var str = numb.toString().split(".");
       str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       return str.join(".");
     },
-    selectMethod(method) {
-      this.picked = method;
+    selectMethodCarrier(method) {
+      this.picked_carrier = method;
+       console.log(this.picked_carrier, "picked_carrier");
+    },
+    selectMethodAddress(address) {
+      this.picked_address = address;
+      console.log(this.picked_address, "picked_address");
     },
     submitHandler() {
       const myRefs = [
@@ -390,6 +476,63 @@ export default {
         this.$emit("toggle-menu-show", "confirmation");
       }
     },
+   async onsubmit () {
+    const myPersonalRefs = [
+        this.$refs.name,
+        this.$refs.email,
+        this.$refs.phone,
+      ];
+
+      // myPersonalRefs.map((ref) => {
+      //   if (ref.value === "") {
+      //     this.emptyFields.push(ref.name);
+      //   }
+      // });
+
+      // if(this.emptyFields[0] === "name" || this.emptyFields[1] === "email" || this.emptyFields[2] === "phone") {
+      //   const address = {
+      //     name: this.$refs.name.value,
+      //     email: this.$refs.email.value,
+      //     phone: this.$refs.phone.value,
+      //     address: this.$refs.address.value,
+      //     zip: this.$refs.zip.value,
+      //     city: this.$refs.city.value,
+      //     country: this.$refs.country.value,
+      //   }
+      //   await AddressessLogic.create_address(address)
+      //   .then((res) => {
+      //     console.log(res);
+      //     this.picked_address = res.id;
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
+      // }
+
+      if(this.emptyFields.length === 0) {
+        const order = {
+        carrierId: this.picked_carrier,
+        deliveryId: this.picked_address,
+        orderItems: this.cart.map((product) => {
+          return {
+            itemId: product.id,
+            quantity: product.addedQuantity,
+          };
+        }),
+      }
+     await OrdersLogic.pass_order(order)
+        .then((res) => {
+          console.log(res);
+          this.sessionId = res.stripeSessionId;
+          this.$refs.checkoutRef.redirectToCheckout();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      } 
+
+    },
     wipeError(field) {
       if (this.emptyFields.includes(field)) {
         this.emptyFields = this.emptyFields.filter((ref) => ref !== field);
@@ -409,6 +552,37 @@ export default {
         this.invalidEmail = true;
       }
     },
+    async getCarriers() {
+      const carriers = await CarriersLogic.getCarriers();
+      this.carriers = carriers;
+      console.log(this.carriers);
+    },
+    async getAddresses() {
+    try {
+      const addresses = await AddressessLogic.getAddresses();
+      this.addresses = addresses;
+      console.log(this.addresses);
+    } catch (error) {
+      console.log(error);
+    }
+    },
+  },
+  async mounted () {
+
+    if (this.$route.path !== "/checkout") {
+      const id = this.$route.params.id;
+      console.log(id);
+      OrdersLogic.confirmOrder(id)
+        .then((res) => {
+          console.log(res);
+          this.$emit("toggle-menu-show", "confirmation");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    await this.getCarriers();
+    await this.getAddresses();
   },
   computed: {
     total() {
@@ -426,6 +600,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 * input[type="number"]::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -455,6 +630,7 @@ input::-webkit-inner-spin-button {
     padding-left: 1rem;
   }
 }
+
 .empty-border {
   border: 0.2rem solid #ce382c !important;
 }
@@ -657,6 +833,33 @@ input::-webkit-inner-spin-button {
           cursor: pointer;
         }
         input[type="radio"]:checked + *::before {
+          background: radial-gradient(
+            rgba(216, 125, 74, 1) 0%,
+            rgba(216, 125, 74, 1) 40%,
+            transparent 50%,
+            transparent
+          );
+          border-color: #d5d5d5;
+        }
+
+
+        input[type="checkbox"] {
+          display: none;
+        }
+        input[type="checkbox"] + *::before {
+          content: "";
+          display: inline-block;
+          vertical-align: bottom;
+          width: 2rem;
+          height: 2rem;
+          margin-right: 1.6rem;
+          border-radius: 50%;
+          border-style: solid;
+          border-width: 0.1rem;
+          border-color: #d5d5d5;
+          cursor: pointer;
+        }
+        input[type="checkbox"]:checked + *::before {
           background: radial-gradient(
             rgba(216, 125, 74, 1) 0%,
             rgba(216, 125, 74, 1) 40%,

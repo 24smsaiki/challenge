@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     editSrc(product) {
-      return product.image.slice(2);
+      return product.image;
     },
     separator(numb) {
       var str = numb.toString().split(".");
