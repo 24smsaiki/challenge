@@ -14,7 +14,8 @@
       ref="checkoutRef"
       :pk="publishableKey"
       :session-id="sessionId"
-    />
+    /> 
+    <template v-if="!loading">
       <div class="checkout__form__input">
         <h1 class="checkout__form__input__heading">Checkout</h1>
         <h2 class="checkout__form__input__subheading">Détails de facturation</h2>
@@ -24,25 +25,48 @@
             <div class="input-texts">
               <label
                 for="name"
-                :class="emptyFields.includes('name') ? 'red-label' : ''"
-                >Name</label
+                :class="emptyFields.includes('lastname') ? 'red-label' : ''"
+                >Nom</label
               >
-              <p class="empty-message" v-if="emptyFields.includes('name')">
+              <p class="empty-message" v-if="emptyFields.includes('lastname')">
                 Le champ de ne peut pas être vide.
               </p>
             </div>
             <input
               type="text"
-              name="name"
-              id="name"
-              ref="name"
-              :class="emptyFields.includes('name') ? 'empty-border' : ''"
-              @click="wipeError('name')"
-              @change="wipeError('name')"
+              name="lastname"
+              id="lastname"
+              ref="lastname"
+              :class="emptyFields.includes('lastname') ? 'empty-border' : ''"
+              @click="wipeError('lastname')"
+              @change="wipeError('lastname')"
               spellcheck="false"
             />
           </div>
           <div class="checkout__form__input__item no-margin">
+            <div class="input-texts">
+              <label
+                for="name"
+                :class="emptyFields.includes('firstname') ? 'red-label' : ''"
+                >Prénom</label
+              >
+              <p class="empty-message" v-if="emptyFields.includes('firstname')">
+                Le champ de ne peut pas être vide.
+              </p>
+            </div>
+            <input
+              type="text"
+              name="firstname"
+              id="firstname"
+              ref="firstname"
+              :class="emptyFields.includes('firstname') ? 'empty-border' : ''"
+              @click="wipeError('firstname')"
+              @change="wipeError('firstname')"
+              spellcheck="false"
+            />
+          </div>
+          
+          <div class="checkout__form__input__item ">
             <div class="input-texts">
               <label
                 for="email"
@@ -70,12 +94,12 @@
               @change="wipeError('email')"
             />
           </div>
-          <div class="checkout__form__input__item">
+          <div class="checkout__form__input__item no-margin">
             <div class="input-texts">
               <label
                 for="phone"
                 :class="emptyFields.includes('phone') ? 'red-label' : ''"
-                >Phone number</label
+                > téléphone</label
               >
               <p class="empty-message" v-if="emptyFields.includes('phone')">
                 Le champ de ne peut pas être vide.
@@ -188,6 +212,8 @@
               spellcheck="false"
             />
           </div>
+          <!-- add button save & return -->
+       
         </template>
 
         <template v-else>
@@ -213,7 +239,11 @@
 
                 </label>
               </div>
-              
+              <!-- add button to add new address -->
+              <!-- <button class="btn btn--orange btn--small" @click="newAddress = true">Saisir une autre adresse</button> -->
+              <p class="empty-message" v-if="emptyFields.includes('address')">
+                Le champ de ne peut pas être vide.
+              </p>
             </div>
           </div>
           <div
@@ -243,11 +273,10 @@
          
         </template>
         </section>
-        <h2 class="checkout__form__input__subheading">Payment details</h2>
+        <h2 class="checkout__form__input__subheading">Transporteurs</h2>
 
         <section>
           <div class="checkout__form__input__item payment-method">
-            <h3 class="label">Payment method</h3>
             <div class="methods">
               <div v-for="carrier in carriers" :key="carrier.id"
                 :class="[
@@ -264,12 +293,16 @@
                   v-model="picked_carrier"
                   :checked="picked_carrier === carrier.id"
                 />
-                <label :for="carrier.label" class="radio-label parent">{{ carrier.label }}
+                <label :for="carrier.label" :class="emptyFields.includes('shipping') ? 'red-label' : ''" class="radio-label parent">{{ carrier.label }}
 
                   <span class="carrier-fee">{{ carrier.fees }} €</span>
                 </label>
+               
               </div>
-              <div
+              <p class="empty-message" v-if="emptyFields.includes('shipping')">
+                Le champ de ne peut pas être vide.
+              </p>
+              <!-- <div
                 :class="[
                   'radio-container',
                   picked_carrier === 'cash' ? 'orange-border' : '',
@@ -284,7 +317,7 @@
                   v-model="picked_carrier"
                 />
                 <label for="cash" class="radio-label">Cash on Delivery</label>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="checkout__form__input__item" v-if="picked_carrier === 'e-money'">
@@ -339,9 +372,9 @@
           <div class="cash-info" v-show="picked_carrier === 'cash'">
             <i class="fas fa-money-bill-wave cash-info__icon"></i>
             <p class="cash-info__text">
-              The ‘Cash on Delivery’ option enables you to pay in cash when our
-              delivery courier arrives at your residence. Just make sure your
-              address is correct so that your order will not be cancelled.
+              L'option " Cash on Delivery " vous permet de payer en espèces lorsque votre coursier arrive à votre domicile.
+              Assurez-vous simplement que votre
+              adresse est correcte afin que votre commande ne soit pas annulée.
             </p>
           </div>
         </section>
@@ -366,37 +399,44 @@
         <div class="price">
           <div class="price__detail">
             <h4 class="price__detail__title">Total</h4>
-            <p class="price__detail__value">$ {{ separator(total) }}</p>
+            <p class="price__detail__value">{{ separator(total) }} €</p>
           </div>
           <div class="price__detail">
-            <h4 class="price__detail__title">Shipping</h4>
-            <p class="price__detail__value">$ {{ shipping }}</p>
+            <h4 class="price__detail__title">Livraison</h4>
+            <p class="price__detail__value">{{ shipping }} €</p>
           </div>
-          <div class="price__detail">
+          <!-- <div class="price__detail">
             <h4 class="price__detail__title">VAT (included)</h4>
             <p class="price__detail__value">$ {{ separator(vat) }}</p>
-          </div>
+          </div> -->
           <div class="price__detail grand-total">
             <h4 class="price__detail__title">Grand total</h4>
             <p class="price__detail__value">
-              $ {{ separator(total + shipping) }}
+              {{ separator(total + shipping) }} €
             </p>
           </div>
         </div>
         <input
+          v-if="cart.length > 0"
           type="submit"
           :value="picked === 'e-money' ? 'Continue & pay' : 'Continue'"
           class="btn default-btn"
         />
       </div>
+    </template>
+    <template v-else>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif">
+    </template>
     </form>
   </main>
+
 </template>
 
 <script>
 import Header from "../components/Product/Header.vue";
 import Confirmation from "../components/Checkout/Confirmation.vue";
 import CarriersLogic from "../logics/CarriersLogic.js";
+import Address from "../components/Checkout/Address.vue";
 import AddressessLogic from "../logics/AddressesLogic.js";
 import OrdersLogic from "../logics/OrdersLogic.js";
 import LocalStorage from "../services/localStorage";
@@ -404,14 +444,13 @@ import { StripeCheckout } from '@vue-stripe/vue-stripe';
 
 export default {
   name: "Checkout",
-  components: { Header, Confirmation, StripeCheckout },
+  components: { Header, Confirmation, StripeCheckout, Address },
   props: { cart: Array, showConfirmation: Boolean },
   emits: ["toggle-menu-show", "empty-cart"],
   data() {
     return {
-      picked_carrier: "cash",
+      picked_carrier: null,
       picked_address: null,
-      shipping: 50,
       emptyFields: [],
       invalidEmail: false,
       carriers: [],
@@ -434,11 +473,9 @@ export default {
     },
     selectMethodCarrier(method) {
       this.picked_carrier = method;
-       console.log(this.picked_carrier, "picked_carrier");
     },
     selectMethodAddress(address) {
       this.picked_address = address;
-      console.log(this.picked_address, "picked_address");
     },
     submitHandler() {
       const myRefs = [
@@ -477,37 +514,30 @@ export default {
       }
     },
    async onsubmit () {
+   
+
     const myPersonalRefs = [
-        this.$refs.name,
+        this.$refs.lastname,
+        this.$refs.firstname,
         this.$refs.email,
         this.$refs.phone,
       ];
 
-      // myPersonalRefs.map((ref) => {
-      //   if (ref.value === "") {
-      //     this.emptyFields.push(ref.name);
-      //   }
-      // });
-
-      // if(this.emptyFields[0] === "name" || this.emptyFields[1] === "email" || this.emptyFields[2] === "phone") {
-      //   const address = {
-      //     name: this.$refs.name.value,
-      //     email: this.$refs.email.value,
-      //     phone: this.$refs.phone.value,
-      //     address: this.$refs.address.value,
-      //     zip: this.$refs.zip.value,
-      //     city: this.$refs.city.value,
-      //     country: this.$refs.country.value,
-      //   }
-      //   await AddressessLogic.create_address(address)
-      //   .then((res) => {
-      //     console.log(res);
-      //     this.picked_address = res.id;
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-      // }
+      myPersonalRefs.map((ref) => {
+        if (ref.value === "") {
+          this.emptyFields.push(ref.name);
+        }
+      });
+      if(this.picked_address === null) {
+        this.emptyFields.push("address");
+      } else {
+        this.emptyFields = this.emptyFields.filter((field) => field !== "address");
+      }
+      if(this.picked_carrier === null) {
+        this.emptyFields.push("shipping");
+      } else {
+        this.emptyFields = this.emptyFields.filter((field) => field !== "shipping");
+      }
 
       if(this.emptyFields.length === 0) {
         const order = {
@@ -520,14 +550,17 @@ export default {
           };
         }),
       }
+      this.loading = true;
      await OrdersLogic.pass_order(order)
         .then((res) => {
-          console.log(res);
           this.sessionId = res.stripeSessionId;
           this.$refs.checkoutRef.redirectToCheckout();
         })
         .catch((err) => {
           console.log(err);
+        })
+        .finally(() => {
+          this.loading = false;
         });
 
       } 
@@ -555,32 +588,36 @@ export default {
     async getCarriers() {
       const carriers = await CarriersLogic.getCarriers();
       this.carriers = carriers;
-      console.log(this.carriers);
     },
     async getAddresses() {
     try {
       const addresses = await AddressessLogic.getAddresses();
       this.addresses = addresses;
-      console.log(this.addresses);
     } catch (error) {
       console.log(error);
     }
+    },
+    clearFormNewAddress() {
+      this.$refs.address.value = "";
+      this.$refs.zip.value = "";
+      this.$refs.city.value = "";
+      this.$refs.country.value = "";
+      this.newAddress = false;
     },
   },
   async mounted () {
 
     if (this.$route.path !== "/checkout") {
       const id = this.$route.params.id;
-      console.log(id);
       OrdersLogic.confirmOrder(id)
         .then((res) => {
-          console.log(res);
           this.$emit("toggle-menu-show", "confirmation");
         })
         .catch((err) => {
           console.log(err);
         });
-    }
+    };
+    console.log(this.picked_address, this.picked_carrier)
     await this.getCarriers();
     await this.getAddresses();
   },
@@ -592,8 +629,15 @@ export default {
       );
       return totalValue;
     },
-    vat() {
-      return (0.2 * this.total).toFixed(2);
+    // vat() {
+    //   return (0.2 * this.total).toFixed(2);
+    // },
+    shipping() {
+      let carrier = this.carriers.find((carrier) => carrier.id === this.picked_carrier);
+      if(!carrier) {
+        return 0;
+      }
+      return carrier.fees;
     },
   },
 };
@@ -1028,4 +1072,29 @@ input::-webkit-inner-spin-button {
     }
   }
 }
+
+.btn--orange {
+  background: rgba(216, 125, 74, 1);
+  color: white;
+  border: none;
+  padding: 1.5rem 0;
+  font-weight: 700;
+  font-size: 1.8rem;
+  line-height: 2.459rem;
+  text-align: center;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  &:hover {
+    background: rgba(216, 125, 74, 0.8);
+  }
+}
+
+.btn--small {
+  padding: 1rem 0;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+}
+
+
 </style>
