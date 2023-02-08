@@ -617,7 +617,6 @@ export default {
           console.log(err);
         });
     };
-    console.log(this.picked_address, this.picked_carrier)
     await this.getCarriers();
     await this.getAddresses();
   },
