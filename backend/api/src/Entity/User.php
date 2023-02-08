@@ -76,11 +76,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?bool $isActif = null;
 
-    #[Groups(['get'])]
+    #[Groups(['post', 'get'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstname = null;
 
-    #[Groups(['get'])]
+    #[Groups(['post', 'get'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
 
@@ -283,5 +283,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    
 }
