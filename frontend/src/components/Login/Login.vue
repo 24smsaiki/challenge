@@ -21,7 +21,7 @@ const onSubmit = async () => {
     await login(form);
     redirectToHome();
   } catch (err) {
-    if(err.response.status === 401) {
+    if (err.response.status === 401) {
       error.value = "Vérifiez vos identifiants";
     } else {
       error.value = "Une erreur est survenue";
@@ -58,12 +58,10 @@ const onSubmit = async () => {
     </div>
     <div class="signup d-flex mt-2">
       <p>Vous n'avez pas de compte ?</p>
-      <router-link to="/register" class="underline ml-1"
+      <router-link active-class="active" to="/register" class="underline ml-1"
         >Inscrivez-vous</router-link
       >
     </div>
-
-  
   </form>
 </template>
 

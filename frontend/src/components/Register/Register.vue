@@ -77,7 +77,7 @@ const onSubmit = async () => {
     <div class="error" v-if="error">{{ error }}</div>
     <div class="signin d-flex mt-2">
       <p>Vous avez déjà un compte ?</p>
-      <router-link to="/login" class="underline ml-1"
+      <router-link active-class="active" to="/login" class="underline ml-1"
         >Connectez-vous</router-link
       >
     </div>

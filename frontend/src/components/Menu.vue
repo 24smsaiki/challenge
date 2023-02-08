@@ -13,13 +13,21 @@ defineEmits(["toggle-menu-show"]);
     <section class="links">
       <ul class="navbar__desktop-menu ml-30">
         <li class="navbar__desktop-menu__link">
-          <router-link to="/">Accueil</router-link>
-          <router-link to="/">Produits</router-link>
-          <router-link v-if="isAuth" to="/account">Compte</router-link>
-          <router-link to="/">Contact</router-link>
-          <router-link v-if="!isAuth" to="/register">Inscription</router-link>
-          <router-link v-if="!isAuth" to="/login">Connexion</router-link>
-          <router-link v-if="isAuth" to="/logout">Déconnexion</router-link>
+          <router-link active-class="active" to="/">Accueil</router-link>
+          <router-link active-class="active" to="/">Produits</router-link>
+          <router-link active-class="active" v-if="isAuth" to="/account"
+            >Compte</router-link
+          >
+          <router-link active-class="active" to="/">Contact</router-link>
+          <router-link active-class="active" v-if="!isAuth" to="/register"
+            >Inscription</router-link
+          >
+          <router-link active-class="active" v-if="!isAuth" to="/login"
+            >Connexion</router-link
+          >
+          <router-link active-class="active" v-if="isAuth" to="/logout"
+            >Déconnexion</router-link
+          >
         </li>
       </ul>
     </section>

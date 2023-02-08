@@ -23,6 +23,7 @@
     />
     <h2 class="category__name">{{ product }}</h2>
     <router-link
+      active-class="active"
       class="category__link"
       :to="{ name: 'Category', params: { category: `${product}` } }"
       @click="scrollToTop"
