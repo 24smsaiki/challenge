@@ -57,7 +57,6 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
     {
         if ( Order::class !== $resourceClass 
         || $this->securityChecker->isGranted('ROLE_ADMIN') 
-        || $this->securityChecker->isGranted('ROLE_SELLER')
         || null === $user = $this->securityChecker->getUser() ) {
             return;
         }

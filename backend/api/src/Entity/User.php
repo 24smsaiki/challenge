@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use App\Controller\RegisterController;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Controller\ManageProfileClientController;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\Length;
@@ -19,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => 'get'])]
+#[ApiResource(mercure: true, security: 'is_granted("ROLE_USER")', denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(operations: [
@@ -27,6 +30,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         name: 'register', 
         uriTemplate: '/register', 
         controller: RegisterController::class
+    ),
+    new Put(
+        name: 'updateProfile',
+        uriTemplate:'/users/ManageProfile',
+        controller: ManageProfileClientController::class,  
+        security: 'is_granted("ROLE_USER")' 
     )
 ])]
 
@@ -57,11 +66,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
     private ?string $password;
 
-    #[Groups(['get'])]
+    #[Groups(['post','get'])]
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Address::class)]
     private Collection $Address;
 
-    #[Groups(['get'])]
+    #[Groups(['post','get'])]
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Order::class)]
     private Collection $orders;
 

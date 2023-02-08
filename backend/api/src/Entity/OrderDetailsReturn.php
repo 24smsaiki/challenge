@@ -2,9 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\OrderDetailsReturnRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\OrderDetailsReturnRepository;
 
+
+#[ApiResource(mercure: true, security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
 #[ORM\Entity(repositoryClass: OrderDetailsReturnRepository::class)]
 class OrderDetailsReturn
 {
