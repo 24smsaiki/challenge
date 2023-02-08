@@ -2,12 +2,14 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Account from "../components/Account/Account.vue";
 import Addresses from "../components/Account/Addresses.vue";
+import Category from "../views/Category.vue";
 import Checkout from "../views/Checkout.vue";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Logout from "../views/Logout.vue";
 import NotFound from "../views/NotFound.vue";
 import Orders from "../components/Account/Orders.vue";
+import Product from "../views/Product.vue";
 import Register from "../views/Register.vue";
 import Settings from "../components/Account/Settings.vue";
 
@@ -23,17 +25,20 @@ const router = createRouter({
     {
       path: "/category/:category",
       name: "Category",
-      component: () => import("../views/Category.vue"),
+      component: Category,
+      meta: { requiresAuth: true },
     },
     {
       path: "/product/:product",
       name: "Product",
-      component: () => import("../views/Product.vue"),
+      component: Product,
+      meta: { requiresAuth: true },
     },
     {
       path: "/checkout",
       name: "Checkout",
       component: Checkout,
+      meta: { requiresAuth: true },
     },
     {
       path: "/login",
@@ -54,6 +59,7 @@ const router = createRouter({
       path: "/account",
       name: "Account",
       component: Account,
+      meta: { requiresAuth: true },
     },
     {
       path: "/order/payment/success/:id",
@@ -65,18 +71,30 @@ const router = createRouter({
       path: "/account/orders",
       name: "Orders",
       component: Orders,
+      meta: { requiresAuth: true },
     },
     {
       path: "/account/addresses",
       name: "Addresses",
       component: Addresses,
+      meta: { requiresAuth: true },
     },
     {
       path: "/account/settings",
       name: "Settings",
       component: Settings,
+      meta: { requiresAuth: true },
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("app-user");
+  if (to.matched.some((record) => record.meta.requiresAuth) && !token) {
+    next({ name: "Login" });
+  } else {
+    next();
+  }
 });
 
 export default router;
