@@ -3,19 +3,18 @@
 namespace App\Extension;
 
 
+use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use ApiPlatform\Metadata\Operation;
 use Symfony\Component\Security\Core\Security;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
-use App\Entity\Address;
-use App\Entity\OrderDetails;
 
 /**
  * This extension makes sure normal users can only access their own Orders
  */
-final class CurrentUserAddressExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+final class CurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
     private $securityChecker;
     public function __construct(Security $security)
@@ -55,7 +54,7 @@ final class CurrentUserAddressExtension implements QueryCollectionExtensionInter
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Address::class !== $resourceClass 
+        if (User::class !== $resourceClass 
         || $this->securityChecker->isGranted('ROLE_ADMIN')){
             return;
         }
@@ -66,13 +65,14 @@ final class CurrentUserAddressExtension implements QueryCollectionExtensionInter
         if(null === $user){
             return;
         }
-        // here select only those addresses published by the current user
-        if($this->securityChecker->isGranted('ROLE_USER'))
+        // here current user informations
+        if($this->securityChecker->isGranted('ROLE_USER') 
+        || $this->securityChecker->isGranted('ROLE_SELLER'))
         {
             $queryBuilder
                 ->select($rootAlias)    
-                ->where('o.customer = :current_user')
-                ->setParameter('current_user', $user)
+                ->where('o.id = :current_user_id')
+                ->setParameter('current_user_id', $user->getId())
             ;
             return;
         }

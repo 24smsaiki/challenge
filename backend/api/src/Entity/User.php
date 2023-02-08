@@ -11,14 +11,15 @@ use App\Controller\RegisterController;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(mercure: true)]
+#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(operations: [
@@ -32,45 +33,54 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[UniqueEntity(fields: ['email'], message: 'Cet email est déjà utilisé.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    #[Groups(['post', 'get'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-    
+
+    #[Groups(['post', 'get'])]
     #[NotBlank(message: 'Veuillez renseigner l\'email'), Email(message: 'Veuillez renseigner un email valide.')]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email;
 
+    #[Groups(['post', 'get'])]
     #[ORM\Column]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
+    #[Groups(['post'])]
     #[ApiProperty(security: "is_granted('ROLE_ADMIN')")]
     #[ORM\Column]
     #[NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
     private ?string $password;
-    
+
+    #[Groups(['get'])]
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Address::class)]
     private Collection $Address;
 
+    #[Groups(['get'])]
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Order::class)]
     private Collection $orders;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $token;
 
-    
+    #[Groups(['post', 'get'])]
     #[ORM\Column(nullable: true)]
     private ?bool $isPasswordRequest = null;
 
+    #[Groups(['post', 'get'])]
     #[ORM\Column(nullable: true)]
     private ?bool $isActif = null;
 
+    #[Groups(['get'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $firstname = null;
 
+    #[Groups(['get'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
 
