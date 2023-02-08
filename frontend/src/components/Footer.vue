@@ -88,6 +88,10 @@ function scrollToTop() {
   flex-direction: column;
   align-items: center;
 
+  a.active {
+    color: #d87d4a;
+  }
+
   .footer__content__first-line__logo {
     font-size: 2.4rem;
     margin-bottom: 2.4rem;

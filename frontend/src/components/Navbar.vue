@@ -57,6 +57,10 @@ defineEmits(["toggle-menu-show"]);
   margin-left: 30px;
 }
 
+.navbar__desktop-menu__link a.active {
+  color: #d87d4a;
+}
+
 .navbar {
   background: transparent;
   display: flex;
