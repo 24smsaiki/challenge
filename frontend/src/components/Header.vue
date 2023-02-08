@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <Navbar @toggle-menu-show="$emit('toggle-menu-show', $event)" />
+    <Navbar @toggle-menu-show="$emit('toggle-menu-show', $event)"></Navbar>
   </header>
 </template>
 

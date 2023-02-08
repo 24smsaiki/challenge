@@ -4,6 +4,6 @@ import Register from "../components/Register/Register.vue";
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)" />
+  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <Register />
 </template>

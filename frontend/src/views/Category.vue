@@ -2,7 +2,7 @@
   <Header
     :category="category"
     @toggle-menu-show="$emit('toggle-menu-show', $event)"
-  />
+  ></Header>
 
   <div class="picks">
     <h2 class="highlight">Produits</h2>
