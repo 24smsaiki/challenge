@@ -57,7 +57,12 @@ const router = createRouter({
       name: "PaymentSuccess",
       // component: () => import("../views/PaymentSuccess.vue"),
       component: () => import("../views/Checkout.vue"),
-    }
+    },
+    {
+      path: "/join-us",
+      name: "JoinUs",
+      component: () => import("../views/Seller.vue"),
+    },
   ],
 });
 
