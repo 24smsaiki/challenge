@@ -65,7 +65,8 @@ const router = createRouter({
       path: "/order/payment/success/:id",
       name: "PaymentSuccess",
       // component: () => import("../views/PaymentSuccess.vue"),
-      component: () => import("../views/Checkout.vue"),
+      components: Checkout,
+      meta: { requiresAuth: true },
     },
     {
       path: "/account/orders",
@@ -89,7 +90,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("app-user");
+  const token = localStorage.getItem("app-token");
+  const app = JSON.parse(localStorage.getItem("app-user"));
+
+  if (app?.exp < Date.now() / 1000) {
+    localStorage.removeItem("app-token");
+    localStorage.removeItem("app-user");
+    window.location.reload();
+  }
+
   if (to.matched.some((record) => record.meta.requiresAuth) && !token) {
     next({ name: "Login" });
   } else {
