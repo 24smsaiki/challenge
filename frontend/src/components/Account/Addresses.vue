@@ -2,48 +2,8 @@
 import Header from "../Header.vue";
 import Sidebar from "./Sidebar.vue";
 import { ref, computed } from "vue";
-import axios from "axios";
 import { createToast } from "mosha-vue-toastify";
-
-// Only using to debug and test
-const dataUsingToTest = {
-  "@context": "/contexts/Address",
-  "@id": "/addresses",
-  "@type": "hydra:Collection",
-  "hydra:member": [
-    {
-      "@id": "/addresses/1",
-      "@type": "Address",
-      id: 1,
-      firstname: "John",
-      lastname: "Doe",
-      phone: "0606060606",
-      addressField: "1 rue de la paix",
-      addressFieldInformation: "Appartement 1",
-      zipCode: "75000",
-      city: "Paris",
-      country: "France",
-      customer: "/users/1",
-      orders: ["/orders/1"],
-    },
-    {
-      "@id": "/addresses/2",
-      "@type": "Address",
-      id: 2,
-      firstname: "Jane",
-      lastname: "Doe",
-      phone: "0606060606",
-      addressField: "2 rue de la paix",
-      addressFieldInformation: "Appartement 2",
-      zipCode: "75000",
-      city: "Paris",
-      country: "France",
-      customer: "/users/1",
-      orders: ["/orders/2"],
-    },
-  ],
-  "hydra:totalItems": 2,
-};
+import AddressesLogic from "../../logics/AddressesLogic";
 
 const addresses = ref([]);
 const newAddress = ref({
@@ -176,14 +136,7 @@ const isPhone = () => {
 };
 
 const addAddress = () => {
-  axios
-    .post("https://localhost/addresses", newAddress.value, {
-      headers: {
-        Authorization:
-          "Bearer " +
-          `${localStorage.getItem("app-token").split('"').join("")}`,
-      },
-    })
+  AddressesLogic.createAddress(newAddress.value)
     .then((response) => {
       if (response.status === 201) {
         addresses.value.push({
@@ -244,18 +197,10 @@ const setFormFields = () => {
 };
 
 const updateAddress = () => {
-  axios
-    .put(
-      `https://localhost/addresses/${addresses.value[addressIndex.value].id}`,
-      newAddress.value,
-      {
-        headers: {
-          Authorization:
-            "Bearer " +
-            `${localStorage.getItem("app-token").split('"').join("")}`,
-        },
-      }
-    )
+  AddressesLogic.updateAddress(
+    addresses.value[addressIndex.value].id,
+    newAddress.value
+  )
     .then((response) => {
       if (response.status === 200) {
         addresses.value[addressIndex.value].firstname = response.data.firstname;
@@ -283,14 +228,7 @@ const updateAddress = () => {
 };
 
 const deleteAddress = (index) => {
-  axios
-    .delete(`https://localhost/addresses/${addresses.value[index].id}`, {
-      headers: {
-        Authorization:
-          "Bearer " +
-          `${localStorage.getItem("app-token").split('"').join("")}`,
-      },
-    })
+  AddressesLogic.deleteAddress(addresses.value[index].id)
     .then((response) => {
       if (response.status === 204) {
         addresses.value.splice(index, 1);
@@ -340,18 +278,11 @@ const setValidFormClass = computed(() => {
 });
 
 const getAddresses = () => {
-  axios
-    .get("https://localhost/addresses", {
-      headers: {
-        Authorization:
-          "Bearer " +
-          `${localStorage.getItem("app-token").split('"').join("")}`,
-      },
-    })
-    .then((response) => response)
-    .then((res) => {
-      addresses.value = res?.data["hydra:member"];
-      // addresses.value = dataUsingToTest["hydra:member"];
+  AddressesLogic.getAddresses()
+    .then((response) => {
+      if (response.status === 200) {
+        addresses.value = response?.data;
+      }
     })
     .catch(() =>
       setToast("Une erreur est survenue lors du chargement", "danger")

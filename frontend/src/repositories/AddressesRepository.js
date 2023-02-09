@@ -16,4 +16,8 @@ export default class AddressesRepository {
   static async updateAddress(id, body) {
     return await Request.make("put", `/addresses/${id}`, { ...body });
   }
+
+  static async deleteAddress(id) {
+    return await Request.make("delete", `/addresses/${id}`);
+  }
 }

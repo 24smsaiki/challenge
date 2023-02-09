@@ -16,4 +16,8 @@ export default class AddressesLogic {
   static async updateAddress(id, body) {
     return await AddressesRepository.updateAddress(id, body);
   }
+
+  static async deleteAddress(id) {
+    return await AddressesRepository.deleteAddress(id);
+  }
 }
