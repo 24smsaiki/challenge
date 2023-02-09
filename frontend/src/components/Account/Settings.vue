@@ -85,7 +85,7 @@ const updateUser = () => {
   //     }
   //   })
   //   .catch(() =>
-  //     setToast("Une erreur est survenue lors de la mise à jour", "error")
+  //     setToast("Une erreur est survenue lors de la mise à jour", "danger")
   //   );
 };
 
@@ -109,7 +109,7 @@ const getUserData = () => {
       settingsForm.value.confirmPassword = "fakePassword";
     })
     .catch(() =>
-      setToast("Une erreur est survenue lors du chargement", "error")
+      setToast("Une erreur est survenue lors du chargement", "danger")
     );
 };
 

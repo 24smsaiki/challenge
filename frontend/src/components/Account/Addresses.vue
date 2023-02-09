@@ -118,7 +118,7 @@ const addAddress = () => {
       }
     })
     .catch(() =>
-      setToast("Une erreur est survenue lors de l'ajout de l'adresse", "error")
+      setToast("Une erreur est survenue lors de l'ajout de l'adresse", "danger")
     );
 
   resetFormFields();
@@ -191,7 +191,7 @@ const updateAddress = () => {
     .catch(() => {
       setToast(
         "Une erreur est survenue lors de la modification de l'adresse",
-        "error"
+        "danger"
       );
     });
 
@@ -217,7 +217,7 @@ const deleteAddress = (index) => {
     .catch(() => {
       setToast(
         "Une erreur est survenue lors de la suppression de l'adresse",
-        "error"
+        "danger"
       );
     });
 };
@@ -265,7 +265,7 @@ const getAddresses = () => {
       // addresses.value = dataUsingToTest["hydra:member"];
     })
     .catch(() =>
-      setToast("Une erreur est survenue lors du chargement", "error")
+      setToast("Une erreur est survenue lors du chargement", "danger")
     );
 };
 

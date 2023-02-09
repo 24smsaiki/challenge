@@ -44,7 +44,7 @@ const getUserData = () => {
       email.value = user.email;
     })
     .catch(() =>
-      setToast("Une erreur est survenue lors du chargement", "error")
+      setToast("Une erreur est survenue lors du chargement", "danger")
     );
 };
 

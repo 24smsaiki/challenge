@@ -150,11 +150,11 @@ const getOrders = () => {
     })
     .then((response) => response)
     .then((res) => {
-      orders.value = res?.data["hydra:member"];
-      // orders.value = dataUsingToTest["hydra:member"];
+      // orders.value = res?.data["hydra:member"];
+      orders.value = dataUsingToTest["hydra:member"];
     })
     .catch(() =>
-      setToast("Une erreur est survenue lors du chargement", "error")
+      setToast("Une erreur est survenue lors du chargement", "danger")
     );
 };
 
