@@ -32,7 +32,7 @@ class StripeService
                 $products_for_stripe
             ],
             'mode' => 'payment',
-            'success_url' => $YOUR_DOMAIN.'/order/payment/success/{CHECKOUT_SESSION_ID}',
+            'success_url' => 'http://localhost:3000' . '/order/payment/success/{CHECKOUT_SESSION_ID}',
             'cancel_url' => $YOUR_DOMAIN.'/order/payment/fail/{CHECKOUT_SESSION_ID}',
         ]);
 

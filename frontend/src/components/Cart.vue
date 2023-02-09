@@ -53,7 +53,6 @@ export default {
   props: { show: Boolean, cart: Array },
   methods: {
     editSrc(product) {
-      console.log(product.image);
       return product.image
     },
     separator(numb) {
@@ -75,7 +74,6 @@ export default {
       this.cart.forEach(
         (product) => (totalValue += product.price * product.addedQuantity)
       );
-      console.log(totalValue);
       return totalValue;
     },
   },

@@ -52,6 +52,12 @@ const router = createRouter({
       name: "Account",
       component: Account,
     },
+    {
+      path: "/order/payment/success/:id",
+      name: "PaymentSuccess",
+      // component: () => import("../views/PaymentSuccess.vue"),
+      component: () => import("../views/Checkout.vue"),
+    }
   ],
 });
 

@@ -1,11 +1,14 @@
 <script setup>
-import { ref, defineEmits, computed, onMounted } from "vue";
+import { ref, defineEmits, computed, onMounted, watch } from "vue";
 import Header from "../components/Product/Header.vue";
 // import ProductPageNavigation from "../components/ProductPageNavigation.vue";
 import router from "../router/Router";
 import OthersCard from "../components/Product/OthersCard.vue";
 import { useProductStore } from "../stores/ProductStore.js";
 import { useCartStore } from "../stores/CartStore.js";
+import { createToast } from 'mosha-vue-toastify';
+import 'mosha-vue-toastify/dist/style.css'
+
 
 // define emits
 const emit = defineEmits(["toggle-menu-show", "add-to-cart"]);
@@ -17,6 +20,8 @@ const justAdded = ref(false);
 const products = productStore.products;
 
 
+
+
 const currentProduct = computed(() => {
 
   if(products.length === 0) return null;
@@ -25,7 +30,6 @@ const currentProduct = computed(() => {
 });
 
 const increaseTotal = () => {
-  console.log(currentProduct.value)
      total.value++;
     };
 const decreaseTotal = () => {
@@ -35,6 +39,21 @@ const decreaseTotal = () => {
     };
 const addToCartHandler = () => {
       justAdded.value = true;
+      const toast = createToast('Product ajouté au panier', {
+        position: 'top-right',
+        timeout: 7000,
+        close: true,
+        type: 'success',
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: false,
+        closeButton: 'button',
+        icon: true,
+        rtl: false
+      });
      const data = {
       productId: currentProduct.value.id,
       addedQuantity: total.value,
@@ -108,9 +127,10 @@ const editedText = computed(() => {
               'default-btn',
               justAdded ? 'just-added' : '',
             ]"
+            
             @click="addToCartHandler"
           >
-            {{ justAdded ? "Added to cart" : "Add to cart" }}
+           Ajouter au panier
           </button>
         </div>
       </div>
@@ -176,55 +196,6 @@ const editedText = computed(() => {
     <ProductNavigation />
   </main>
 </template>
-
-<!-- <script>
-
-export default {
-  name: "Product",
-  components: { Header, ProductNavigation, OthersCard },
-  emits: ["toggle-menu-show", "add-to-cart"],
-  data() {
-    return {
-      total: 1,
-      products: useCartStore().products,
-      justAdded: false,
-    };
-  },
-  methods: {
-    
-    decreaseTotal() {
-      if (this.total > 1) {
-        this.total--;
-      }
-    },
-    addToCartHandler() {
-      this.justAdded = true;
-      const data = {
-        productId: this.currentProduct.id,
-        addedQuantity: this.total,
-      };
-      useCartStore().addProduct(data);
-    },
-    resetTotal() {
-      this.total = 1;
-      this.justAdded = false;
-    }
-  }
-  mounted() {
-    this.$emit("toggle-menu-show", false);
-  },
-  computed: {
-    currentProduct() {
-      return this.products
-        .slice()
-        .find((product) => product.slug === this.$route.params.product);
-    },
-    editedText() {
-     
-    },
-  },
-};
-</script> -->
 
 <style lang="scss" scoped>
 main {

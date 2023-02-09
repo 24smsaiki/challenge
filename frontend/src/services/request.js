@@ -13,7 +13,6 @@ console.log("request.js: ", import.meta.env.VITE_API_URL);
 request.interceptors.request.use(
     (config) => {
         const token = LocalStorage.get("token");
-        console.log("request.js: ", token)
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }

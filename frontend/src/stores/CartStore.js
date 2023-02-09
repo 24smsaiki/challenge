@@ -5,7 +5,7 @@ import { useProductStore } from './ProductStore';
 export const useCartStore = defineStore({
     id: 'cart',
     state: () => ({
-        cart: [],
+        cart: JSON.parse(localStorage.getItem("cart")) || [],
     }),
     getters: {
         total() {
@@ -19,7 +19,7 @@ export const useCartStore = defineStore({
         addProduct({productId, addedQuantity}) {
             const productStore = useProductStore();
             const product = productStore.getProductById(productId);
-            const productFromCart = this.cart.find((item) => item.product.id === productId);
+            const productFromCart = this.cart.find((item) => item.id === productId);
 
             if(productFromCart) {
                 productFromCart.addedQuantity += addedQuantity;

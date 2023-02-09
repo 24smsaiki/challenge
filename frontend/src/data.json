@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": 4,
     "slug": "yx1-earphones",
     "name": "YX1 Wireless Earphones",
     "image":  "/src/assets/product-yx1-earphones/desktop/image-product.jpg",
@@ -160,7 +160,7 @@
     ]
   },
   {
-    "id": 4,
+    "id": 1,
     "slug": "xx99-mark-two-headphones",
     "name": "XX99 Mark II Headphones",
     "image": "/src/assets/product-xx99-mark-two-headphones/desktop/image-product.jpg",
