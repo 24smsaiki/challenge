@@ -59,6 +59,7 @@ function setToast(message, type) {
   });
 }
 
+// TODO DON'T ALLOW EMAIL CHANGE
 // TODO WAIT FOR API TO FINISH
 const updateUser = () => {
   // console.log(">>>", settingsForm.value);
@@ -161,7 +162,8 @@ getUserData();
             id="email"
             type="email"
             placeholder="Adresse email"
-            v-model="settingsForm.email"
+            disabled
+            readonly
           />
         </div>
         <div class="ml-2 mb-5 mr-2">
