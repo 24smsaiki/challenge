@@ -130,7 +130,7 @@ getUserData();
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="username"
             type="text"
-            placeholder="Entrer le nom d'utilisateur"
+            placeholder="Nom d'utilisateur"
             v-model="settingsForm.username"
           />
         </div>
@@ -140,7 +140,7 @@ getUserData();
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="firstname"
             type="text"
-            placeholder="Entrer le prénom"
+            placeholder="Prénom"
             v-model="settingsForm.firstname"
           />
         </div>
@@ -150,7 +150,7 @@ getUserData();
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="lastname"
             type="text"
-            placeholder="Entrer le nom"
+            placeholder="Nom"
             v-model="settingsForm.lastname"
           />
         </div>
@@ -160,7 +160,7 @@ getUserData();
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="email"
             type="email"
-            placeholder="Entrer l'adresse email"
+            placeholder="Adresse email"
             v-model="settingsForm.email"
           />
         </div>
@@ -172,7 +172,7 @@ getUserData();
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="password"
             type="password"
-            placeholder="Entrer le mot de passe"
+            placeholder="Mot de passe"
             v-model="settingsForm.password"
           />
         </div>
@@ -184,7 +184,7 @@ getUserData();
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="confirmPassword"
             type="password"
-            placeholder="Confirmer le mot de passe"
+            placeholder="Mot de passe de confirmation"
             v-model="settingsForm.confirmPassword"
           />
         </div>
