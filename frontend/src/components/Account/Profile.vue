@@ -59,6 +59,7 @@ getUserData();
       >
       <input
         disabled
+        readonly
         class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="username"
         type="text"
@@ -69,6 +70,7 @@ getUserData();
       <label class="block font-bold mb-2" for="firstName">Prénom</label>
       <input
         disabled
+        readonly
         class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="firstName"
         type="text"
@@ -79,6 +81,7 @@ getUserData();
       <label class="block font-bold mb-2" for="lastName">Nom</label>
       <input
         disabled
+        readonly
         class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="lastName"
         type="text"
@@ -89,6 +92,7 @@ getUserData();
       <label class="block font-bold mb-2" for="email">Adresse email</label>
       <input
         disabled
+        readonly
         class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="email"
         type="email"

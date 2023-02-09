@@ -334,7 +334,7 @@ getAddresses();
                 >
                 <textarea
                   class="form-control mt-3"
-                  v-model="address.addressFieldInformation"
+                  :value="address.addressFieldInformation"
                   placeholder="Informations complémentaires"
                   rows="3"
                   disabled
