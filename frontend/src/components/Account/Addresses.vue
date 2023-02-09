@@ -3,7 +3,9 @@ import Header from "../Header.vue";
 import Sidebar from "./Sidebar.vue";
 import { ref, computed } from "vue";
 import axios from "axios";
+import { createToast } from "mosha-vue-toastify";
 
+// Only using to debug and test
 const dataUsingToTest = {
   "@context": "/contexts/Address",
   "@id": "/addresses",
@@ -72,18 +74,52 @@ const resetFormFields = () => {
   newAddress.value.addressFieldInformation = "";
 };
 
-const addAddress = () => {
-  // addresses.value.push(Object.assign({}, newAddress.value));
-  // TODO POST WITH AXIOS
+function setToast(message, type) {
+  createToast(message, {
+    position: "top-right",
+    timeout: 5000,
+    close: true,
+    type: type,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: false,
+    closeButton: "button",
+    icon: true,
+    rtl: false,
+  });
+}
 
-  // axios
-  //   .post("http://localhost/addresses", newAddress.value)
-  //   .then((response) => {
-  //     console.log(response);
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
+const addAddress = () => {
+  axios
+    .post("https://localhost/addresses", newAddress.value, {
+      headers: {
+        Authorization:
+          "Bearer " +
+          `${localStorage.getItem("app-token").split('"').join("")}`,
+      },
+    })
+    .then((response) => {
+      if (response.status === 201) {
+        addresses.value.push({
+          id: response.data.id,
+          firstname: response.data.firstname,
+          lastname: response.data.lastname,
+          phone: response.data.phone,
+          addressField: response.data.addressField,
+          addressFieldInformation: response.data.addressFieldInformation,
+          zipCode: response.data.zipCode,
+          city: response.data.city,
+          country: response.data.country,
+        });
+        setToast("Addresse ajoutée avec succès", "success");
+      }
+    })
+    .catch(() =>
+      setToast("Une erreur est survenue lors de l'ajout de l'adresse", "error")
+    );
 
   resetFormFields();
   addingField.value = false;
@@ -125,13 +161,66 @@ const setFormFields = () => {
 };
 
 const updateAddress = () => {
-  // addresses.value[addressIndex.value] = Object.assign({}, newAddress.value);
-  // TODO UPDATE WITH AXIOS
+  axios
+    .put(
+      `https://localhost/addresses/${addresses.value[addressIndex.value].id}`,
+      newAddress.value,
+      {
+        headers: {
+          Authorization:
+            "Bearer " +
+            `${localStorage.getItem("app-token").split('"').join("")}`,
+        },
+      }
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        addresses.value[addressIndex.value].firstname = response.data.firstname;
+        addresses.value[addressIndex.value].lastname = response.data.lastname;
+        addresses.value[addressIndex.value].addressField =
+          response.data.addressField;
+        addresses.value[addressIndex.value].zipCode = response.data.zipCode;
+        addresses.value[addressIndex.value].city = response.data.city;
+        addresses.value[addressIndex.value].country = response.data.country;
+        addresses.value[addressIndex.value].phone = response.data.phone;
+        addresses.value[addressIndex.value].addressFieldInformation =
+          response.data.addressFieldInformation;
+        setToast("Addresse modifiée avec succès", "success");
+      }
+    })
+    .catch(() => {
+      setToast(
+        "Une erreur est survenue lors de la modification de l'adresse",
+        "error"
+      );
+    });
+
   resetFormFields();
   editingField.value = false;
 };
 
-const deleteAddress = (index) => addresses.value.splice(index, 1);
+const deleteAddress = (index) => {
+  axios
+    .delete(`https://localhost/addresses/${addresses.value[index].id}`, {
+      headers: {
+        Authorization:
+          "Bearer " +
+          `${localStorage.getItem("app-token").split('"').join("")}`,
+      },
+    })
+    .then((response) => {
+      if (response.status === 204) {
+        addresses.value.splice(index, 1);
+        setToast("Addresse supprimée avec succès", "success");
+      }
+    })
+    .catch(() => {
+      setToast(
+        "Une erreur est survenue lors de la suppression de l'adresse",
+        "error"
+      );
+    });
+};
 
 const isFormValid = computed(() => {
   if (
@@ -161,7 +250,7 @@ const setValidFormClass = computed(() => {
   }
 });
 
-const setAddresses = () => {
+const getAddresses = () => {
   axios
     .get("https://localhost/addresses", {
       headers: {
@@ -172,15 +261,15 @@ const setAddresses = () => {
     })
     .then((response) => response)
     .then((res) => {
-      // addresses.value = res?.data["hydra:member"];
-      addresses.value = dataUsingToTest["hydra:member"];
+      addresses.value = res?.data["hydra:member"];
+      // addresses.value = dataUsingToTest["hydra:member"];
     })
-    .catch((error) => {
-      console.log(error);
-    });
+    .catch(() =>
+      setToast("Une erreur est survenue lors du chargement", "error")
+    );
 };
 
-setAddresses();
+getAddresses();
 </script>
 
 <template>
@@ -190,8 +279,6 @@ setAddresses();
     <div class="content">
       <div class="addresses">
         <legend>
-          <h1 class="mb-5">Mes adresses</h1>
-
           <!-- Data -->
           <div v-for="(address, index) in addresses" :key="index">
             <div v-if="!editingField && !addingField" class="address">
@@ -429,7 +516,7 @@ setAddresses();
             ></textarea>
             <button
               class="btn"
-              @click="updateAddress(index)"
+              @click="updateAddress"
               :disabled="!isFormValid"
               :style="setValidFormClass"
             >
@@ -444,10 +531,6 @@ setAddresses();
 
 <style scoped lang="scss">
 #addresses {
-  h1 {
-    font-size: 24px;
-  }
-
   .is-invalid {
     cursor: not-allowed;
   }
@@ -460,7 +543,7 @@ setAddresses();
   .address {
     width: 100%;
     background-color: #f2f2f2;
-    margin: 20px 0;
+    margin: 0 0 20px 0;
     padding: 20px;
     font-size: 16px;
   }

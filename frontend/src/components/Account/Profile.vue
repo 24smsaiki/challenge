@@ -1,13 +1,32 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { createToast } from "mosha-vue-toastify";
 
 const username = ref("");
 const firstName = ref("");
 const lastName = ref("");
 const email = ref("");
 
-const setUserData = () => {
+function setToast(message, type) {
+  createToast(message, {
+    position: "top-right",
+    timeout: 5000,
+    close: true,
+    type: type,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: false,
+    closeButton: "button",
+    icon: true,
+    rtl: false,
+  });
+}
+
+const getUserData = () => {
   axios
     .get("https://localhost/users", {
       headers: {
@@ -24,43 +43,43 @@ const setUserData = () => {
       lastName.value = user.lastname;
       email.value = user.email;
     })
-    .catch((error) => {
-      console.log(error);
-    });
+    .catch(() =>
+      setToast("Une erreur est survenue lors du chargement", "error")
+    );
 };
 
-setUserData();
+getUserData();
 </script>
 
 <template>
   <form class="profile-form">
-    <div class="ml-2 mb-4 mr-2">
+    <div class="ml-2 mb-5 mr-2">
       <label class="block font-bold mb-2" for="username"
         >Nom d'utilisateur</label
       >
       <input
         disabled
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="username"
         type="text"
         :value="username"
       />
     </div>
-    <div class="ml-2 mb-4 mr-2">
+    <div class="ml-2 mb-5 mr-2">
       <label class="block font-bold mb-2" for="firstName">Prénom</label>
       <input
         disabled
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="firstName"
         type="text"
         :value="firstName"
       />
     </div>
-    <div class="ml-2 mb-4 mr-2">
+    <div class="ml-2 mb-5 mr-2">
       <label class="block font-bold mb-2" for="lastName">Nom</label>
       <input
         disabled
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="lastName"
         type="text"
         :value="lastName"
@@ -70,7 +89,7 @@ setUserData();
       <label class="block font-bold mb-2" for="email">Adresse email</label>
       <input
         disabled
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+        class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="email"
         type="email"
         :value="email"
@@ -79,12 +98,14 @@ setUserData();
   </form>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .profile-form {
   font-size: 20px;
   height: 100%;
-  display: flex;
-  flex-direction: column;
   overflow: auto;
+
+  input {
+    border-radius: 5px;
+  }
 }
 </style>

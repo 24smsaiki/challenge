@@ -1,10 +1,11 @@
 <script setup>
 import Header from "../Header.vue";
 import Sidebar from "./Sidebar.vue";
-
 import { ref } from "vue";
 import axios from "axios";
+import { createToast } from "mosha-vue-toastify";
 
+// Only using to debug and test
 const dataUsingToTest = {
   "@context": "/contexts/Order",
   "@id": "/orders",
@@ -108,6 +109,24 @@ const dataUsingToTest = {
   "hydra:totalItems": 2,
 };
 
+function setToast(message, type) {
+  createToast(message, {
+    position: "top-right",
+    timeout: 5000,
+    close: true,
+    type: type,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: false,
+    hideProgressBar: false,
+    closeButton: "button",
+    icon: true,
+    rtl: false,
+  });
+}
+
 const orders = ref([]);
 
 function getFormattedDate(dateTime) {
@@ -120,7 +139,7 @@ function getFormattedDate(dateTime) {
   const seconds = date.getSeconds().toString().padStart(2, "0");
   return `${day}/${month}/${year} à ${hours}:${minutes}:${seconds}`;
 }
-const setOrders = () => {
+const getOrders = () => {
   axios
     .get("https://localhost/orders", {
       headers: {
@@ -134,12 +153,12 @@ const setOrders = () => {
       orders.value = res?.data["hydra:member"];
       // orders.value = dataUsingToTest["hydra:member"];
     })
-    .catch((error) => {
-      console.log(error);
-    });
+    .catch(() =>
+      setToast("Une erreur est survenue lors du chargement", "error")
+    );
 };
 
-setOrders();
+getOrders();
 </script>
 
 <template>
