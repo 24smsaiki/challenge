@@ -205,11 +205,11 @@ getOrders();
                   class="w-20 h-20 object-cover mb-4"
                 />
                 <h2 class="text-gray-600 mb-4">
-                  <span class="font-bold"> Label: </span>
+                  <span class="font-bold">Label: </span>
                   {{ orderDetail.item.label }}
                 </h2>
                 <p class="text-gray-600 mb-4 d-flex flex-column">
-                  <span class="font-bold"> Description : </span>
+                  <span class="font-bold">Description : </span>
                   <textarea
                     class="pl-2 pr-2"
                     disabled
@@ -225,7 +225,7 @@ getOrders();
                   {{ orderDetail.quantity }}
                 </p>
                 <p class="text-gray-600">
-                  <span class="font-bold"> Total : </span>
+                  <span class="font-bold">Total : </span>
                   {{ orderDetail.totalPrice }} €
                 </p>
               </div>
