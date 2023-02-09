@@ -3,7 +3,7 @@
   <div class="card">
     <div class="card-img">
       <img
-        src="https://m.media-amazon.com/images/I/71wzZxJ0dZL._AC_SX679_.jpg"
+        :src="product.image"
         class="img-fluid"
         alt=""
       />
@@ -33,7 +33,6 @@
           <li class="count">4,326</li>
         </ul>
       </div>
-      <a href="#" class="cart">Ajouter au panier</a>
     </div>
   </div>
 
