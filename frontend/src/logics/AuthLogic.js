@@ -9,17 +9,14 @@ export default class AuthLogic {
   }
 
   static async login(body) {
-    const result = await AuthRepository.login({ ...body });
-    let res;
+    await AuthRepository.login({ ...body }).then((res) => {
+      const result = jwt_decode(res.data.token);
 
-    if (result?.token) {
-      res = jwt_decode(result.token);
-    }
+      AuthLogic.setToken(res.data.token);
+      AuthLogic.setStorageUser(result);
 
-    AuthLogic.setToken(result.token);
-    AuthLogic.setStorageUser(res);
-
-    return res;
+      return result;
+    });
   }
 
   static logout() {
