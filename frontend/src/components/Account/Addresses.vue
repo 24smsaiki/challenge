@@ -56,6 +56,16 @@ const newAddress = ref({
   phone: "",
   addressFieldInformation: "",
 });
+const errors = ref({
+  firstname: "",
+  lastname: "",
+  addressField: "",
+  zipCode: "",
+  city: "",
+  country: "",
+  phone: "",
+  addressFieldInformation: "",
+});
 
 const addingField = ref(false);
 const editingField = ref(false);
@@ -91,6 +101,79 @@ function setToast(message, type) {
     rtl: false,
   });
 }
+
+const isFirstName = () => {
+  const firstname = newAddress.value.firstname;
+
+  if (firstname.length < 3) {
+    errors.value.firstname = "Le prénom doit contenir au moins 3 caractères";
+  } else {
+    errors.value.firstname = "";
+  }
+};
+
+const isLastName = () => {
+  const lastname = newAddress.value.lastname;
+
+  if (lastname.length < 3) {
+    errors.value.lastname = "Le nom doit contenir au moins 3 caractères";
+  } else {
+    errors.value.lastname = "";
+  }
+};
+
+const isAddressField = () => {
+  const addressField = newAddress.value.addressField;
+
+  if (addressField.length < 10) {
+    errors.value.addressField =
+      "L'adresse doit contenir au moins 10 caractères";
+  } else {
+    errors.value.addressField = "";
+  }
+};
+
+const isZipCode = () => {
+  const zipCode = newAddress.value.zipCode;
+  const regex = new RegExp("^[0-9]{5}$");
+
+  if (!regex.test(zipCode)) {
+    errors.value.zipCode = "Le code postal n'est pas valide";
+  } else {
+    errors.value.zipCode = "";
+  }
+};
+
+const isCity = () => {
+  const city = newAddress.value.city;
+
+  if (city.length < 3) {
+    errors.value.city = "La ville doit contenir au moins 3 caractères";
+  } else {
+    errors.value.city = "";
+  }
+};
+
+const isCountry = () => {
+  const country = newAddress.value.country;
+
+  if (country.length < 3) {
+    errors.value.country = "Le pays doit contenir au moins 3 caractères";
+  } else {
+    errors.value.country = "";
+  }
+};
+
+const isPhone = () => {
+  const phone = newAddress.value.phone;
+  const regex = new RegExp("^[0-9]{10}$");
+
+  if (!regex.test(phone)) {
+    errors.value.phone = "Le numéro de téléphone n'est pas valide";
+  } else {
+    errors.value.phone = "";
+  }
+};
 
 const addAddress = () => {
   axios
@@ -224,18 +307,24 @@ const deleteAddress = (index) => {
 
 const isFormValid = computed(() => {
   if (
-    newAddress.value.firstname === "" ||
-    newAddress.value.lastname === "" ||
-    newAddress.value.addressField === "" ||
-    newAddress.value.zipCode === "" ||
-    newAddress.value.city === "" ||
-    newAddress.value.country === "" ||
-    newAddress.value.phone === "" ||
-    newAddress.value.addressFieldInformation === ""
+    errors.value.firstname === "" &&
+    errors.value.lastname === "" &&
+    errors.value.addressField === "" &&
+    errors.value.zipCode === "" &&
+    errors.value.city === "" &&
+    errors.value.country === "" &&
+    errors.value.phone === "" &&
+    newAddress.value.firstname !== "" &&
+    newAddress.value.lastname !== "" &&
+    newAddress.value.addressField !== "" &&
+    newAddress.value.zipCode !== "" &&
+    newAddress.value.city !== "" &&
+    newAddress.value.country !== "" &&
+    newAddress.value.phone !== ""
   ) {
-    return false;
-  } else {
     return true;
+  } else {
+    return false;
   }
 });
 
@@ -333,7 +422,7 @@ getAddresses();
                   >Informations complémentaires</label
                 >
                 <textarea
-                  class="form-control mt-3"
+                  class="form-control"
                   :value="address.addressFieldInformation"
                   placeholder="Informations complémentaires"
                   rows="3"
@@ -397,51 +486,79 @@ getAddresses();
               v-model="newAddress.firstname"
               id="firstname"
               placeholder="Prénom"
+              @input="isFirstName"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.firstname">
+              {{ errors.firstname }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.lastname"
               id="lastname"
               placeholder="Nom"
+              @input="isLastName"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.lastname">
+              {{ errors.lastname }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.addressField"
               id="addressField"
               placeholder="Adresse"
+              @input="isAddressField"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.addressField">
+              {{ errors.addressField }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.zipCode"
               id="zipCode"
               placeholder="Code postal"
+              @input="isZipCode"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.zipCode">
+              {{ errors.zipCode }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.city"
               id="city"
               placeholder="Ville"
+              @input="isCity"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.city">
+              {{ errors.city }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.country"
               id="country"
               placeholder="Pays"
+              @input="isCountry"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.country">
+              {{ errors.country }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.phone"
               id="phone"
               placeholder="Numéro de téléphone"
+              @input="isPhone"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.phone">
+              {{ errors.phone }}
+            </p>
             <textarea
-              class="form-control mt-3"
+              class="form-control"
               v-model="newAddress.addressFieldInformation"
               placeholder="Informations complémentaires"
               rows="3"
@@ -465,51 +582,79 @@ getAddresses();
               v-model="newAddress.firstname"
               id="firstname"
               placeholder="Prénom"
+              @input="isFirstName"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.firstname">
+              {{ errors.firstname }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.lastname"
               id="lastname"
               placeholder="Nom"
+              @input="isLastName"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.lastname">
+              {{ errors.lastname }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.addressField"
               id="addressField"
               placeholder="Adresse"
+              @input="isAddressField"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.addressField">
+              {{ errors.addressField }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.zipCode"
               id="zipCode"
               placeholder="Code postal"
+              @input="isZipCode"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.zipCode">
+              {{ errors.zipCode }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.city"
               id="city"
               placeholder="Ville"
+              @input="isCity"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.city">
+              {{ errors.city }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.country"
               id="country"
               placeholder="Pays"
+              @input="isCountry"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.country">
+              {{ errors.country }}
+            </p>
             <input
               class="form-control"
               type="text"
               v-model="newAddress.phone"
               id="phone"
               placeholder="Numéro de téléphone"
+              @input="isPhone"
             />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.phone">
+              {{ errors.phone }}
+            </p>
             <textarea
-              class="form-control mt-3"
+              class="form-control"
               v-model="newAddress.addressFieldInformation"
               placeholder="Informations complémentaires"
               rows="3"
@@ -556,6 +701,11 @@ getAddresses();
 
   .d-flex {
     display: flex;
+  }
+
+  .messageErrors {
+    color: red;
+    font-size: 12px;
   }
 
   .address h3 {
