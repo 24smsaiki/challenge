@@ -9,7 +9,13 @@ const email = ref("");
 
 const setUserData = () => {
   axios
-    .get("https://localhost/users")
+    .get("https://localhost/users", {
+      headers: {
+        Authorization:
+          "Bearer " +
+          `${localStorage.getItem("app-token").split('"').join("")}`,
+      },
+    })
     .then((response) => response)
     .then((res) => {
       const user = res?.data["hydra:member"][0];
