@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
 import { createToast } from "mosha-vue-toastify";
+import ProfileLogic from "../../logics/ProfileLogic";
 
 const username = ref("");
 const firstName = ref("");
@@ -27,21 +27,15 @@ function setToast(message, type) {
 }
 
 const getUserData = () => {
-  axios
-    .get("https://localhost/users", {
-      headers: {
-        Authorization:
-          "Bearer " +
-          `${localStorage.getItem("app-token").split('"').join("")}`,
-      },
-    })
-    .then((response) => response)
-    .then((res) => {
-      const user = res?.data["hydra:member"][0];
-      username.value = `${user.firstname} ${user.lastname}`;
-      firstName.value = user.firstname;
-      lastName.value = user.lastname;
-      email.value = user.email;
+  ProfileLogic.getUser()
+    .then((response) => {
+      if (response.status === 200) {
+        const user = response?.data[0];
+        username.value = `${user.firstname} ${user.lastname}`;
+        firstName.value = user.firstname;
+        lastName.value = user.lastname;
+        email.value = user.email;
+      }
     })
     .catch(() =>
       setToast("Une erreur est survenue lors du chargement", "danger")
