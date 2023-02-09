@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
-import ProfileLogic from "../../logics/ProfileLogic";
+import ProfileLogic from "../../logics/Account/ProfileLogic";
 
 const username = ref("");
 const firstName = ref("");
