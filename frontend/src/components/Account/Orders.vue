@@ -2,8 +2,8 @@
 import Header from "../Header.vue";
 import Sidebar from "./Sidebar.vue";
 import { ref } from "vue";
-import axios from "axios";
 import { createToast } from "mosha-vue-toastify";
+import OrdersLogic from "../../logics/Account/OrdersLogic";
 
 // Only using to debug and test
 const dataUsingToTest = {
@@ -140,22 +140,16 @@ function getFormattedDate(dateTime) {
   return `${day}/${month}/${year} à ${hours}:${minutes}:${seconds}`;
 }
 const getOrders = () => {
-  axios
-    .get("https://localhost/orders", {
-      headers: {
-        Authorization:
-          "Bearer " +
-          `${localStorage.getItem("app-token").split('"').join("")}`,
-      },
-    })
-    .then((response) => response)
+  OrdersLogic.getOrders(orders)
     .then((res) => {
-      // orders.value = res?.data["hydra:member"];
-      orders.value = dataUsingToTest["hydra:member"];
+      if (res.status === 200) {
+        orders.value = res.data;
+        // orders.value = dataUsingToTest["hydra:member"];
+      }
     })
-    .catch(() =>
-      setToast("Une erreur est survenue lors du chargement", "danger")
-    );
+    .catch(() => {
+      setToast("Une erreur est survenue lors du chargement", "danger");
+    });
 };
 
 getOrders();
