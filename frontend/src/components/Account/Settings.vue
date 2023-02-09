@@ -59,10 +59,10 @@ function setToast(message, type) {
   });
 }
 
-// TODO DON'T ALLOW EMAIL CHANGE
+// TODO DON'T ALLOW EMAIL CHANGE -- ALREADY MANAGED VIA :value
 // TODO WAIT FOR API TO FINISH
 const updateUser = () => {
-  // console.log(">>>", settingsForm.value);
+  console.log(">>>", settingsForm.value);
   // axios
   //   .put(
   //     "https://localhost/users",
@@ -162,6 +162,7 @@ getUserData();
             id="email"
             type="email"
             placeholder="Adresse email"
+            :value="settingsForm.email"
             disabled
             readonly
           />
