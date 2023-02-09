@@ -1,7 +1,7 @@
 <script setup>
 import { inject } from "vue";
 
-const isAuth = inject("ProviderisAuth");
+const isAuth = inject("ProviderIsAuth");
 
 defineProps(["show"]);
 defineEmits(["toggle-menu-show"]);

@@ -1,8 +1,8 @@
 <script setup>
 import { inject, defineEmits } from "vue";
 
-const isAuth = inject("ProviderisAuth");
-const logout = inject("Providerlogout");
+const isAuth = inject("ProviderIsAuth");
+const logout = inject("ProviderLogout");
 const onLogout = () => {
   logout();
 };

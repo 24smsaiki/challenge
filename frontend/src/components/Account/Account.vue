@@ -1,48 +1,25 @@
 <script setup>
 import Header from "../Header.vue";
+import Sidebar from "./Sidebar.vue";
+import Profile from "./Profile.vue";
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)" />
+  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <section id="account">
-    <div class="sidebar">
-      <nav class="nav">
-        <ul>
-          <li class="active"><span>Profil</span></li>
-          <li><span>Mes commandes</span></li>
-          <li><span>Mes adresses</span></li>
-          <li><span>Paramètres</span></li>
-        </ul>
-      </nav>
-    </div>
+    <Sidebar />
     <div class="content">
-      <h1>Mon profil</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-        voluptates, quod, quia, voluptate quae voluptatem quibusdam quos
-        accusantium quas dolorum quidem. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam, quae. Quisquam, quae.
-        Quisquam, quae. Quisquam, quae. Quisquam,
-      </p>
+      <Profile />
     </div>
   </section>
 </template>
 
-<style scoped lang="scss">
-#account {
+<style lang="scss">
+#account,
+#addresses,
+#orders,
+#profile,
+#settings {
   height: 700px;
   margin: 25px;
   display: flex;
@@ -54,6 +31,7 @@ import Header from "../Header.vue";
     border-radius: 5px;
     width: 300px;
     background: black;
+
     .nav {
       position: relative;
       margin: 0 15%;
@@ -78,29 +56,33 @@ import Header from "../Header.vue";
           color: rgba(#fff, 0.8);
           display: block;
           transition: all ease-out 300ms;
-        }
 
-        &.active span {
-          color: #d87d4a;
-        }
+          a {
+            color: white;
 
-        &:not(.active)::after {
-          opacity: 0.2;
-        }
+            &::after {
+              content: "";
+              position: absolute;
+              width: 100%;
+              height: 0.2em;
+              background: black;
+              left: 0;
+              bottom: 0;
+              background-image: linear-gradient(to right, #d87d4a, #ef6210);
+            }
 
-        &:not(.active):hover span {
-          color: #d87d4a;
-        }
+            &.active {
+              color: #d87d4a;
+            }
 
-        &::after {
-          content: "";
-          position: absolute;
-          width: 100%;
-          height: 0.2em;
-          background: black;
-          left: 0;
-          bottom: 0;
-          background-image: linear-gradient(to right, #d87d4a, #ef6210);
+            &:not(.active):hover {
+              color: #d87d4a;
+            }
+
+            &:not(.active)::after {
+              opacity: 0;
+            }
+          }
         }
       }
     }

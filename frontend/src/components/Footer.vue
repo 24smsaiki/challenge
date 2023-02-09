@@ -1,7 +1,7 @@
 <script setup>
 import { inject } from "vue";
 
-const isAuth = inject("ProviderisAuth");
+const isAuth = inject("ProviderIsAuth");
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
