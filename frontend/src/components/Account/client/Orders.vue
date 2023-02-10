@@ -161,7 +161,7 @@ getOrders();
     <Sidebar />
     <div class="content">
       <div v-if="orders.length === 0" class="empty-card">
-        <p class="empty">Vous n'avez pas encore passé de commande.</p>
+        <p class="empty">Vous n'avez pas encore passé de commande</p>
         <div>
           Achetez des produits sur notre
           <router-link to="/products" class="text-blue-500"
