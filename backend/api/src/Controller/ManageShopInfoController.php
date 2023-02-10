@@ -42,9 +42,11 @@ class ManageShopInfoController extends AbstractController
         if (!empty($newShopLabel)) {
             $current_seller->setShopLabel($newShopLabel);
         }
+
         if (!empty($newShopDescription)) {
             $current_seller->setShopDescription($newShopDescription);
         }
+
         if (!empty($newShopPhoneContact)) {
             $current_seller->getShopPhoneContact($newShopPhoneContact);
         }
