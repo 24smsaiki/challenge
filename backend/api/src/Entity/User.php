@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -22,22 +21,23 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(mercure: true, security: 'is_granted("ROLE_USER")', denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
+#[ApiResource(mercure: true, security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(operations: [
     new Post(
-        name: 'register', 
-        uriTemplate: '/register', 
+        name: 'register',
+        uriTemplate: '/register',
         controller: RegisterController::class
     ),
-    new Put(
-        name: 'updateProfile',
-        uriTemplate:'/users/ManageProfile',
-        controller: ManageProfileClientController::class,  
-        security: 'is_granted("ROLE_USER")' 
+    new Post(
+        name: 'updateprofile',
+        uriTemplate: '/users/updateprofile',
+        controller: ManageProfileClientController::class,
+        security: 'is_granted("ROLE_USER")',
     )
 ])]
+
 
 #[UniqueEntity(fields: ['email'], message: 'Cet email est déjà utilisé.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -66,11 +66,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
     private ?string $password;
 
-    #[Groups(['post','get'])]
+    #[Groups(['post', 'get'])]
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Address::class)]
     private Collection $Address;
 
-    #[Groups(['post','get'])]
+    #[Groups(['post', 'get'])]
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Order::class)]
     private Collection $orders;
 
@@ -93,7 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
 
-   
+
     public function __construct()
     {
         $this->Address = new ArrayCollection();
@@ -237,13 +237,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setToken(?string $token): self
     {
-        
+
         $this->token = $token;
-       
+
         return $this;
     }
 
-    
+
 
     public function getIsPasswordRequest(): ?bool
     {

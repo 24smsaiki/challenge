@@ -1,95 +1,92 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Account from "../components/Account/client/Account.vue";
-import Addresses from "../components/Account/client/Addresses.vue";
-import Category from "../views/Category.vue";
-import Checkout from "../views/Checkout.vue";
-import Home from "../views/Home.vue";
-import Login from "../views/Login.vue";
-import Logout from "../views/Logout.vue";
-import NotFound from "../views/NotFound.vue";
-import Orders from "../components/Account/client/Orders.vue";
-import Product from "../views/Product.vue";
-import Register from "../views/Register.vue";
-import Settings from "../components/Account/client/Settings.vue";
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
       name: "Home",
-      component: Home,
+      component: import("../views/Home.vue"),
     },
-    { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: import("../views/NotFound.vue"),
+    },
     {
       path: "/category/:category",
       name: "Category",
-      component: Category,
+      component: import("../views/Category.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/product/:product",
       name: "Product",
-      component: Product,
+      component: import("../views/Product.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/checkout",
       name: "Checkout",
-      component: Checkout,
+      component: import("../views/Checkout.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/login",
       name: "Login",
-      component: Login,
+      component: import("../views/Login.vue"),
     },
     {
       path: "/register",
       name: "Register",
-      component: Register,
+      component: import("../views/Register.vue"),
     },
     {
       path: "/logout",
       name: "Logout",
-      component: Logout,
+      component: import("../views/Logout.vue"),
     },
     {
       path: "/account",
       name: "Account",
-      component: Account,
+      component: JSON.parse(localStorage.getItem("app-user"))?.roles.includes(
+        "ROLE_SELLER"
+      )
+        ? import("../components/Account/seller/Account.vue")
+        : import("../components/Account/client/Account.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/order/payment/success/:id",
       name: "PaymentSuccess",
-      // component: () => import("../views/PaymentSuccess.vue"),
       component: () => import("../views/Checkout.vue"),
     },
     {
       path: "/join-us",
       name: "JoinUs",
       component: () => import("../views/Seller.vue"),
-      components: Checkout,
       meta: { requiresAuth: true },
     },
     {
       path: "/account/orders",
       name: "Orders",
-      component: Orders,
+      component: JSON.parse(localStorage.getItem("app-user"))?.roles.includes(
+        "ROLE_SELLER"
+      )
+        ? import("../components/Account/seller/Orders.vue")
+        : import("../components/Account/client/Orders.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/account/addresses",
       name: "Addresses",
-      component: Addresses,
+      component: import("../components/Account/client/Addresses.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/account/settings",
       name: "Settings",
-      component: Settings,
+      component: import("../components/Account/client/Settings.vue"),
       meta: { requiresAuth: true },
     },
   ],

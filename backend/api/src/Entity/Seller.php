@@ -14,15 +14,22 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\ManageRequestAccountSellerController;
+use App\Controller\ManageShopInfoController;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
+#[ApiResource(mercure: true, security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/seller/request/answer/{id}',
         controller: ManageRequestAccountSellerController::class,
         name: 'seller_request_answer',
         security: 'is_granted("ROLE_ADMIN")',
+    ),
+    new Post(
+        uriTemplate: '/seller/manageShop',
+        controller: ManageShopInfoController::class,
+        name: 'seller_request_answer',
+        security: 'is_granted("ROLE_SELLER")',
     )
 ])]
 #[ORM\EntityListeners([SellerListener::class])]
@@ -37,19 +44,19 @@ class Seller implements PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?string $shopLabel = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?string $shopDescription = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?string $shopEmailContact = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['post'])]
+    #[Groups(['post', 'get'])]
     private ?string $shopPhoneContact = null;
 
     #[ORM\Column(nullable: true)]
@@ -81,11 +88,10 @@ class Seller implements PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
 
-   
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
-        
     }
 
     public function getId(): ?int
@@ -164,7 +170,7 @@ class Seller implements PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -257,5 +263,4 @@ class Seller implements PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
 }
