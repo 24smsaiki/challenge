@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Verify backend folder exists
         run: |
-          ls 
+          cd ./backend/ 
 
     # runs-on: ubuntu-latest
     # steps:
