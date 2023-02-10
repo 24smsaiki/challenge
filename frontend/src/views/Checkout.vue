@@ -640,6 +640,9 @@ export default {
       try {
         const addresses = await AddressessLogic.getAddresses();
         this.addresses = addresses;
+        if( this.addresses.length === 0) {
+          this.newAddress = true;
+        }
       } catch (error) {
         console.log(error);
       }

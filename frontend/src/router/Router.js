@@ -59,8 +59,12 @@ const router = createRouter({
     {
       path: "/order/payment/success/:id",
       name: "PaymentSuccess",
-      // component: () => import("../views/PaymentSuccess.vue"),
-      components: import("../views/Checkout.vue"),
+      component: () => import("../views/Checkout.vue"),
+    },
+    {
+      path: "/join-us",
+      name: "JoinUs",
+      component: () => import("../views/Seller.vue"),
       meta: { requiresAuth: true },
     },
     {

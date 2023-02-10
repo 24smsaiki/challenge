@@ -8,4 +8,8 @@ export default class AuthRepository {
   static async register(body) {
     return await Request.make("post", "/register", { ...body });
   }
+
+  static async registerSeller(body) {
+    return await Request.make("post", "/sellers", { ...body });
+  }
 }

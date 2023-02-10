@@ -154,8 +154,8 @@ const updateUser = () => {
   //   );
 };
 
-const getUser = () => {
-  SettingsLogic.getUser()
+const getUserInformation = () => {
+  SettingsLogic.getUserInformation()
     .then((res) => {
       if (res.status === 200) {
         const user = res.data[0];
@@ -172,7 +172,7 @@ const getUser = () => {
     );
 };
 
-getUser();
+getUserInformation();
 </script>
 
 <template>

@@ -26,8 +26,8 @@ function setToast(message, type) {
   });
 }
 
-const getUserData = () => {
-  ProfileLogic.getUser()
+const getUserInformation = () => {
+  ProfileLogic.getUserInformation()
     .then((response) => {
       if (response.status === 200) {
         const user = response?.data[0];
@@ -42,7 +42,7 @@ const getUserData = () => {
     );
 };
 
-getUserData();
+getUserInformation();
 </script>
 
 <template>
