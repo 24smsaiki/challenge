@@ -55,7 +55,7 @@ function scrollToTop() {
               >Connexion</router-link
             >
           </li>
-         
+
           <li
             v-if="isAuth"
             class="footer__content__first-line__link-list__link"
@@ -65,11 +65,11 @@ function scrollToTop() {
             >
           </li>
           <li
-           
-           class="footer__content__first-line__link-list__link"
-         >
-           <router-link to="/join-us">Devenir vendeur</router-link>
-         </li>
+            v-if="isAuth"
+            class="footer__content__first-line__link-list__link"
+          >
+            <router-link to="/join-us">Devenir vendeur</router-link>
+          </li>
         </ul>
       </div>
       <p class="footer__content__text">

@@ -74,7 +74,7 @@ const router = createRouter({
         "ROLE_SELLER"
       )
         ? import("../components/Account/seller/Orders.vue")
-         : import("../components/Account/client/Orders.vue"),
+        : import("../components/Account/client/Orders.vue"),
       meta: { requiresAuth: true },
     },
     {
