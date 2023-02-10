@@ -27,10 +27,11 @@ function setToast(message, type) {
 }
 
 const getUserInformation = () => {
-  ProfileLogic.getUserInformation()
+  const user = JSON.parse(localStorage.getItem("app-user"));
+  ProfileLogic.getUserInformation(user?.id)
     .then((response) => {
       if (response.status === 200) {
-        const user = response?.data[0];
+        const user = response?.data;
         username.value = `${user.firstname} ${user.lastname}`;
         firstName.value = user.firstname;
         lastName.value = user.lastname;
