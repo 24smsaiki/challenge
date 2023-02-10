@@ -5,7 +5,7 @@ export default class OrdersRepository {
     return await Request.make("get", "/users");
   }
 
-  static async updateUserInformation(id, body) {
-    return await Request.make("put", `/users/${id}`, { ...body });
+  static async updateUserInformation(body) {
+    return await Request.make("post", "/users/updateprofile", { ...body });
   }
 }

@@ -5,7 +5,7 @@ export default class SettingsLogic {
     return await SettingsRepository.getUserInformation();
   }
 
-  static async updateUserInformation(id, body) {
-    return await SettingsRepository.updateUserInformation(id, body);
+  static async updateUserInformation(body) {
+    return await SettingsRepository.updateUserInformation(body);
   }
 }

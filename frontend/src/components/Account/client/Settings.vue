@@ -139,19 +139,22 @@ function setToast(message, type) {
   });
 }
 
-// TODO WAIT FOR API TO FINISH
 const updateUser = () => {
-  console.log(">>>", settingsForm.value);
-  // SettingsLogic.updateUser(settingsForm.value)
-  //   .then((res) => {
-  //     if (res.status === 200) {
-  //       // settingsForm.value = [...settingsForm.value]; // TODO necessary ?
-  //       setToast("Vos informations ont été mises à jour", "success");
-  //     }
-  //   })
-  //   .catch(() =>
-  //     setToast("Une erreur est survenue lors de la mise à jour", "danger")
-  //   );
+  const data = {
+    firstname: settingsForm.value.firstname,
+    lastname: settingsForm.value.lastname,
+    password: settingsForm.value.password,
+  };
+
+  SettingsLogic.updateUserInformation(data)
+    .then((res) => {
+      if (res.status === 200) {
+        setToast("Vos informations ont été mises à jour", "success");
+      }
+    })
+    .catch(() => {
+      setToast("Une erreur est survenue lors de la mise à jour", "danger");
+    });
 };
 
 const getUserInformation = () => {
@@ -163,8 +166,8 @@ const getUserInformation = () => {
         settingsForm.value.firstname = user.firstname;
         settingsForm.value.lastname = user.lastname;
         settingsForm.value.email = user.email;
-        settingsForm.value.password = "fakePassword";
-        settingsForm.value.confirmPassword = "fakePassword";
+        settingsForm.value.password = "";
+        settingsForm.value.confirmPassword = "";
       }
     })
     .catch(() =>
