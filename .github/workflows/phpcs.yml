@@ -35,7 +35,7 @@ jobs:
 
       - name: Run PHPStan
         run: |
-          cd backend
+          cd backend && docker docker-compose exec php sh &&
           ./vendor/bin/phpstan analyse -c phpstan.neon src
 
       - name: Check for errors
