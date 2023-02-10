@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -22,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(mercure: true, security: 'is_granted("ROLE_USER")', denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
+#[ApiResource(mercure: true, security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiResource(operations: [
@@ -31,13 +30,14 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         uriTemplate: '/register',
         controller: RegisterController::class
     ),
-    new Put(
-        name: 'updateProfile',
-        uriTemplate: '/users/ManageProfile',
+    new Post(
+        name: 'updateprofile',
+        uriTemplate: '/users/updateprofile',
         controller: ManageProfileClientController::class,
-        security: 'is_granted("ROLE_USER")'
+        security: 'is_granted("ROLE_USER")',
     )
 ])]
+
 
 #[UniqueEntity(fields: ['email'], message: 'Cet email est déjà utilisé.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
