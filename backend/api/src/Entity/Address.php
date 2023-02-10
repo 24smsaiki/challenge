@@ -2,8 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AddressRepository;
@@ -61,6 +59,9 @@ class Address
     #[ORM\OneToMany(mappedBy: 'delivery', targetEntity: Order::class)]
     #[Groups(['post'])]
     private Collection $orders;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $is_deleted = false;
 
     public function __construct()
     {
@@ -208,6 +209,18 @@ class Address
                 $order->setDelivery(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsDeleted(): ?bool
+    {
+        return $this->is_deleted;
+    }
+
+    public function setIsDeleted(?bool $is_deleted): self
+    {
+        $this->is_deleted = $is_deleted;
 
         return $this;
     }

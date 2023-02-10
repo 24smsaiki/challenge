@@ -44,7 +44,7 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
      */
     public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, Operation $operation = null, array $context = []): void
     {
-        $this->addWhere($queryBuilder, $resourceClass);
+        return;
     }
 
     /**

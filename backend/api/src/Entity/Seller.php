@@ -17,7 +17,7 @@ use App\Controller\ManageRequestAccountSellerController;
 use App\Controller\ManageShopInfoController;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(mercure: true, security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
+#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/seller/request/answer/{id}',
@@ -32,6 +32,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         security: 'is_granted("ROLE_SELLER")',
     )
 ])]
+
 #[ORM\EntityListeners([SellerListener::class])]
 #[ORM\Entity(repositoryClass: SellerRepository::class)]
 

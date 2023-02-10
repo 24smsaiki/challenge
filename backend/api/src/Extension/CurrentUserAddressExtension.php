@@ -45,7 +45,7 @@ final class CurrentUserAddressExtension implements QueryCollectionExtensionInter
      */
     public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, Operation $operation = null, array $context = []): void
     {
-        $this->addWhere($queryBuilder, $resourceClass);
+        return;
     }
 
     /**
@@ -69,10 +69,13 @@ final class CurrentUserAddressExtension implements QueryCollectionExtensionInter
         // here select only those addresses published by the current user
         if($this->securityChecker->isGranted('ROLE_USER'))
         {
+            $notDeleted = false;
             $queryBuilder
                 ->select($rootAlias)    
                 ->where('o.customer = :current_user')
+                ->andWhere('o.is_deleted = :notDeleted')
                 ->setParameter('current_user', $user)
+                ->setParameter('notDeleted', $notDeleted)
             ;
             return;
         }

@@ -10,9 +10,6 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 
-/**
- * This extension makes sure normal users can only access their own Orders
- */
 final class CurrentSellerExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
     private $securityChecker;
@@ -43,7 +40,7 @@ final class CurrentSellerExtension implements QueryCollectionExtensionInterface,
      */
     public function applyToItem(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, array $identifiers, Operation $operation = null, array $context = []): void
     {
-        $this->addWhere($queryBuilder, $resourceClass);
+        return;
     }
 
     /**
