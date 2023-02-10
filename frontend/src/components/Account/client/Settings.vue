@@ -190,7 +190,9 @@ getUser();
             id="username"
             type="text"
             placeholder="Nom d'utilisateur"
-            v-model="settingsForm.username"
+            :value="settingsForm.username"
+            disabled
+            readonly
             @input="isUserName"
           />
         </div>
