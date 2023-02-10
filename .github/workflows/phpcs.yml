@@ -23,9 +23,26 @@ jobs:
           standard: phpcs.xml
   phpstan:
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: php-actions/composer@v6 # or alternative dependency management
-    - uses: php-actions/phpstan@v3
-      with:
-        path: src/
+
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          composer install --no-interaction --no-suggest
+
+      - name: Run PHPStan
+        run: |
+          cd backend
+          ./vendor/bin/phpstan analyse -c phpstan.neon src
+
+      - name: Check for errors
+        run: |
+          if [ "$(cd backend && ./vendor/bin/phpstan analyse -c phpstan.neon src --error-format=table | grep -c error)" -eq 0 ]; then
+            echo "No errors detected."
+          else
+            echo "Errors detected."
+            exit 1
+          fi
