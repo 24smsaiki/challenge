@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd backend
-          composer install --no-interaction --no-suggest
+          composer install
 
       - name: Run PHPStan
         run: |
