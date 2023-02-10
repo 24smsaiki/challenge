@@ -67,16 +67,16 @@ const router = createRouter({
       component: () => import("../views/Seller.vue"),
       meta: { requiresAuth: true },
     },
-    {
-      path: "/account/orders",
-      name: "Orders",
-      component: JSON.parse(localStorage.getItem("app-user"))?.roles.includes(
-        "ROLE_SELLER"
-      )
-        ? import("../components/Account/seller/Orders.vue")
-        : import("../components/Account/client/Orders.vue"),
-      meta: { requiresAuth: true },
-    },
+    // {
+    //   path: "/account/orders",
+    //   name: "Orders",
+    //   component: JSON.parse(localStorage.getItem("app-user"))?.roles.includes(
+    //     "ROLE_SELLER"
+    //   )
+    //     ? import("../components/Account/seller/Orders.vue")
+    //      : import("../components/Account/client/Orders.vue"),
+    //   meta: { requiresAuth: true },
+    // },
     {
       path: "/account/addresses",
       name: "Addresses",

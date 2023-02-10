@@ -3,6 +3,12 @@ import LocalStorage from "../services/LocalStorage";
 import jwt_decode from "jwt-decode";
 
 export default class AuthLogic {
+
+  static async registerSeller(body) {
+    const result = await AuthRepository.registerSeller(body);
+    return result.message;
+  }
+
   static async register(body) {
     const result = await AuthRepository.register(body);
     return result.message;
