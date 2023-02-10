@@ -25,30 +25,24 @@ jobs:
   phpstan:
     runs-on: ubuntu-latest
     steps:
-      - name: Verify backend folder exists
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # - name: Install dependencies
+      #   run: |
+      #     cd backend
+      #     composer install
+
+      - name: Run PHPStan
         run: |
-          cd ../backend/ 
+          cd backend
+          ./vendor/bin/phpstan analyse -c phpstan.neon src
 
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - name: Checkout code
-    #     uses: actions/checkout@v2
-
-    #   - name: Install dependencies
-    #     run: |
-    #       cd backend
-    #       composer install
-
-    #   - name: Run PHPStan
-    #     run: |
-    #       cd backend
-    #       ./vendor/bin/phpstan analyse -c phpstan.neon src
-
-    #   - name: Check for errors
-    #     run: |
-    #       if [ "$(cd backend && ./vendor/bin/phpstan analyse -c phpstan.neon src --error-format=table | grep -c error)" -eq 0 ]; then
-    #         echo "No errors detected."
-    #       else
-    #         echo "Errors detected."
-    #         exit 1
-    #       fi
+      - name: Check for errors
+        run: |
+          if [ "$(cd backend && ./vendor/bin/phpstan analyse -c phpstan.neon src --error-format=table | grep -c error)" -eq 0 ]; then
+            echo "No errors detected."
+          else
+            echo "Errors detected."
+            exit 1
+          fi
