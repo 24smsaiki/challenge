@@ -46,16 +46,16 @@ const router = createRouter({
       name: "Logout",
       component: import("../views/Logout.vue"),
     },
-    {
-      path: "/account",
-      name: "Account",
-      component: JSON.parse(localStorage.getItem("app-user"))?.roles.includes(
-        "ROLE_SELLER"
-      )
-        ? import("../components/Account/seller/Account.vue")
-        : import("../components/Account/client/Account.vue"),
-      meta: { requiresAuth: true },
-    },
+    // {
+    //   path: "/account",
+    //   name: "Account",
+    //   component: JSON.parse(localStorage.getItem("app-user"))?.roles.includes(
+    //     "ROLE_SELLER"
+    //   )
+    //     ? import("../components/Account/seller/Account.vue")
+    //     : import("../components/Account/client/Account.vue"),
+    //   meta: { requiresAuth: true },
+    // },
     {
       path: "/order/payment/success/:id",
       name: "PaymentSuccess",
@@ -66,17 +66,18 @@ const router = createRouter({
       name: "JoinUs",
       component: () => import("../views/Seller.vue"),
       meta: { requiresAuth: true },
+      
     },
-    {
-      path: "/account/orders",
-      name: "Orders",
-      component: JSON.parse(localStorage.getItem("app-user"))?.roles.includes(
-        "ROLE_SELLER"
-      )
-        ? import("../components/Account/seller/Orders.vue")
-        : import("../components/Account/client/Orders.vue"),
-      meta: { requiresAuth: true },
-    },
+    // {
+    //   path: "/account/orders",
+    //   name: "Orders",
+    //   component: JSON.parse(localStorage.getItem("app-user"))?.roles.includes(
+    //     "ROLE_SELLER"
+    //   )
+    //     ? import("../components/Account/seller/Orders.vue")
+    //     : import("../components/Account/client/Orders.vue"),
+    //   meta: { requiresAuth: true },
+    // },
     {
       path: "/account/addresses",
       name: "Addresses",
@@ -87,6 +88,12 @@ const router = createRouter({
       path: "/account/settings",
       name: "Settings",
       component: import("../components/Account/client/Settings.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/admin/dashboard",
+      name: "AdminDashboard",
+      component: import("../views/Admin/Dashboard.vue"),
       meta: { requiresAuth: true },
     },
   ],
