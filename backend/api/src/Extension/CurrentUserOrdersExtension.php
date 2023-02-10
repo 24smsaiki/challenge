@@ -10,7 +10,6 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 
-use function PHPSTORM_META\map;
 
 /**
  * This extension makes sure normal users can only access their own Orders

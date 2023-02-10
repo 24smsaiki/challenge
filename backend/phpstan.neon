@@ -1,0 +1,23 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+
+parameters:
+    symfony:
+        app_dir: 'app'
+        container_xml_path: 'app/config/container.xml'
+        cache_dir: 'var/cache/phpstan'
+    paths:
+        - src/
+services:
+    - Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver(~, ~)
+
+file_exclude_patterns:
+    - 'var/'
+    - 'public/'
+    - 'config/routes.yaml'
+    - 'config/routes/annotations.yaml'
+
+ignoreErrors:
+    - '#Access to an undefined property API\\.*::\$.*#'includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
