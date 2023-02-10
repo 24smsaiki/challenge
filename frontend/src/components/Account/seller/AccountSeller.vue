@@ -1,7 +1,7 @@
 <script setup>
 import Header from "../../Header.vue";
-import Sidebar from "./Sidebar.vue";
-import Profile from "./Profile.vue";
+import Sidebar from "./SidebarSeller.vue";
+import Profile from "./ProfileSeller.vue";
 </script>
 
 <template>

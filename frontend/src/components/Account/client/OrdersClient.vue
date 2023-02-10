@@ -1,6 +1,6 @@
 <script setup>
 import Header from "../../Header.vue";
-import Sidebar from "./Sidebar.vue";
+import Sidebar from "./SidebarClient.vue";
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
 import OrdersLogic from "../../../logics/Account/client/OrdersLogic";

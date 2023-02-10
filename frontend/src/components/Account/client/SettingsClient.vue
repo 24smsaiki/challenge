@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { createToast } from "mosha-vue-toastify";
 import Header from "../../Header.vue";
-import Sidebar from "./Sidebar.vue";
+import Sidebar from "./SidebarClient.vue";
 import SettingsLogic from "../../../logics/Account/client/SettingsLogic";
 
 const settingsForm = ref({

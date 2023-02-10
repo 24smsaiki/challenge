@@ -49,11 +49,7 @@ const router = createRouter({
     {
       path: "/account",
       name: "Account",
-      component: JSON.parse(localStorage.getItem("app-user"))?.roles.includes(
-        "ROLE_SELLER"
-      )
-        ? import("../components/Account/seller/Account.vue")
-        : import("../components/Account/client/Account.vue"),
+      component: import("../components/Account/Account.vue"),
       meta: { requiresAuth: true },
     },
     {
@@ -70,23 +66,19 @@ const router = createRouter({
     {
       path: "/account/orders",
       name: "Orders",
-      component: JSON.parse(localStorage.getItem("app-user"))?.roles.includes(
-        "ROLE_SELLER"
-      )
-        ? import("../components/Account/seller/Orders.vue")
-        : import("../components/Account/client/Orders.vue"),
+      component: import("../components/Account/Orders.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/account/addresses",
       name: "Addresses",
-      component: import("../components/Account/client/Addresses.vue"),
+      component: import("../components/Account/client/AddressesClient.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/account/settings",
       name: "Settings",
-      component: import("../components/Account/client/Settings.vue"),
+      component: import("../components/Account/Settings.vue"),
       meta: { requiresAuth: true },
     },
   ],
