@@ -26,9 +26,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install dependencies
-        run: |
-          composer install --no-interaction --no-suggest
       - name: Run PHPStan
         run: |
           ./vendor/bin/phpstan analyse -c phpstan.neon src
+      - name: Check for errors
+        run: |
+          if [ "$(./vendor/bin/phpstan analyse -c phpstan.neon src --error-format=table | grep -c error)" -eq 0 ]; then
+            echo "No errors detected."
+          else
+            echo "Errors detected."
+            exit 1
+          fi
