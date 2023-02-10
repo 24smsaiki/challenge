@@ -28,17 +28,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: docker run --rm -v $PWD/backend:/app composer install --no-interaction 
-      - name: Run PHPStan
-        run: |
-          ./vendor/bin/phpstan analyse -c phpstan.neon src
+      - name: Install dependencies && run phpstan
+        run: docker run --rm -v $PWD/backend:/app composer exec --working-dir=/app vendor/bin/phpstan analyse -c phpstan.neon src
 
-      - name: Check for errors
-        run: |
-          if [ "$(cd backend && ./vendor/bin/phpstan analyse -c phpstan.neon src --error-format=table | grep -c error)" -eq 0 ]; then
-            echo "No errors detected."
-          else
-            echo "Errors detected."
-            exit 1
-          fi
+      
