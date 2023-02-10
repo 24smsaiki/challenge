@@ -27,15 +27,15 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Table(name: '`user`')]
 #[ApiResource(operations: [
     new Post(
-        name: 'register', 
-        uriTemplate: '/register', 
+        name: 'register',
+        uriTemplate: '/register',
         controller: RegisterController::class
     ),
     new Put(
         name: 'updateProfile',
-        uriTemplate:'/users/ManageProfile',
-        controller: ManageProfileClientController::class,  
-        security: 'is_granted("ROLE_USER")' 
+        uriTemplate: '/users/ManageProfile',
+        controller: ManageProfileClientController::class,
+        security: 'is_granted("ROLE_USER")'
     )
 ])]
 
@@ -66,11 +66,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
     private ?string $password;
 
-    #[Groups(['post','get'])]
+    #[Groups(['post', 'get'])]
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Address::class)]
     private Collection $Address;
 
-    #[Groups(['post','get'])]
+    #[Groups(['post', 'get'])]
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Order::class)]
     private Collection $orders;
 
@@ -93,7 +93,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
 
-   
+
     public function __construct()
     {
         $this->Address = new ArrayCollection();
@@ -237,13 +237,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setToken(?string $token): self
     {
-        
+
         $this->token = $token;
-       
+
         return $this;
     }
 
-    
+
 
     public function getIsPasswordRequest(): ?bool
     {
