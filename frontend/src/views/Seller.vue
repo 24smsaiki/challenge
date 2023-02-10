@@ -27,7 +27,6 @@ const errors = reactive({
   confirmPassword: "",
   firstname: "",
   lastname: "",
-  message: "",
 });
 
 const isFormValid = () => {
@@ -133,7 +132,6 @@ const isConfirmPassword = () => {
 };
 
 const redirectToHome = () => {
-  // redirect with vue router
   router.push({ name: "Home" });
 };
 
@@ -155,7 +153,11 @@ const onSubmit = () => {
       loading.value = false;
       
       if( error.response.status ? error.response.status === 500 : false) {
-        errors.message = "Une erreur est survenue, veuillez réessayer ultérieurement."
+        createToast("Une erreur est survenue. Veuillez réessayer ultérieurement.", {
+          type: "error",
+          position: "top-right",
+          timeout: 3000,
+        });
       }
     }).finally(() => {
       loading.value = false;
@@ -314,9 +316,6 @@ const onSubmit = () => {
             :disabled="!isFormValid"
             :style="setValidFormClass">Soumettre</button>
           </div>
-          <p class="messageErrors mb-3 ml-0" v-if="errors?.message">
-          {{ errors.message }}
-        </p>
         </form>
 
         <div class="success">
