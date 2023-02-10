@@ -24,15 +24,9 @@ jobs:
   
   phpstan:
     name: PHPStan
-
     runs-on: ubuntu-latest
-
     steps:
-    - name: "Checkout"
-      uses: actions/checkout@v2
-
-    - name: PHPStan
-      uses: docker://oskarstark/phpstan-ga
+    - name: PHPStan Static Analysis
+      uses: php-actions/phpstan@v3
       with:
-        args: analyse ./backend/api/src/
-      
+        configuration: ./backend/phpstan.neon
