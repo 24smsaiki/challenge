@@ -1,4 +1,4 @@
-import AddressesRepository from "../../repositories/Account/AddressesRepository";
+import AddressesRepository from "../../../repositories/Account/client/AddressesRepository";
 
 export default class AddressesLogic {
   static async getAddresses() {

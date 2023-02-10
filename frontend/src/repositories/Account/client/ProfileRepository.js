@@ -1,4 +1,4 @@
-import * as Request from "../../services/request";
+import * as Request from "../../../services/request";
 
 export default class ProfileRepository {
   static async getUser() {

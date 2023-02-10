@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed } from "vue";
 import { createToast } from "mosha-vue-toastify";
-import Header from "../Header.vue";
+import Header from "../../Header.vue";
 import Sidebar from "./Sidebar.vue";
-import SettingsLogic from "../../logics/Account/SettingsLogic";
+import SettingsLogic from "../../../logics/Account/client/SettingsLogic";
 
 const settingsForm = ref({
   username: "",
@@ -141,7 +141,7 @@ function setToast(message, type) {
 
 // TODO WAIT FOR API TO FINISH
 const updateUser = () => {
-  // console.log(">>>", settingsForm.value);
+  console.log(">>>", settingsForm.value);
   // SettingsLogic.updateUser(settingsForm.value)
   //   .then((res) => {
   //     if (res.status === 200) {

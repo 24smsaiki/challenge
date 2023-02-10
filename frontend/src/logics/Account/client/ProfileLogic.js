@@ -1,4 +1,4 @@
-import ProfileRepository from "../repositories/ProfileRepository";
+import ProfileRepository from "../../../repositories/Account/client/ProfileRepository";
 
 export default class ProfileLogic {
   static async getUser() {

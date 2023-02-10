@@ -1,4 +1,4 @@
-import SettingsRepository from "../../repositories/Account/SettingsRepository";
+import SettingsRepository from "../../../repositories/Account/client/SettingsRepository";
 
 export default class SettingsLogic {
   static async getUser() {

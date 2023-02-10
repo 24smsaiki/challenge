@@ -1,17 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Account from "../components/Account/Account.vue";
-import Addresses from "../components/Account/Addresses.vue";
+import Account from "../components/Account/client/Account.vue";
+import Addresses from "../components/Account/client/Addresses.vue";
 import Category from "../views/Category.vue";
 import Checkout from "../views/Checkout.vue";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Logout from "../views/Logout.vue";
 import NotFound from "../views/NotFound.vue";
-import Orders from "../components/Account/Orders.vue";
+import Orders from "../components/Account/client/Orders.vue";
 import Product from "../views/Product.vue";
 import Register from "../views/Register.vue";
-import Settings from "../components/Account/Settings.vue";
+import Settings from "../components/Account/client/Settings.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

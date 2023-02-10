@@ -1,9 +1,9 @@
 <script setup>
-import Header from "../Header.vue";
+import Header from "../../Header.vue";
 import Sidebar from "./Sidebar.vue";
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
-import OrdersLogic from "../../logics/Account/OrdersLogic";
+import OrdersLogic from "../../../logics/Account/client/OrdersLogic";
 
 // Only using to debug and test
 const dataUsingToTest = {

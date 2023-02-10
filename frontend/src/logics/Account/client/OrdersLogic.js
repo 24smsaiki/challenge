@@ -1,4 +1,4 @@
-import OrdersRepository from "../../repositories/Account/OrdersRepository";
+import OrdersRepository from "../../../repositories/Account/client/OrdersRepository";
 
 export default class OrdersLogic {
   static async getOrders() {
