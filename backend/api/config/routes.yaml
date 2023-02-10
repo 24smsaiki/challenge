@@ -26,6 +26,11 @@ order_fail:
     path: /order/payment/fail/{stripeSessionId}
     controller: App\Controller\OrderFailController::__invoke
     methods: ['GET']
+    
+manage_request_seller_account:
+    path: /seller/request/answer/{id}
+    controller: App\Controller\ManageRequestAccountSellerController::__invoke
+    methods: ['POST']
 
 activation_user:
     path: /user/activation/{token}
