@@ -21,10 +21,11 @@ jobs:
           files: "**.php"
           phpcs_path: php phpcs.phar
           standard: phpcs.xml
+  
   phpstan:
     - name: Verify backend folder exists
-    run: |
-      ls backend
+      run: |
+        ls backend
 
     # runs-on: ubuntu-latest
     # steps:
