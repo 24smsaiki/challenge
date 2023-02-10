@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use Stripe\Stripe;
@@ -30,46 +31,45 @@ class OrdersBySellerController extends AbstractController
         private ManagerRegistry $managerRegistry,
         private ValidatorInterface $validator,
         private Security $security
-    ) {}
+    ) {
+    }
 
     #[IsGranted('ROLE_SELLER')]
     public function __invoke()
     {
         $seller = $this->managerRegistry->getManager()->getRepository(Seller::class)->findOneByUserId($this->security->getUser()->getId());
-       
+
         $queryBuilder = $this->managerRegistry->getManager()->createQueryBuilder('o');
         $queryBuilder->select('o')
             ->from(OrderDetails::class, 'o')
-            ->leftJoin('o.myOrder','m')
-            ->leftJoin('o.item','i')
-            ->leftJoin('i.seller','s')
+            ->leftJoin('o.myOrder', 'm')
+            ->leftJoin('o.item', 'i')
+            ->leftJoin('i.seller', 's')
             ->where('s.id = :seller')
             ->andWhere('m.isPaid = true')
             ->groupBy('m.reference')
-            ->orderBy('m.createdAt',"DESC")
-            ->setParameter('seller', $seller)  
+            ->orderBy('m.createdAt', "DESC")
+            ->setParameter('seller', $seller)
         ;
 
         $query = $queryBuilder->getQuery();
         $orderDetails = $query->getResult();
         $orderArray = array();
         $total = 0;
-        foreach($orderDetails as $detail) {
+        foreach ($orderDetails as $detail) {
             // $total += $detail->getTotalPrice();
-            if($detail->getId())
-            $orderArray[] = array(
+            if ($detail->getId()) {
+                $orderArray[] = array(
                 'reference' => $detail->getMyOrder()->getReference(),
                 'createdAt' => $detail->getMyOrder()->getCreatedAt(),
-            );
+                );
+            }
         }
         $response = new Response();
-        $response->setContent(json_encode(array("orders"=>$orderArray)));
+        $response->setContent(json_encode(array("orders" => $orderArray)));
         $response->headers->set("Content-Type", "application/json");
         $response->headers->set("Access-Control-Allow-Origin", "*");
 
         return $response;
-
-        
-        
     }
 }

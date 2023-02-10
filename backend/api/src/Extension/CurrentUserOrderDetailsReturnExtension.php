@@ -2,7 +2,6 @@
 
 namespace App\Extension;
 
-
 use Doctrine\ORM\QueryBuilder;
 use ApiPlatform\Metadata\Operation;
 use Symfony\Component\Security\Core\Security;
@@ -30,7 +29,7 @@ final class CurrentUserOrderDetailsReturnExtension implements QueryCollectionExt
      * @param Operation $operation
      * @param array $context
      */
-    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []) : void
+    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
         $this->addWhere($queryBuilder, $resourceClass);
     }
@@ -55,7 +54,7 @@ final class CurrentUserOrderDetailsReturnExtension implements QueryCollectionExt
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (OrderDetailsReturn::class !== $resourceClass){
+        if (OrderDetailsReturn::class !== $resourceClass) {
             return;
         }
 
@@ -63,12 +62,11 @@ final class CurrentUserOrderDetailsReturnExtension implements QueryCollectionExt
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $user = $this->securityChecker->getUser();
 
-        if(null === $user){
+        if (null === $user) {
             return;
         }
         // here the orders concerned by the seller (select only those have at least one product published by the current seller)
-        if($this->securityChecker->isGranted('ROLE_SELLER'))
-        {
+        if ($this->securityChecker->isGranted('ROLE_SELLER')) {
             $queryBuilder
                 ->select($rootAlias)
                 ->innerJoin('o.item', 'i')
@@ -78,7 +76,7 @@ final class CurrentUserOrderDetailsReturnExtension implements QueryCollectionExt
             ;
             return;
         }
-        
+
         if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
             return;
         }

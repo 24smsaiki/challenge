@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\OrderDetailsReturnRepository;
 
-
 #[ApiResource(mercure: true, security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
 #[ORM\Entity(repositoryClass: OrderDetailsReturnRepository::class)]
 class OrderDetailsReturn
@@ -16,7 +15,7 @@ class OrderDetailsReturn
     #[ORM\Column]
     private ?int $id = null;
 
-   
+
 
     #[ORM\ManyToOne(inversedBy: 'orderDetailsReturns')]
     private ?Product $item = null;
@@ -31,7 +30,7 @@ class OrderDetailsReturn
     {
         return $this->id;
     }
-    
+
     public function getItem(): ?Product
     {
         return $this->item;

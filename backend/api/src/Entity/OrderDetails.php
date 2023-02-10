@@ -7,7 +7,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\OrderDetailsRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true,normalizationContext: ['groups' => ['get']])]
+#[ApiResource(mercure: true, normalizationContext: ['groups' => ['get']])]
 #[ORM\Entity(repositoryClass: OrderDetailsRepository::class)]
 
 class OrderDetails

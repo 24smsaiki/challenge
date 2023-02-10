@@ -2,7 +2,6 @@
 
 namespace App\Extension;
 
-
 use Doctrine\ORM\QueryBuilder;
 use ApiPlatform\Metadata\Operation;
 use Symfony\Component\Security\Core\Security;
@@ -30,7 +29,7 @@ final class CurrentUserAddressExtension implements QueryCollectionExtensionInter
      * @param Operation $operation
      * @param array $context
      */
-    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []) : void
+    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
         $this->addWhere($queryBuilder, $resourceClass);
     }
@@ -55,22 +54,23 @@ final class CurrentUserAddressExtension implements QueryCollectionExtensionInter
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Address::class !== $resourceClass 
-        || $this->securityChecker->isGranted('ROLE_ADMIN')){
+        if (
+            Address::class !== $resourceClass
+            || $this->securityChecker->isGranted('ROLE_ADMIN')
+        ) {
             return;
         }
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $user = $this->securityChecker->getUser();
-        
-        if(null === $user){
+
+        if (null === $user) {
             return;
         }
         // here select only those addresses published by the current user
-        if($this->securityChecker->isGranted('ROLE_USER'))
-        {
+        if ($this->securityChecker->isGranted('ROLE_USER')) {
             $queryBuilder
-                ->select($rootAlias)    
+                ->select($rootAlias)
                 ->where('o.customer = :current_user')
                 ->setParameter('current_user', $user)
             ;

@@ -17,7 +17,8 @@ class ResetPasswordController extends AbstractController
         private RequestStack $requestStack,
         private ManagerRegistry $managerRegistry,
         private MailService $mail
-    ) {}
+    ) {
+    }
 
     public function __invoke()
     {
@@ -25,7 +26,7 @@ class ResetPasswordController extends AbstractController
         $email = json_decode($request->getContent())->email;
 
         $em = $this->managerRegistry->getManager();
-        
+
         /** @var User $user */
         if (!$user = $em->getRepository(User::class)->findOneBy(['email' => $email])) {
             return $this->createNotFoundException();
@@ -34,8 +35,8 @@ class ResetPasswordController extends AbstractController
         $user->setToken(bin2hex(random_bytes(32)));
         $user->setIsPasswordRequest(true);
         $em->flush();
-        $content = "<h3>Vous avez demandé un nouveau mot de passe voici le lien"." https://localhost/update/password/".$user->getToken()."</h3>";
-        $this->mail->send($email,'Reset password',$content);
+        $content = "<h3>Vous avez demandé un nouveau mot de passe voici le lien" . " https://localhost/update/password/" . $user->getToken() . "</h3>";
+        $this->mail->send($email, 'Reset password', $content);
 
         return new JsonResponse(['message' => 'reset password mail sent.', 'status' => 'success'], 201);
     }

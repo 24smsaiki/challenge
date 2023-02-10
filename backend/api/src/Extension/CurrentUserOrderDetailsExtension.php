@@ -2,7 +2,6 @@
 
 namespace App\Extension;
 
-
 use Doctrine\ORM\QueryBuilder;
 use ApiPlatform\Metadata\Operation;
 use Symfony\Component\Security\Core\Security;
@@ -31,7 +30,7 @@ final class CurrentUserOrderDetailsExtension implements QueryCollectionExtension
      * @param Operation $operation
      * @param array $context
      */
-    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []) : void
+    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
         $this->addWhere($queryBuilder, $resourceClass);
     }
@@ -56,32 +55,31 @@ final class CurrentUserOrderDetailsExtension implements QueryCollectionExtension
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (OrderDetails::class !== $resourceClass){
+        if (OrderDetails::class !== $resourceClass) {
             return;
         }
 
         // share operation between user and seller
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $user = $this->securityChecker->getUser();
-        
-        if(null === $user){
+
+        if (null === $user) {
             return;
         }
         // here select only those product's published by the current seller
-        if($this->securityChecker->isGranted('ROLE_SELLER'))
-        {
+        if ($this->securityChecker->isGranted('ROLE_SELLER')) {
             $queryBuilder
-                ->select($rootAlias)    
+                ->select($rootAlias)
                 ->distinct(false)
                 ->groupBy('o.myOrder')
                 ->innerJoin('o.item', 'p')
-                ->innerJoin('p.publisher','s')
+                ->innerJoin('p.publisher', 's')
                 ->where('s.userId = :current_user_id')
                 ->setParameter('current_user_id', $user->getId())
             ;
             return;
         }
-        
+
         if ($this->securityChecker->isGranted('ROLE_ADMIN') ||  $this->securityChecker->isGranted('ROLE_USER')) {
             return;
         }

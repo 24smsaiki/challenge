@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use Stripe\Stripe;
@@ -25,10 +26,10 @@ class OrderSuccessController extends AbstractController
     public function __construct(
         private ManagerRegistry $managerRegistry,
         private MailService $mail
+    ) {
+    }
 
-    ) {}
 
-  
     public function __invoke($stripeSessionId)
     {
         $order = $this->managerRegistry->getManager()->getRepository(Order::class)->findOneByStripeSessionId($stripeSessionId);
@@ -37,12 +38,10 @@ class OrderSuccessController extends AbstractController
         $em = $this->managerRegistry->getManager();
         $em->persist($order);
         $em->flush();
-        
+
         $content = "<h3>Felicition votre commande a bien été confirmé</h3>";
-        $this->mail->send($order->getCustomer()->getEmail(),'commande confirmée',$content);
+        $this->mail->send($order->getCustomer()->getEmail(), 'commande confirmée', $content);
 
         return new JsonResponse(['message' => 'order success mail sent', 'status' => 'success'], 201);
-
-        
     }
 }

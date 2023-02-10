@@ -15,10 +15,11 @@ class ActivationUserController extends AbstractController
 {
     public function __construct(
         private ManagerRegistry $managerRegistry,
-    ) {}
+    ) {
+    }
 
     /**
-     * 
+     *
      *  @param string $token
     */
 
@@ -27,14 +28,12 @@ class ActivationUserController extends AbstractController
         $em = $this->managerRegistry->getManager();
         $user = $em->getRepository(User::class)->findOneBy(['token' => $token]);
         if ($user->getToken() !== null) {
-            
             $user->setToken(null);
             $user->setIsActif(true);
             $em->flush();
-    
+
             return new JsonResponse(['message' => 'User correctly added', 'status' => 'success'], 201);
         } else {
-
             return new JsonResponse(['message' => 'Token expired', 'status' => 'success'], 201);
         }
     }

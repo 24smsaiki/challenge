@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -21,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Post(
         uriTemplate: '/order/pass',
         controller: NewOrderController::class,
-        name: 'order'  
+        name: 'order'
     )
 ])]
 
@@ -74,8 +73,6 @@ class Order
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
-
-
     }
 
     public function getId(): ?int
@@ -220,7 +217,4 @@ class Order
 
         return $this;
     }
-
-    
-    
 }

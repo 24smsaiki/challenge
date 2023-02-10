@@ -12,7 +12,7 @@ use App\Controller\OrderReturnController;
 use App\Repository\OrderReturnRepository;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[ApiResource(mercure: true,security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')" , denormalizationContext: ['groups' => ['post']])]
+#[ApiResource(mercure: true, security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => ['post']])]
 #[ORM\Entity(repositoryClass: OrderReturnRepository::class)]
 
 #[ApiResource(operations: [
@@ -132,6 +132,4 @@ class OrderReturn
 
         return $this;
     }
-
-   
 }

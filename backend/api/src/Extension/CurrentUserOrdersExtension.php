@@ -2,7 +2,6 @@
 
 namespace App\Extension;
 
-
 use App\Entity\Order;
 use Doctrine\ORM\QueryBuilder;
 use ApiPlatform\Metadata\Operation;
@@ -10,6 +9,7 @@ use Symfony\Component\Security\Core\Security;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
+
 use function PHPSTORM_META\map;
 
 /**
@@ -30,7 +30,7 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
      * @param Operation $operation
      * @param array $context
      */
-    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []) : void
+    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
         $this->addWhere($queryBuilder, $resourceClass);
     }
@@ -55,21 +55,22 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if ( Order::class !== $resourceClass 
-        || $this->securityChecker->isGranted('ROLE_ADMIN') 
-        || null === $user = $this->securityChecker->getUser() ) {
-            return;
-        }
-        
-        $rootAlias = $queryBuilder->getRootAliases()[0];
-        
-        // here the orders for the users (select only those passed by the current user)
-        if($this->securityChecker->isGranted('ROLE_USER')){
-            $queryBuilder->andWhere(sprintf('%s.customer = :current_user', $rootAlias));
-            $queryBuilder->setParameter('current_user', $user); 
-            
+        if (
+            Order::class !== $resourceClass
+            || $this->securityChecker->isGranted('ROLE_ADMIN')
+            || null === $user = $this->securityChecker->getUser()
+        ) {
             return;
         }
 
+        $rootAlias = $queryBuilder->getRootAliases()[0];
+
+        // here the orders for the users (select only those passed by the current user)
+        if ($this->securityChecker->isGranted('ROLE_USER')) {
+            $queryBuilder->andWhere(sprintf('%s.customer = :current_user', $rootAlias));
+            $queryBuilder->setParameter('current_user', $user);
+
+            return;
+        }
     }
 }

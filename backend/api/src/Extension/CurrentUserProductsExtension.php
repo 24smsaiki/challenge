@@ -2,7 +2,6 @@
 
 namespace App\Extension;
 
-
 use Doctrine\ORM\QueryBuilder;
 use ApiPlatform\Metadata\Operation;
 use Symfony\Component\Security\Core\Security;
@@ -29,7 +28,7 @@ final class CurrentUserProductsExtension implements QueryCollectionExtensionInte
      * @param Operation $operation
      * @param array $context
      */
-    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []) : void
+    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
         $this->addWhere($queryBuilder, $resourceClass);
     }
@@ -54,20 +53,19 @@ final class CurrentUserProductsExtension implements QueryCollectionExtensionInte
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Product::class !== $resourceClass){
+        if (Product::class !== $resourceClass) {
             return;
         }
 
         // share operation between user and seller
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $user = $this->securityChecker->getUser();
-        
-        if(null === $user){
+
+        if (null === $user) {
             return;
         }
         // here the orders concerned by the seller (select only those have at least one product published by the current seller)
-        if($this->securityChecker->isGranted('ROLE_SELLER'))
-        {
+        if ($this->securityChecker->isGranted('ROLE_SELLER')) {
             $queryBuilder
                 ->select($rootAlias)
                 ->innerJoin('o.publisher', 's')
@@ -76,7 +74,7 @@ final class CurrentUserProductsExtension implements QueryCollectionExtensionInte
             ;
             return;
         }
-        
+
         if ($this->securityChecker->isGranted('ROLE_ADMIN') ||  $this->securityChecker->isGranted('ROLE_USER')) {
             return;
         }

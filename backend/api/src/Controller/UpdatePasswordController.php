@@ -17,10 +17,11 @@ class UpdatePasswordController extends AbstractController
         private RequestStack $requestStack,
         private ManagerRegistry $managerRegistry,
         private UserPasswordHasherInterface $passwordHasher
-    ) {}
+    ) {
+    }
 
     /**
-     * 
+     *
      *  @param string $token
     */
 
@@ -29,12 +30,11 @@ class UpdatePasswordController extends AbstractController
         $em = $this->managerRegistry->getManager();
         $user = $em->getRepository(User::class)->findOneBy(['token' => $token]);
         $request = $this->requestStack->getCurrentRequest();
-        if($user->getIsPasswordRequest() === true ) {
-            
+        if ($user->getIsPasswordRequest() === true) {
             $newPassword = json_decode($request->getContent())->newPassword;
             $confirmPassword = json_decode($request->getContent())->confirmPassword;
-    
-            
+
+
             if ($newPassword === $confirmPassword) {
                 $hashedPassword = $this->passwordHasher->hashPassword(
                     $user,
@@ -44,13 +44,11 @@ class UpdatePasswordController extends AbstractController
                 $user->setIsPasswordRequest(false);
                 $user->setPassword($hashedPassword);
                 $em->flush();
-                
             }
-    
+
             return new JsonResponse(['message' => 'password updated', 'status' => 'success'], 201);
         } else {
             new JsonResponse(['message' => 'Token Expired', 'status' => 'success'], 201);
         }
-        
     }
 }

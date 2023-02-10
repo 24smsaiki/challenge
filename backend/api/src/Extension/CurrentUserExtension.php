@@ -2,7 +2,6 @@
 
 namespace App\Extension;
 
-
 use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use ApiPlatform\Metadata\Operation;
@@ -29,7 +28,7 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
      * @param Operation $operation
      * @param array $context
      */
-    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []) : void
+    public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, Operation $operation = null, array $context = []): void
     {
         $this->addWhere($queryBuilder, $resourceClass);
     }
@@ -54,23 +53,26 @@ final class CurrentUserExtension implements QueryCollectionExtensionInterface, Q
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (User::class !== $resourceClass 
-        || $this->securityChecker->isGranted('ROLE_ADMIN')){
+        if (
+            User::class !== $resourceClass
+            || $this->securityChecker->isGranted('ROLE_ADMIN')
+        ) {
             return;
         }
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $user = $this->securityChecker->getUser();
-        
-        if(null === $user){
+
+        if (null === $user) {
             return;
         }
         // here current user informations
-        if($this->securityChecker->isGranted('ROLE_USER') 
-        || $this->securityChecker->isGranted('ROLE_SELLER'))
-        {
+        if (
+            $this->securityChecker->isGranted('ROLE_USER')
+            || $this->securityChecker->isGranted('ROLE_SELLER')
+        ) {
             $queryBuilder
-                ->select($rootAlias)    
+                ->select($rootAlias)
                 ->where('o.id = :current_user_id')
                 ->setParameter('current_user_id', $user->getId())
             ;

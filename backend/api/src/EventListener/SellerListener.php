@@ -8,11 +8,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-
 class SellerListener implements EventSubscriberInterface
 {
-    
-    public function __construct(private RequestStack $requestStack,private UserPasswordHasherInterface $passwordHasher){}
+    public function __construct(private RequestStack $requestStack, private UserPasswordHasherInterface $passwordHasher)
+    {
+    }
 
     public function getSubscribedEvents(): array
     {
@@ -30,9 +30,5 @@ class SellerListener implements EventSubscriberInterface
             $hashedPassword = $this->passwordHasher->hashPassword($args, $content['password']);
             $args->setPassword($hashedPassword);
         }
-    
     }
-
 }
-
-

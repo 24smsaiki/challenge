@@ -8,44 +8,42 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 
 class JWTCreatedListener
 {
-    
 /**
  * @var RequestStack
  */
-private $requestStack;
+    private $requestStack;
 /**
  * @var UserRepository
  */
-private $userRepository;
+    private $userRepository;
 /**
  * @param RequestStack $requestStack
  */
-public function __construct(RequestStack $requestStack, UserRepository $userRepository)
-{
-    $this->requestStack = $requestStack;
-    $this->userRepository = $userRepository;
-}
+    public function __construct(RequestStack $requestStack, UserRepository $userRepository)
+    {
+        $this->requestStack = $requestStack;
+        $this->userRepository = $userRepository;
+    }
 
 /**
  * @param JWTCreatedEvent $event
  *
  * @return void
  */
-public function onJWTCreated(JWTCreatedEvent $event)
-{
-    $request = $this->requestStack->getCurrentRequest();
-    $content = json_decode($request->getContent(), true);
+    public function onJWTCreated(JWTCreatedEvent $event)
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        $content = json_decode($request->getContent(), true);
 
-    $currentUser = $this->userRepository->findOneBy(['email'=>$content["email"]]);
-    $payload = $event->getData();
-    $payload['id'] = $currentUser->getId();
-    
-    $event->setData($payload);
+        $currentUser = $this->userRepository->findOneBy(['email' => $content["email"]]);
+        $payload = $event->getData();
+        $payload['id'] = $currentUser->getId();
 
-    $header = $event->getHeader();
-    $header['cty'] = 'JWT';
+        $event->setData($payload);
 
-    $event->setHeader($header);
+        $header = $event->getHeader();
+        $header['cty'] = 'JWT';
+
+        $event->setHeader($header);
+    }
 }
-}
-

@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true,security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')",denormalizationContext: ['groups' => ['post']])]
+#[ApiResource(mercure: true, security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => ['post']])]
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ORM\EntityListeners([AddressListener::class])]
 class Address
@@ -65,7 +65,6 @@ class Address
     public function __construct()
     {
         $this->orders = new ArrayCollection();
-        
     }
 
     public function getId(): ?int
@@ -176,7 +175,7 @@ class Address
 
     public function setCustomer(?User $customer): self
     {
-        
+
         $this->customer = $customer;
 
         return $this;

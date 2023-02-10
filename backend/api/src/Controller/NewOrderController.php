@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Order;
@@ -25,18 +26,19 @@ class NewOrderController extends AbstractController
         private ValidatorInterface $validator,
         private Security $security,
         private StripeService $stripeService
-    ) {}
+    ) {
+    }
 
     public function __invoke()
     {
-        
+
 
         $request = $this->requestStack->getCurrentRequest();
         $em = $this->managerRegistry->getManager();
-        $body = json_decode($request->getContent(),true);
+        $body = json_decode($request->getContent(), true);
         $date = new \DateTime();
         $order = new Order();
-        $reference = $date->format('dmY').'-'.uniqid();
+        $reference = $date->format('dmY') . '-' . uniqid();
         $order->setReference($reference);
         $order->setCustomer($this->security->getUser());
         $order->setCreatedAt($date);
@@ -49,47 +51,44 @@ class NewOrderController extends AbstractController
 
         $em->persist($order);
         $total = 0;
-        $products_for_stripe =[];
+        $products_for_stripe = [];
 
-        foreach ($body['orderItems'] as $item)
-        {
+        foreach ($body['orderItems'] as $item) {
             $findItem = $em->getRepository(Product::class)->findOneById($item['itemId']);
-            $orderDetails = new OrderDetails;
+            $orderDetails = new OrderDetails();
             $orderDetails->setMyOrder($order);
             $orderDetails->setItem($findItem);
             $orderDetails->setQuantity($item['quantity']);
-            $orderDetails->setTotalPrice($findItem->getPrice()*$orderDetails->getQuantity());
+            $orderDetails->setTotalPrice($findItem->getPrice() * $orderDetails->getQuantity());
             $em->persist($orderDetails);
-            
+
             $total += $orderDetails->getTotalPrice();
 
             //set products to stripe
             $products_for_stripe[] = [
                 'price_data' => [
                   'currency' => 'eur',
-                  'unit_amount' => ceil($orderDetails->getTotalPrice()*100),
+                  'unit_amount' => ceil($orderDetails->getTotalPrice() * 100),
                   'product_data' => [
                     'name' => $orderDetails->getItem()->getLabel(),
-                    
+
                   ],
                 ],
                 'quantity' => $orderDetails->getQuantity(),
             ];
-            
-
         }
-        $order->setTotal($total+$order->getCarrier()->getFees());
+        $order->setTotal($total + $order->getCarrier()->getFees());
         $em->persist($order);
 
-        $stripeId = $this->stripeService->getSessionId($order,$products_for_stripe);
+        $stripeId = $this->stripeService->getSessionId($order, $products_for_stripe);
 
         $order->setStripeSessionId($stripeId);
         $em->flush();
 
-       
+
 
         $response = new Response();
-        $response->setContent(json_encode(array("stripeSessionId"=>$order->getStripeSessionId())));
+        $response->setContent(json_encode(array("stripeSessionId" => $order->getStripeSessionId())));
         return $response;
     }
 }

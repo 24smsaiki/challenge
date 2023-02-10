@@ -22,48 +22,46 @@ class OrdersProductsBySellerController extends AbstractController
         private ManagerRegistry $managerRegistry,
         private ValidatorInterface $validator,
         private Security $security
-    ) {}
+    ) {
+    }
 
     #[IsGranted('ROLE_SELLER')]
     public function __invoke($reference)
     {
         $productsArray = array();
         $seller = $this->managerRegistry->getManager()->getRepository(Seller::class)->findOneByUserId($this->security->getUser()->getId());
-        
-       
+
+
         $queryBuilder = $this->managerRegistry->getManager()->createQueryBuilder('o');
         $queryBuilder->select('o')
             ->from(OrderDetails::class, 'o')
-            ->leftJoin('o.myOrder','m')
-            ->leftJoin('o.item','i')
-            ->leftJoin('i.seller','s')
+            ->leftJoin('o.myOrder', 'm')
+            ->leftJoin('o.item', 'i')
+            ->leftJoin('i.seller', 's')
             ->where('s.id = :seller')
             ->andWhere('m.reference = :reference')
-            ->orderBy('m.createdAt',"DESC")
-            ->setParameter('seller', $seller)  
+            ->orderBy('m.createdAt', "DESC")
+            ->setParameter('seller', $seller)
             ->setParameter('reference', $reference)
         ;
 
         $query = $queryBuilder->getQuery();
         $products = $query->getResult();
-    
-        
-        foreach($products as $product) {
+
+
+        foreach ($products as $product) {
             $productsArray[] = array(
                 'label' => $product->getItem()->getLabel(),
                 'price' => $product->getItem()->getPrice(),
                 'quantity' => $product->getQuantity()
             );
         }
-        
+
         $response = new Response();
-        $response->setContent(json_encode(array("items"=>$productsArray)));
+        $response->setContent(json_encode(array("items" => $productsArray)));
         $response->headers->set("Content-Type", "application/json");
         $response->headers->set("Access-Control-Allow-Origin", "*");
 
         return $response;
-       
-        
-        
     }
 }

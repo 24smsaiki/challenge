@@ -1,12 +1,12 @@
-<?php 
+<?php
 
 namespace App\Service;
 
 use Mailjet\Client;
 use Mailjet\Resources;
 
-class MailService {
-
+class MailService
+{
     public function send($to_email, $subject, $content)
     {
         $mj = new Client($_ENV['MAILJET_APIKEY'], $_ENV['MAILJET_APISECRET'], true, ['version' => 'v3.1']);

@@ -22,7 +22,8 @@ class RegisterController extends AbstractController
         private UserPasswordHasherInterface $passwordHasher,
         private ValidatorInterface $validator,
         private MailService $mail
-    ) {}
+    ) {
+    }
 
     public function __invoke()
     {
@@ -30,12 +31,12 @@ class RegisterController extends AbstractController
         $em = $this->managerRegistry->getManager();
 
         $body = json_decode($request->getContent());
-        
+
         $email = $body->email;
         $password = $body->password;
         $passwordConfirmation = $body->passwordConfirmation;
-        
-        
+
+
 
         $user = new User();
         $hashedPassword = $this->passwordHasher->hashPassword(
@@ -54,30 +55,27 @@ class RegisterController extends AbstractController
 
         $errors = $this->validator->validate($user);
 
-        if($password !== $passwordConfirmation){
+        if ($password !== $passwordConfirmation) {
             $errors->add(new ConstraintViolation('Les mots de passe ne correspondent pas.', null, [], null, 'plainPassword', null));
         }
-        if(strlen($password) < 8){
+        if (strlen($password) < 8) {
             $errors->add(new ConstraintViolation('Le mot de passe doit contenir au moins 8 caractères.', null, [], null, 'password', null));
         }
-        if(count($errors) > 0){
-            $errors = array_map(function($error){
+        if (count($errors) > 0) {
+            $errors = array_map(function ($error) {
                 return [
                     "message" => $error->getMessage()
                 ];
-                
             }, iterator_to_array($errors));
-            
-            return new JsonResponse(['status' => 'error', 'errors' => $errors], 422);
 
+            return new JsonResponse(['status' => 'error', 'errors' => $errors], 422);
         }
-       
+
         $em->getRepository(User::class)->save($user, true);
-        
-        $content = "<h3>voici le lien d'activation de votre compte"." https://localhost/user/activation/".$user->getToken()."</h3>";
-        $this->mail->send($email,'Activation de compte',$content);
-        
+
+        $content = "<h3>voici le lien d'activation de votre compte" . " https://localhost/user/activation/" . $user->getToken() . "</h3>";
+        $this->mail->send($email, 'Activation de compte', $content);
+
         return new JsonResponse(['message' => "Un mail d'activation vient d'être envoyé à votre mail", 'status' => 'success'], 201);
-        
-}
+    }
 }
