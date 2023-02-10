@@ -29,6 +29,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies && run phpstan
-        run: docker run --rm -v $PWD/backend:/app composer exec --working-dir=/app vendor/bin/phpstan analyse -c phpstan.neon src
+        run:   docker run --rm -v $PWD/backend:/app composer install --no-interaction
+      
+      - name: Analyze with PHPStan
+        run: |
+          docker run --rm -v $PWD/backend:/app composer exec --working-dir=/app vendor/bin/phpstan analyse -c phpstan.neon src
 
       
