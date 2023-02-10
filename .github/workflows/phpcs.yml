@@ -25,9 +25,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-      - uses: actions/checkout@v2
-      - uses: php-actions/composer@v6 # or alternative dependency management
-      - uses: php-actions/phpstan@v3
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          composer install
 
       - name: Run PHPStan
         run: |
