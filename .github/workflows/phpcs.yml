@@ -23,6 +23,7 @@ jobs:
           standard: phpcs.xml
   
   phpstan:
+    runs-on: ubuntu-latest
     steps:
       - name: Verify backend folder exists
         run: |
