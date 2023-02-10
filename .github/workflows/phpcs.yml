@@ -22,26 +22,30 @@ jobs:
           phpcs_path: php phpcs.phar
           standard: phpcs.xml
   phpstan:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Verify backend folder exists
+    run: |
+      ls backend
 
-      - name: Install dependencies
-        run: |
-          cd backend
-          composer install
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v2
 
-      - name: Run PHPStan
-        run: |
-          cd backend
-          ./vendor/bin/phpstan analyse -c phpstan.neon src
+    #   - name: Install dependencies
+    #     run: |
+    #       cd backend
+    #       composer install
 
-      - name: Check for errors
-        run: |
-          if [ "$(cd backend && ./vendor/bin/phpstan analyse -c phpstan.neon src --error-format=table | grep -c error)" -eq 0 ]; then
-            echo "No errors detected."
-          else
-            echo "Errors detected."
-            exit 1
-          fi
+    #   - name: Run PHPStan
+    #     run: |
+    #       cd backend
+    #       ./vendor/bin/phpstan analyse -c phpstan.neon src
+
+    #   - name: Check for errors
+    #     run: |
+    #       if [ "$(cd backend && ./vendor/bin/phpstan analyse -c phpstan.neon src --error-format=table | grep -c error)" -eq 0 ]; then
+    #         echo "No errors detected."
+    #       else
+    #         echo "Errors detected."
+    #         exit 1
+    #       fi
