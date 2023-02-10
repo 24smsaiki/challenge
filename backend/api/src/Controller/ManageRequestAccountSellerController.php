@@ -38,6 +38,8 @@ class ManageRequestAccountSellerController extends AbstractController
                     $user->setPassword($getSeller->getPassword());
                     $user->setRoles(["ROLE_SELLER"]);
                     $user->setIsActif(true);
+                    $user->setFirstname($getSeller->getFirstname());
+                    $user->setLastname($getSeller->getLastname());
                     
                     
                     $em->persist($user);

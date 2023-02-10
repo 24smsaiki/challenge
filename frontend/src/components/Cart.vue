@@ -1,4 +1,3 @@
-
 <template>
   <div :class="['overlay', show ? 'showElement' : 'hideElement']"></div>
 
@@ -37,6 +36,7 @@
     </div>
     <router-link
       class="cart__router-link"
+      active-class="active"
       to="/checkout"
       @click="$emit('toggle-menu-show', 'cart')"
       v-if="cart.length > 0"
@@ -53,7 +53,7 @@ export default {
   props: { show: Boolean, cart: Array },
   methods: {
     editSrc(product) {
-      return product.image
+      return product.image;
     },
     separator(numb) {
       var str = numb.toString().split(".");

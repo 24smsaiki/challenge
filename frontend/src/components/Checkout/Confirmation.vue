@@ -57,7 +57,12 @@
         </div>
       </div>
     </div>
-    <router-link @click="goHomeHandler" to="/" class="home-link">
+    <router-link
+      active-class="active"
+      @click="goHomeHandler"
+      to="/"
+      class="home-link"
+    >
       <button class="home-link__btn default-btn">Page d'accueil</button>
     </router-link>
   </div>

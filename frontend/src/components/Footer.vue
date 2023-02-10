@@ -1,7 +1,7 @@
 <script setup>
 import { inject } from "vue";
 
-const isAuth = inject("ProviderisAuth");
+const isAuth = inject("ProviderIsAuth");
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
@@ -15,44 +15,54 @@ function scrollToTop() {
         <span class="footer__content__first-line__logo">GadgetMarket</span>
         <ul class="footer__content__first-line__link-list">
           <li class="footer__content__first-line__link-list__link">
-            <router-link @click="scrollToTop" to="/">Accueil</router-link>
+            <router-link active-class="active" @click="scrollToTop" to="/"
+              >Accueil</router-link
+            >
           </li>
           <li class="footer__content__first-line__link-list__link">
-            <router-link to="/">Produits</router-link>
+            <router-link active-class="active" to="/">Produits</router-link>
           </li>
           <li
             v-if="isAuth"
             class="footer__content__first-line__link-list__link"
           >
-            <router-link to="/account">Compte</router-link>
+            <router-link active-class="active" to="/account"
+              >Compte</router-link
+            >
           </li>
           <li
             v-if="isAuth"
             class="footer__content__first-line__link-list__link"
           >
-            <router-link to="/">Panier</router-link>
+            <router-link active-class="active" to="/">Panier</router-link>
           </li>
           <li class="footer__content__first-line__link-list__link">
-            <router-link to="/">Contact</router-link>
+            <router-link active-class="active" to="/">Contact</router-link>
           </li>
           <li
             v-if="!isAuth"
             class="footer__content__first-line__link-list__link"
           >
-            <router-link to="/register">Inscription</router-link>
+            <router-link active-class="active" to="/register"
+              >Inscription</router-link
+            >
           </li>
           <li
             v-if="!isAuth"
             class="footer__content__first-line__link-list__link"
           >
-            <router-link to="/login">Connexion</router-link>
+            <router-link active-class="active" to="/login"
+              >Connexion</router-link
+            >
           </li>
          
           <li
             v-if="isAuth"
             class="footer__content__first-line__link-list__link"
           >
-            <router-link to="/logout">Déconnexion</router-link>
+            <router-link active-class="active" to="/logout"
+              >Déconnexion</router-link
+            >
           </li>
           <li
            
@@ -84,6 +94,10 @@ function scrollToTop() {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  a.active {
+    color: #d87d4a;
+  }
 
   .footer__content__first-line__logo {
     font-size: 2.4rem;

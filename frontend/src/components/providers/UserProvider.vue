@@ -1,38 +1,34 @@
-<!-- Gestion des données de l'application -->
 <template>
-    <slot :logout="logout" :isAuth="isAuth"></slot>
+  <slot :logout="logout" :isAuth="isAuth"></slot>
 </template>
 
 <script setup>
-import { ref, reactive, provide } from 'vue'
-import AuthLogic from '../../logics/AuthLogic';
-import router from '../../router/Router';
+import { ref, reactive, provide } from "vue";
+import AuthLogic from "../../logics/AuthLogic";
+import router from "../../router/Router";
 
 let isAuth = ref(AuthLogic.isAuth());
 const user = reactive({});
 
-const login =  (form) => {
-     return AuthLogic.login({...form})
-        .then((data) => {
-                isAuth.value = !isAuth.value; 
-                user.value = data;
-        })
-    };
-
-const  logout = () => {
-    AuthLogic.logout();
+const login = (form) => {
+  return AuthLogic.login({ ...form }).then((data) => {
     isAuth.value = !isAuth.value;
-    router.push({ name: 'home' });
-    };
+    user.value = data;
+  });
+};
+
+const logout = () => {
+  AuthLogic.logout();
+  isAuth.value = !isAuth.value;
+  router.push({ name: "Home" });
+};
 
 const register = (form) => {
-    return AuthLogic.register({...form});
-    };
+  return AuthLogic.register({ ...form });
+};
 
-    provide('Providerlogout', logout);
-    provide('ProviderisAuth', isAuth);
-    provide('ProviderLogin', login);
-    provide('ProviderRegister', register);
-
-
+provide("ProviderLogout", logout);
+provide("ProviderIsAuth", isAuth);
+provide("ProviderLogin", login);
+provide("ProviderRegister", register);
 </script>

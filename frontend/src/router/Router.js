@@ -1,13 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Account from "../components/Account/Account.vue";
+import Account from "../components/Account/client/Account.vue";
+import Addresses from "../components/Account/client/Addresses.vue";
 import Category from "../views/Category.vue";
 import Checkout from "../views/Checkout.vue";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Logout from "../views/Logout.vue";
+import NotFound from "../views/NotFound.vue";
+import Orders from "../components/Account/client/Orders.vue";
 import Product from "../views/Product.vue";
 import Register from "../views/Register.vue";
+import Settings from "../components/Account/client/Settings.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,20 +21,24 @@ const router = createRouter({
       name: "Home",
       component: Home,
     },
+    { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
     {
       path: "/category/:category",
       name: "Category",
-      component: () => import("../views/Category.vue"),
+      component: Category,
+      meta: { requiresAuth: true },
     },
     {
       path: "/product/:product",
       name: "Product",
-      component: () => import("../views/Product.vue"),
+      component: Product,
+      meta: { requiresAuth: true },
     },
     {
       path: "/checkout",
       name: "Checkout",
       component: Checkout,
+      meta: { requiresAuth: true },
     },
     {
       path: "/login",
@@ -51,6 +59,7 @@ const router = createRouter({
       path: "/account",
       name: "Account",
       component: Account,
+      meta: { requiresAuth: true },
     },
     {
       path: "/order/payment/success/:id",
@@ -62,8 +71,45 @@ const router = createRouter({
       path: "/join-us",
       name: "JoinUs",
       component: () => import("../views/Seller.vue"),
+      components: Checkout,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/account/orders",
+      name: "Orders",
+      component: Orders,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/account/addresses",
+      name: "Addresses",
+      component: Addresses,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/account/settings",
+      name: "Settings",
+      component: Settings,
+      meta: { requiresAuth: true },
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("app-token");
+  const app = JSON.parse(localStorage.getItem("app-user"));
+
+  if (app?.exp < Date.now() / 1000) {
+    localStorage.removeItem("app-token");
+    localStorage.removeItem("app-user");
+    window.location.reload();
+  }
+
+  if (to.matched.some((record) => record.meta.requiresAuth) && !token) {
+    next({ name: "Login" });
+  } else {
+    next();
+  }
 });
 
 export default router;

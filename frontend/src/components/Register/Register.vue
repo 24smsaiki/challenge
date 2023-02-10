@@ -1,42 +1,39 @@
 <script setup>
-import { ref, reactive, inject } from 'vue';
-import router from '../../router/Router';
+import { ref, reactive, inject } from "vue";
+import router from "../../router/Router";
 
-const register = inject('ProviderRegister');
+const register = inject("ProviderRegister");
 const redirectToHome = () => {
-  router.push({ name: 'login' });
+  router.push({ name: "login" });
 };
 const isLoading = ref(false);
 
 const form = reactive({
-  email: '',
-  password: '',
-  passwordConfirmation: '',
-  firstname: '',
-  lastname: '',
+  email: "",
+  password: "",
+  passwordConfirmation: "",
+  firstname: "",
+  lastname: "",
 });
 
-const error = ref('');
+const error = ref("");
 
 const onSubmit = async () => {
   try {
     isLoading.value = true;
     await register(form);
-    error.value = '';
+    error.value = "";
     redirectToHome();
   } catch (err) {
-    error.value = err.response.data.errors[0].message;
+    error.value = err?.response?.data?.errors[0].message;
   } finally {
     isLoading.value = false;
   }
 };
-
-
 </script>
 
 <template>
   <form @submit.prevent="onSubmit">
-
     <h3>Inscription</h3>
     <label for="email">Adresse mail</label>
     <input
@@ -76,12 +73,11 @@ const onSubmit = async () => {
       v-model="form.passwordConfirmation"
     />
 
-
     <button type="submit">S'enregistrer</button>
     <div class="error" v-if="error">{{ error }}</div>
     <div class="signin d-flex mt-2">
       <p>Vous avez déjà un compte ?</p>
-      <router-link to="/login" class="underline ml-1"
+      <router-link active-class="active" to="/login" class="underline ml-1"
         >Connectez-vous</router-link
       >
     </div>

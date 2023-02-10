@@ -1,8 +1,8 @@
 <script setup>
 import { inject, defineEmits } from "vue";
 
-const isAuth = inject("ProviderisAuth");
-const logout = inject("Providerlogout");
+const isAuth = inject("ProviderIsAuth");
+const logout = inject("ProviderLogout");
 const onLogout = () => {
   logout();
 };
@@ -20,13 +20,19 @@ defineEmits(["toggle-menu-show"]);
       <span class="navbar__content__first-line__logo">GadgetMarket</span>
       <ul class="navbar__desktop-menu ml-30">
         <li class="navbar__desktop-menu__link">
-          <router-link to="/">Accueil</router-link>
-          <router-link to="/">Produits</router-link>
-          <router-link v-if="isAuth" to="/account">Compte</router-link>
-          <router-link to="/">Contact</router-link>
-          <router-link v-if="!isAuth" to="/register">Inscription</router-link>
-          <router-link v-if="!isAuth" to="/login">Connexion</router-link>
-          <a v-if="isAuth"  @click="onLogout">Déconnexion</a>
+          <router-link active-class="active" to="/">Accueil</router-link>
+          <router-link active-class="active" to="/">Produits</router-link>
+          <router-link active-class="active" v-if="isAuth" to="/account"
+            >Compte</router-link
+          >
+          <router-link active-class="active" to="/">Contact</router-link>
+          <router-link active-class="active" v-if="!isAuth" to="/register"
+            >Inscription</router-link
+          >
+          <router-link active-class="active" v-if="!isAuth" to="/login"
+            >Connexion</router-link
+          >
+          <a v-if="isAuth" @click="onLogout">Déconnexion</a>
         </li>
       </ul>
     </div>
@@ -49,6 +55,10 @@ defineEmits(["toggle-menu-show"]);
 
 .ml-30 {
   margin-left: 30px;
+}
+
+.navbar__desktop-menu__link a.active {
+  color: #d87d4a;
 }
 
 .navbar {

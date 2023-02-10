@@ -4,6 +4,6 @@ import Header from "../components/Header.vue";
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)" />
+  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <Login />
 </template>

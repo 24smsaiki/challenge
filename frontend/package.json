@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@vue-stripe/vue-stripe": "^4.5.0",
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "axios": "^1.3.2",
     "jwt-decode": "^3.1.2",
     "mosha-vue-toastify": "^1.0.23",

@@ -7,6 +7,7 @@
       construction exceptionnelle conçue pour le passionné de musique.
     </p>
     <router-link
+      active-class="active"
       class="hero__product-link"
       to="/product/xx99-mark-two-headphones"
     >
