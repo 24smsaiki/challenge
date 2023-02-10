@@ -28,14 +28,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Install dependencies
-      #   run: |
-      #     cd backend
-      #     composer install
-
+      - name: Install dependencies
+        run: docker run --rm -v $PWD/backend:/app composer install --no-interaction 
       - name: Run PHPStan
         run: |
-          cd backend && docker docker-compose exec php sh &&
           ./vendor/bin/phpstan analyse -c phpstan.neon src
 
       - name: Check for errors
