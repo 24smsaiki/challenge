@@ -42,9 +42,9 @@ class Seller implements PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[ApiProperty(identifier: true)]
-
-    private ?int $id = null;
     #[Groups(['get'])]
+    private ?int $id = null;
+    
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['post', 'get'])]
     private ?string $shopLabel = null;
