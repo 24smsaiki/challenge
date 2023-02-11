@@ -1,22 +1,6 @@
 import LocalStorage from "./localStorage";
 import axios from "axios";
-import { createToast } from "mosha-vue-toastify";
 import router from "../router/Router";
-import { useRouter } from "vue-router";
-
-function setToast(message, type) {
-  createToast(message, {
-    position: "top-right",
-    timeout: 5000,
-    close: true,
-    type: type,
-    showCloseButtonOnHover: false,
-    hideProgressBar: false,
-    closeButton: "button",
-    icon: true,
-    rtl: false,
-  });
-}
 
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
