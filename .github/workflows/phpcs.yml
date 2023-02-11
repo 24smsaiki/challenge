@@ -29,6 +29,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        subdirectory: backend
+
 
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
@@ -36,12 +39,10 @@ jobs:
         php-version: 8.0
 
     - name: Install dependencies
-      working-directory: ./backend
       run: |
         composer install
 
     - name: Run PHPStan
-      working-directory: ./backend
       run: |
         php vendor/bin/phpstan analyse -c phpstan.neon -l 0 src
       
