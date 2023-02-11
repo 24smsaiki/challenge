@@ -27,7 +27,7 @@ class ProductListener implements EventSubscriberInterface
     {
         if ($args instanceof Product) {
             $seller = $this->managerRegistry->getManager()->getRepository(Seller::class)->findOneByUserId($this->tokenStorage->getToken()->getUser()->getId());
-            $args->getPublisher($seller);
+            $args->setPublisher($seller);
         }
     
     }

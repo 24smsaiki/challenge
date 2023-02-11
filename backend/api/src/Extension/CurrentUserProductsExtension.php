@@ -65,7 +65,7 @@ final class CurrentUserProductsExtension implements QueryCollectionExtensionInte
         if(null === $user){
             return;
         }
-        // here the orders concerned by the seller (select only those have at least one product published by the current seller)
+        // here the orders concerned by the seller (select only those published by the current seller)
         if($this->securityChecker->isGranted('ROLE_SELLER'))
         {
             $queryBuilder
