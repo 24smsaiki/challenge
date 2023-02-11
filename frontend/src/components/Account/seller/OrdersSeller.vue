@@ -306,6 +306,7 @@ function getFormattedDate(dateTime) {
   const seconds = date.getSeconds().toString().padStart(2, "0");
   return `${day}/${month}/${year} à ${hours}:${minutes}:${seconds}`;
 }
+
 const getOrders = () => {
   OrdersLogic.getOrders()
     .then((res) => {
@@ -331,7 +332,10 @@ const getOrders = () => {
       }
     })
     .catch(() => {
-      setToast("Une erreur est survenue lors du chargement", "danger");
+      setToast(
+        "Une erreur est survenue lors du chargement des commandes",
+        "danger"
+      );
     });
 };
 

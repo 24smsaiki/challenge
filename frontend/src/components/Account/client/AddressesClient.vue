@@ -281,7 +281,10 @@ const getAddresses = () => {
       }
     })
     .catch(() =>
-      setToast("Une erreur est survenue lors du chargement", "danger")
+      setToast(
+        "Une erreur est survenue lors du chargement des addresses",
+        "danger"
+      )
     );
 };
 
@@ -300,31 +303,33 @@ getAddresses();
             <div v-if="!editingField && !addingField" class="address">
               <div class="personalInformation">
                 <div class="form-group mb-3 d-flex">
-                  <label for="country" class="mr-3 font-bold">Prénom :</label>
+                  <label for="firstname" class="mr-3 font-bold">Prénom :</label>
                   <p readonly disabled>
                     {{ address.firstname }}
                   </p>
                 </div>
                 <div class="form-group mb-3 d-flex">
-                  <label for="country" class="mr-3 font-bold">Nom :</label>
+                  <label for="lastname" class="mr-3 font-bold">Nom :</label>
                   <p readonly disabled>
                     {{ address.lastname }}
                   </p>
                 </div>
                 <div class="form-group mb-3 d-flex">
-                  <label for="country" class="mr-3 font-bold">Adresse :</label>
+                  <label for="addressField" class="mr-3 font-bold"
+                    >Adresse :</label
+                  >
                   <p readonly disabled>
                     {{ address.addressField }}
                   </p>
                 </div>
                 <div class="form-group mb-3 d-flex">
-                  <label for="country" class="mr-3 font-bold">Ville :</label>
+                  <label for="city" class="mr-3 font-bold">Ville :</label>
                   <p readonly disabled>
                     {{ address.city }}
                   </p>
                 </div>
                 <div class="form-group mb-3 d-flex">
-                  <label for="country" class="mr-3 font-bold"
+                  <label for="zipCode" class="mr-3 font-bold"
                     >Code postal :</label
                   >
                   <p readonly disabled>

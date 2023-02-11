@@ -16,10 +16,9 @@ import Profile from "./ProfileSeller.vue";
 
 <style lang="scss">
 #account,
-#addresses,
 #orders,
-#profile,
-#settings {
+#products,
+#profile {
   height: 700px;
   margin: 25px;
   display: flex;

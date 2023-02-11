@@ -144,7 +144,10 @@ const getOrders = () => {
       }
     })
     .catch(() => {
-      setToast("Une erreur est survenue lors du chargement", "danger");
+      setToast(
+        "Une erreur est survenue lors du chargement des commandes",
+        "danger"
+      );
     });
 };
 
