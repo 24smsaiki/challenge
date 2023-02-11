@@ -1,7 +1,7 @@
 <script setup>
 import { createToast } from "mosha-vue-toastify";
 import { ref } from "vue";
-import OrdersLogic from "../../../logics/Account/seller/OrdersLogic";
+import OrdersLogic from "../../../logics/OrdersLogic";
 import Header from "../../Header.vue";
 import Sidebar from "./SidebarSeller.vue";
 
@@ -286,10 +286,6 @@ function setToast(message, type) {
     timeout: 5000,
     close: true,
     type: type,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
     showCloseButtonOnHover: false,
     hideProgressBar: false,
     closeButton: "button",
@@ -311,7 +307,7 @@ function getFormattedDate(dateTime) {
   return `${day}/${month}/${year} à ${hours}:${minutes}:${seconds}`;
 }
 const getOrders = () => {
-  OrdersLogic.getOrders(orders)
+  OrdersLogic.getOrders()
     .then((res) => {
       if (res.status === 200) {
         const response = res.data;

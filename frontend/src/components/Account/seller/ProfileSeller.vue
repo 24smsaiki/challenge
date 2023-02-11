@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
-import ProfileLogic from "../../../logics/Account/seller/ProfileLogic";
+import ProfileLogic from "../../../logics/ProfileLogic";
 
 const username = ref("");
 const firstName = ref("");
@@ -18,10 +18,6 @@ function setToast(message, type) {
     timeout: 5000,
     close: true,
     type: type,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
     showCloseButtonOnHover: false,
     hideProgressBar: false,
     closeButton: "button",
@@ -32,7 +28,7 @@ function setToast(message, type) {
 
 const getSellerInformation = () => {
   const user = JSON.parse(localStorage.getItem("app-user"));
-  const sellerInformation = ProfileLogic.getSellerInformation(user?.id)
+  const sellerInformation = ProfileLogic.getUserInformation(user?.id)
     .then((response) => {
       if (response.status === 200) {
         return response.data;

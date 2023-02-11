@@ -3,7 +3,7 @@ import Header from "../../Header.vue";
 import Sidebar from "./SidebarClient.vue";
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
-import OrdersLogic from "../../../logics/Account/client/OrdersLogic";
+import OrdersLogic from "../../../logics/OrdersLogic";
 
 // Only using to debug and test
 const dataUsingToTest = {
@@ -115,10 +115,6 @@ function setToast(message, type) {
     timeout: 5000,
     close: true,
     type: type,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
     showCloseButtonOnHover: false,
     hideProgressBar: false,
     closeButton: "button",

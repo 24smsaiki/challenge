@@ -3,7 +3,7 @@ import { ref, computed } from "vue";
 import { createToast } from "mosha-vue-toastify";
 import Header from "../../Header.vue";
 import Sidebar from "./SidebarClient.vue";
-import SettingsLogic from "../../../logics/Account/client/SettingsLogic";
+import SettingsLogic from "../../../logics/SettingsLogic";
 
 const settingsForm = ref({
   username: "",
@@ -127,9 +127,6 @@ function setToast(message, type) {
     timeout: 5000,
     close: true,
     type: type,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
     draggablePercent: 0.6,
     showCloseButtonOnHover: false,
     hideProgressBar: false,

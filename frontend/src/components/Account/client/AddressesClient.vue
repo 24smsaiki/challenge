@@ -3,7 +3,7 @@ import Header from "../../Header.vue";
 import Sidebar from "./SidebarClient.vue";
 import { ref, computed } from "vue";
 import { createToast } from "mosha-vue-toastify";
-import AddressesLogic from "../../../logics/Account/client/AddressesLogic";
+import AddressesLogic from "../../../logics/AddressesLogic";
 
 const addresses = ref([]);
 const newAddress = ref({
@@ -50,10 +50,6 @@ function setToast(message, type) {
     timeout: 5000,
     close: true,
     type: type,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
     showCloseButtonOnHover: false,
     hideProgressBar: false,
     closeButton: "button",

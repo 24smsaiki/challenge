@@ -5,6 +5,10 @@ const isAuth = inject("ProviderIsAuth");
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
+let isSeller = false;
+isSeller =
+  JSON.parse(localStorage.getItem("app-user"))?.roles.indexOf("ROLE_SELLER") !==
+  -1;
 </script>
 
 <template>
@@ -65,7 +69,7 @@ function scrollToTop() {
             >
           </li>
           <li
-            v-if="isAuth"
+            v-if="isAuth && isSeller"
             class="footer__content__first-line__link-list__link"
           >
             <router-link to="/join-us">Devenir vendeur</router-link>

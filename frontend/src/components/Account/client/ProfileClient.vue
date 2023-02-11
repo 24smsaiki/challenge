@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
-import ProfileLogic from "../../../logics/Account/client/ProfileLogic";
+import ProfileLogic from "../../../logics/ProfileLogic";
 
 const username = ref("");
 const firstName = ref("");
@@ -14,10 +14,6 @@ function setToast(message, type) {
     timeout: 5000,
     close: true,
     type: type,
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
     showCloseButtonOnHover: false,
     hideProgressBar: false,
     closeButton: "button",
