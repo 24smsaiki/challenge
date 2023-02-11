@@ -156,18 +156,6 @@ class Product
         return $this;
     }
 
-    public function getSeller(): ?Seller
-    {
-        return $this->seller;
-    }
-
-    public function setSeller(?Seller $seller): self
-    {
-        $this->seller = $seller;
-
-        return $this;
-    }
-
     public function getPublisher(): ?seller
     {
         return $this->publisher;
