@@ -29,5 +29,5 @@ jobs:
     - name: PHPStan Static Analysis
       uses: php-actions/phpstan@v3
       with:
-        path: bakcend/api/src/
+        command: ./vendor/bin/phpstan analyse src
       
