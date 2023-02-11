@@ -16,6 +16,13 @@
             >
           </span>
         </li>
+        <li>
+          <span>
+            <router-link active-class="active" to="/account/products"
+              >Mes produits</router-link
+            >
+          </span>
+        </li>
       </ul>
     </nav>
   </div>

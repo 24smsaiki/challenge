@@ -16,4 +16,8 @@ export default class ProductsLogic {
   static async updateProduct(id, body) {
     return await ProductsRepository.updateProduct(id, body);
   }
+
+  static async deleteProduct(id) {
+    return await ProductsRepository.deleteProduct(id);
+  }
 }
