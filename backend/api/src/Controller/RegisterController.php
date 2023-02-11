@@ -34,10 +34,8 @@ class RegisterController extends AbstractController
         $email = $body->email;
         $password = $body->password;
         $passwordConfirmation = $body->passwordConfirmation;
-        $role = $body->role;
+        $role = "ROLE_USER";
         
-        
-
         $user = new User();
         $hashedPassword = $this->passwordHasher->hashPassword(
             $user,

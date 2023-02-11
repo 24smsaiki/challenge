@@ -3,18 +3,18 @@
 
 namespace App\Tests;
 
-use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class SellerTest extends ApiTestCase
+class SellerTest extends WebTestCase
 {
     //use RefreshDatabaseTrait;
 
     public function testRequestSellerAccount(): void
     {
-        dd("hello");
         $client = self::createClient();
         $response = $client->request(Request::METHOD_POST, '/sellers');
+        dd($response);
     }
 
 }
