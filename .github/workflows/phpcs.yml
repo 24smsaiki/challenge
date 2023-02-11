@@ -28,4 +28,6 @@ jobs:
     steps:
     - name: PHPStan Static Analysis
       uses: php-actions/phpstan@v3
+      with:
+        path: src/
       
