@@ -31,7 +31,8 @@ function setToast(message, type) {
 }
 
 const getSellerInformation = () => {
-  const sellerInformation = ProfileLogic.getSellerInformation()
+  const user = JSON.parse(localStorage.getItem("app-user"));
+  const sellerInformation = ProfileLogic.getSellerInformation(user?.id)
     .then((response) => {
       if (response.status === 200) {
         return response.data;
@@ -60,21 +61,17 @@ const getSellerInformation = () => {
   Promise.all([sellerInformation, shopInformation]).then((values) => {
     if (values.length) {
       // user information
-      if (values[0].length) {
-        const user = values[0][0];
-        username.value = `${user.firstname} ${user.lastname}`;
-        firstName.value = user.firstname;
-        lastName.value = user.lastname;
-        email.value = user.email;
-      }
+      username.value = `${values[0]?.firstname} ${values[0]?.lastname}`;
+      firstName.value = values[0]?.firstname;
+      lastName.value = values[0]?.lastname;
+      email.value = values[0]?.email;
 
       // shop information
-      if (values[1].length) {
-        const shop = values[1][0];
-        shopName.value = shop.shop_label;
-        shopDescription.value = shop.shop_description;
-        shopEmail.value = shop.shop_email_contact;
-        shopPhone.value = shop.shop_phone_contact;
+      if (values[1]?.[0]) {
+        shopName.value = values[1][0]?.shopLabel;
+        shopDescription.value = values[1][0]?.shopDescription;
+        shopEmail.value = values[1][0]?.shopEmailContact;
+        shopPhone.value = values[1][0]?.shopPhoneContact;
       }
     }
   });

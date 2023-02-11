@@ -31,11 +31,10 @@ const getUserInformation = () => {
   ProfileLogic.getUserInformation(user?.id)
     .then((response) => {
       if (response.status === 200) {
-        const user = response?.data;
-        username.value = `${user.firstname} ${user.lastname}`;
-        firstName.value = user.firstname;
-        lastName.value = user.lastname;
-        email.value = user.email;
+        username.value = `${response?.data?.firstname} ${response?.data?.lastname}`;
+        firstName.value = response?.data?.firstname;
+        lastName.value = response?.data?.lastname;
+        email.value = response?.data?.email;
       }
     })
     .catch(() =>
