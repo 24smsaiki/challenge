@@ -23,6 +23,13 @@
             >
           </span>
         </li>
+        <li>
+          <span>
+            <router-link active-class="active" to="/account/settings"
+              >Paramètres</router-link
+            >
+          </span>
+        </li>
       </ul>
     </nav>
   </div>

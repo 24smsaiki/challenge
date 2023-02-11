@@ -85,6 +85,7 @@ getSellerInformation();
           <label class="block mb-2" for="username">Nom d'utilisateur</label>
           <input
             disabled
+            placeholder="Nom d'utilisateur"
             readonly
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="username"
@@ -93,20 +94,10 @@ getSellerInformation();
           />
         </div>
         <div class="ml-2 mb-5 mr-2">
-          <label class="block mb-2" for="firstName">Prénom</label>
-          <input
-            disabled
-            readonly
-            class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
-            id="firstName"
-            type="text"
-            :value="firstName"
-          />
-        </div>
-        <div class="ml-2 mb-5 mr-2">
           <label class="block mb-2" for="lastName">Nom</label>
           <input
             disabled
+            placeholder="Nom"
             readonly
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="lastName"
@@ -114,11 +105,24 @@ getSellerInformation();
             :value="lastName"
           />
         </div>
+        <div class="ml-2 mb-5 mr-2">
+          <label class="block mb-2" for="firstName">Prénom</label>
+          <input
+            disabled
+            readonly
+            placeholder="Prénom"
+            class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
+            id="firstName"
+            type="text"
+            :value="firstName"
+          />
+        </div>
         <div>
           <label class="block mb-2" for="email">Adresse email</label>
           <input
             disabled
             readonly
+            placeholder="Adresse email"
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="email"
             type="email"
@@ -135,6 +139,7 @@ getSellerInformation();
           <input
             disabled
             readonly
+            placeholder="Nom"
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="shopName"
             type="text"
@@ -146,6 +151,7 @@ getSellerInformation();
           <input
             disabled
             readonly
+            placeholder="Adresse email"
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="shopEmail"
             type="email"
@@ -153,10 +159,11 @@ getSellerInformation();
           />
         </div>
         <div class="ml-2 mb-5 mr-2">
-          <label class="block mb-2" for="shopPhone">Numéro de téléphone</label>
+          <label class="block mb-2" for="shopPhone">Téléphone</label>
           <input
             disabled
             readonly
+            placeholder="Téléphone"
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="shopPhone"
             type="text"
@@ -164,12 +171,11 @@ getSellerInformation();
           />
         </div>
         <div class="ml-2 mb-5 mr-2">
-          <label class="block mb-2" for="shopDescription"
-            >Description de la boutique</label
-          >
+          <label class="block mb-2" for="shopDescription">Description</label>
           <textarea
             disabled
             readonly
+            placeholder="Description"
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="shopDescription"
             type="text"

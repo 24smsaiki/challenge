@@ -53,6 +53,7 @@ getUserInformation();
       <input
         disabled
         readonly
+        placeholder="Nom d'utilisateur"
         class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="username"
         type="text"
@@ -60,20 +61,10 @@ getUserInformation();
       />
     </div>
     <div class="ml-2 mb-5 mr-2">
-      <label class="block font-bold mb-2" for="firstName">Prénom</label>
-      <input
-        disabled
-        readonly
-        class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
-        id="firstName"
-        type="text"
-        :value="firstName"
-      />
-    </div>
-    <div class="ml-2 mb-5 mr-2">
       <label class="block font-bold mb-2" for="lastName">Nom</label>
       <input
         disabled
+        placeholder="Nom"
         readonly
         class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="lastName"
@@ -81,10 +72,23 @@ getUserInformation();
         :value="lastName"
       />
     </div>
+    <div class="ml-2 mb-5 mr-2">
+      <label class="block font-bold mb-2" for="firstName">Prénom</label>
+      <input
+        disabled
+        readonly
+        placeholder="Prénom"
+        class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
+        id="firstName"
+        type="text"
+        :value="firstName"
+      />
+    </div>
     <div>
       <label class="block font-bold mb-2" for="email">Adresse email</label>
       <input
         disabled
+        placeholder="Adresse email"
         readonly
         class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
         id="email"
