@@ -25,9 +25,25 @@ jobs:
   phpstan:
     name: PHPStan
     runs-on: ubuntu-latest
+
     steps:
-    - name: PHPStan Static Analysis
-      uses: php-actions/phpstan@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
       with:
-        command: ./vendor/bin/phpstan analyse src
+        php-version: 8.1
+
+    - name: Install dependencies
+      working-directory: ./backend
+      run: |
+        docker-compose up -d --build
+        docker-compose exec app composer install
+
+    - name: Run PHPStan
+      working-directory: ./backend
+      run: |
+        docker-compose exec app php vendor/bin/phpstan analyse -c phpstan.neon -l 7 src
+
       
