@@ -24,12 +24,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         controller: ManageRequestAccountSellerController::class,
         name: 'seller_request_answer',
         security: 'is_granted("ROLE_ADMIN")',
-    ),
-    new Post(
-        uriTemplate: '/seller/manageShop',
-        controller: ManageShopInfoController::class,
-        name: 'seller_request_answer',
-        security: 'is_granted("ROLE_SELLER")',
     )
 ])]
 
@@ -60,9 +54,9 @@ class Seller implements PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['post', 'get'])]
     private ?string $shopPhoneContact = null;
-
+    
+    #[Groups(['get'])]
     #[ORM\Column(nullable: true)]
-
     private ?bool $isActif = false;
 
     #[ORM\Column(nullable: true)]
