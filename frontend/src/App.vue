@@ -15,7 +15,8 @@
       :cart="cart"
       :showConfirmation="showConfirmation"
     />
-    <Footer />
+
+      <Footer v-if="!$route.path.startsWith('/admin')" />
   </UserProvider>
 </template>
 
