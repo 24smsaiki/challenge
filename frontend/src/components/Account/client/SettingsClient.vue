@@ -203,20 +203,6 @@ getUserInformation();
           {{ errors.username }}
         </p>
         <div class="ml-2 mb-5 mr-2">
-          <label class="block font-bold mb-2" for="firstname">Prénom</label>
-          <input
-            class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
-            id="firstname"
-            type="text"
-            placeholder="Prénom"
-            v-model="settingsForm.firstname"
-            @input="isFirstName"
-          />
-        </div>
-        <p class="messageErrors mb-3 ml-0" v-if="errors?.firstname">
-          {{ errors.firstname }}
-        </p>
-        <div class="ml-2 mb-5 mr-2">
           <label class="block font-bold mb-2" for="lastname">Nom</label>
           <input
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
@@ -229,6 +215,20 @@ getUserInformation();
         </div>
         <p class="messageErrors mb-3 ml-0" v-if="errors?.lastname">
           {{ errors.lastname }}
+        </p>
+        <div class="ml-2 mb-5 mr-2">
+          <label class="block font-bold mb-2" for="firstname">Prénom</label>
+          <input
+            class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
+            id="firstname"
+            type="text"
+            placeholder="Prénom"
+            v-model="settingsForm.firstname"
+            @input="isFirstName"
+          />
+        </div>
+        <p class="messageErrors mb-3 ml-0" v-if="errors?.firstname">
+          {{ errors.firstname }}
         </p>
         <div class="ml-2 mb-5 mr-2">
           <label class="block font-bold mb-2" for="email">Adresse email</label>
