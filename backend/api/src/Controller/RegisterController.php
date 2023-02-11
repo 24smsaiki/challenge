@@ -34,6 +34,7 @@ class RegisterController extends AbstractController
         $email = $body->email;
         $password = $body->password;
         $passwordConfirmation = $body->passwordConfirmation;
+        $role = $body->role;
         
         
 
@@ -45,7 +46,7 @@ class RegisterController extends AbstractController
         $user->setFirstname($body->firstname);
         $user->setLastname($body->lastname);
         $user->setEmail($email);
-        $user->setRoles(["ROLE_USER"]);
+        $user->setRoles([$role]);
         $user->setIsActif(false);
 
         $user->setIsPasswordRequest(false);
