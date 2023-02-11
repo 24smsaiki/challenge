@@ -17,7 +17,7 @@ use App\Controller\ManageRequestAccountSellerController;
 use App\Controller\ManageShopInfoController;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
+#[ApiResource(mercure: true, security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/seller/request/answer/{id}',
@@ -42,8 +42,9 @@ class Seller implements PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[ApiProperty(identifier: true)]
-    private ?int $id = null;
 
+    private ?int $id = null;
+    #[Groups(['get'])]
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['post', 'get'])]
     private ?string $shopLabel = null;
