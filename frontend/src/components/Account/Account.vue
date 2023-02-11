@@ -11,10 +11,7 @@ if (app) {
   if (app.roles.indexOf("ROLE_SELLER") !== -1) {
     isSeller = true;
     isClient = false;
-  } else if (
-    app.roles.indexOf("ROLE_SELLER") === -1 &&
-    app.roles.indexOf("ROLE_USER") !== -1
-  ) {
+  } else if (app.roles.indexOf("ROLE_USER") !== -1) {
     isClient = true;
     isSeller = false;
   }
