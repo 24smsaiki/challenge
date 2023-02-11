@@ -1,6 +1,7 @@
 import LocalStorage from "./localStorage";
 import axios from "axios";
 import { createToast } from "mosha-vue-toastify";
+import router from "../router/Router";
 import { useRouter } from "vue-router";
 
 function setToast(message, type) {
@@ -30,9 +31,10 @@ request.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   } else {
-    const router = useRouter();
-    router.push("/login");
-    setToast("Le token n'est plus valide, veuillez vous reconnecter", "danger");
+    localStorage.removeItem("app-token");
+    localStorage.removeItem("app-user");
+    router.push({ name: "Login" });
+    window.location.reload();
   }
 
   return config;
