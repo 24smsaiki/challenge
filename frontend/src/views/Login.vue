@@ -33,114 +33,118 @@ const onSubmit = async () => {
 
 <template>
   <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
-  <form @submit.prevent="onSubmit">
-    <h3>Connexion</h3>
-    <label for="email">Adresse mail</label>
-    <input
-      type="text"
-      placeholder="Adresse mail"
-      id="email"
-      v-model="form.email"
-    />
-    <label for="password">Mot de passe</label>
-    <input
-      type="password"
-      placeholder="Mot de passe"
-      id="password"
-      v-model="form.password"
-    />
-    <button type="submit">Se connecter</button>
-    <div class="social">
-      <div class="error" v-if="error">{{ error }}</div>
-    </div>
-    <div class="signup d-flex mt-2">
-      <p>Vous n'avez pas de compte ?</p>
-      <router-link active-class="active" to="/register" class="underline ml-1"
-        >Inscrivez-vous</router-link
-      >
-    </div>
-  </form>
+  <div id="login">
+    <form @submit.prevent="onSubmit">
+      <h3>Connexion</h3>
+      <label for="email">Adresse mail</label>
+      <input
+        type="text"
+        placeholder="Adresse mail"
+        id="email"
+        v-model="form.email"
+      />
+      <label for="password">Mot de passe</label>
+      <input
+        type="password"
+        placeholder="Mot de passe"
+        id="password"
+        v-model="form.password"
+      />
+      <button type="submit">Se connecter</button>
+      <div class="social">
+        <div class="error" v-if="error">{{ error }}</div>
+      </div>
+      <div class="signup d-flex mt-2">
+        <p>Vous n'avez pas de compte ?</p>
+        <router-link active-class="active" to="/register" class="underline ml-1"
+          >Inscrivez-vous</router-link
+        >
+      </div>
+    </form>
+  </div>
 </template>
 
 <style scoped lang="scss">
-.d-flex {
-  display: flex;
-}
+#login {
+  .signup {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+  }
 
-.mt-2 {
-  margin-top: 10px;
-}
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: center;
+  }
 
-.ml-1 {
-  margin-left: 5px;
-}
+  form {
+    width: 400px;
+    background-color: black;
+    margin: 20px auto;
+    color: #ffffff;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 50px 35px;
+  }
 
-.underline {
-  text-decoration: underline;
-}
+  form h3 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+  }
 
-.signup {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 14px;
-}
+  label {
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+  }
 
-.error {
-  color: red;
-  font-size: 12px;
-  margin-top: 10px;
-  text-align: center;
-}
+  input {
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+  }
 
-form {
-  width: 400px;
-  background-color: black;
-  margin: 20px auto;
-  color: #ffffff;
-  border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  padding: 50px 35px;
-}
+  button {
+    margin-top: 50px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
-form h3 {
-  font-size: 32px;
-  font-weight: 500;
-  line-height: 42px;
-  text-align: center;
-}
+  ::placeholder {
+    color: #e5e5e5;
+  }
 
-label {
-  display: block;
-  margin-top: 30px;
-  font-size: 16px;
-  font-weight: 500;
-}
+  .d-flex {
+    display: flex;
+  }
 
-input {
-  display: block;
-  height: 50px;
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.07);
-  border-radius: 3px;
-  padding: 0 10px;
-  margin-top: 8px;
-  font-size: 14px;
-  font-weight: 300;
-}
+  .mt-2 {
+    margin-top: 10px;
+  }
 
-::placeholder {
-  color: #e5e5e5;
-}
+  .ml-1 {
+    margin-left: 5px;
+  }
 
-button {
-  margin-top: 50px;
-  width: 100%;
-  background-color: #ffffff;
-  color: #080710;
-  padding: 15px 0;
-  font-size: 18px;
-  font-weight: 600;
-  border-radius: 5px;
-  cursor: pointer;
+  .underline {
+    text-decoration: underline;
+  }
 }
 </style>
