@@ -91,7 +91,7 @@ import Profile from "./ProfileSeller.vue";
   .content {
     border: 1px solid black;
     border-radius: 5px;
-    padding: 25px;
+    padding: 15px;
     height: 100%;
     width: calc(100% - 300px);
     margin-left: 25px;

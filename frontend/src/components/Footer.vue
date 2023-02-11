@@ -149,7 +149,7 @@ function scrollToTop() {
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        margin-top: 7.1rem;
+        margin-top: 5rem;
       }
 
       &__logo {
