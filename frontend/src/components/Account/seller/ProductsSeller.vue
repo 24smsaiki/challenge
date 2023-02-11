@@ -64,30 +64,32 @@ const isPrice = () => {
 };
 
 const addProduct = () => {
-  const newProductFormat = {
-    label: newProduct.value.label,
-    description: newProduct.value.description,
-    price: Number(newProduct.value.price),
-  };
+  if (isFormValid.value === true) {
+    const newProductFormat = {
+      label: newProduct.value.label,
+      description: newProduct.value.description,
+      price: Number(newProduct.value.price),
+    };
 
-  ProductsLogic.createProduct(newProductFormat)
-    .then((response) => {
-      if (response.status === 201) {
-        products.value.push({
-          id: response.data.id,
-          label: response.data.label,
-          description: response.data.description,
-          price: response.data.price,
-        });
-        setToast("Produit ajoutée avec succès", "success");
-      }
-    })
-    .catch(() =>
-      setToast("Une erreur est survenue lors de l'ajout du produit", "danger")
-    );
+    ProductsLogic.createProduct(newProductFormat)
+      .then((response) => {
+        if (response.status === 201) {
+          products.value.push({
+            id: response.data.id,
+            label: response.data.label,
+            description: response.data.description,
+            price: response.data.price,
+          });
+          setToast("Produit ajoutée avec succès", "success");
+        }
+      })
+      .catch(() =>
+        setToast("Une erreur est survenue lors de l'ajout du produit", "danger")
+      );
 
-  resetFormFields();
-  addingField.value = false;
+    resetFormFields();
+    addingField.value = false;
+  }
 };
 
 const editProduct = (index) => {
@@ -119,28 +121,30 @@ const setFormFields = () => {
 };
 
 const updateProduct = () => {
-  ProductsLogic.updateProduct(
-    products.value[productIndex.value].id,
-    newProduct.value
-  )
-    .then((response) => {
-      if (response.status === 200) {
-        products.value[productIndex.value].label = response.data.label;
-        products.value[productIndex.value].description =
-          response.data.description;
-        products.value[productIndex.value].price = response.data.price;
-        setToast("Produit modifiée avec succès", "success");
-      }
-    })
-    .catch(() => {
-      setToast(
-        "Une erreur est survenue lors de la modification du produit",
-        "danger"
-      );
-    });
+  if (isFormValid.value === true) {
+    ProductsLogic.updateProduct(
+      products.value[productIndex.value].id,
+      newProduct.value
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          products.value[productIndex.value].label = response.data.label;
+          products.value[productIndex.value].description =
+            response.data.description;
+          products.value[productIndex.value].price = response.data.price;
+          setToast("Produit modifiée avec succès", "success");
+        }
+      })
+      .catch(() => {
+        setToast(
+          "Une erreur est survenue lors de la modification du produit",
+          "danger"
+        );
+      });
 
-  resetFormFields();
-  editingField.value = false;
+    resetFormFields();
+    editingField.value = false;
+  }
 };
 
 const deleteProduct = (index) => {
@@ -230,7 +234,7 @@ getProducts();
                   readonly
                 ></textarea>
               </div>
-              <div class="form-group mb-3">
+              <div class="form-group mb-3 d-flex">
                 <label for="price" class="mr-3 font-bold">Prix :</label>
                 <p readonly disabled>{{ product.price }} €</p>
               </div>

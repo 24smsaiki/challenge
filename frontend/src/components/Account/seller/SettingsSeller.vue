@@ -2,17 +2,21 @@
 import { ref, computed } from "vue";
 import { createToast } from "mosha-vue-toastify";
 import Header from "../../Header.vue";
-import Sidebar from "./SidebarClient.vue";
+import Sidebar from "./SidebarSeller.vue";
 import SettingsLogic from "../../../logics/SettingsLogic";
 
 const settingsForm = ref({
   username: "",
   firstname: "",
   lastname: "",
-  email: "",
   password: "",
   confirmPassword: "",
+  shopName: "",
+  shopDescription: "",
+  shopEmail: "",
+  shopPhone: "",
 });
+
 const errors = ref({
   username: "",
   firstname: "",
@@ -20,7 +24,13 @@ const errors = ref({
   email: "",
   password: "",
   confirmPassword: "",
+  shopName: "",
+  shopDescription: "",
+  shopEmail: "",
+  shopPhone: "",
 });
+
+let sellerId = null;
 
 const isFormValid = computed(() => {
   if (
@@ -29,11 +39,17 @@ const isFormValid = computed(() => {
     settingsForm.value.lastname !== "" &&
     settingsForm.value.password !== "" &&
     settingsForm.value.confirmPassword !== "" &&
+    settingsForm.value.shopName !== "" &&
+    settingsForm.value.shopEmail !== "" &&
+    settingsForm.value.shopPhone !== "" &&
     errors.value.username === "" &&
     errors.value.firstname === "" &&
     errors.value.lastname === "" &&
     errors.value.password === "" &&
-    errors.value.confirmPassword === ""
+    errors.value.confirmPassword === "" &&
+    errors.value.shopName === "" &&
+    errors.value.shopEmail === "" &&
+    errors.value.shopPhone === ""
   ) {
     return true;
   } else {
@@ -110,6 +126,28 @@ const isConfirmPassword = () => {
   }
 };
 
+const isShopName = () => {
+  const shopName = settingsForm.value.shopName;
+
+  if (shopName.length < 3) {
+    errors.value.shopName =
+      "Le nom de la boutique doit contenir au moins 3 caractères";
+  } else {
+    errors.value.shopName = "";
+  }
+};
+
+const isShopPhone = () => {
+  const phone = settingsForm.value.shopPhone;
+  const regex = new RegExp("^[0-9]{10}$");
+
+  if (!regex.test(phone)) {
+    errors.value.shopPhone = "Le numéro de téléphone n'est pas valide";
+  } else {
+    errors.value.shopPhone = "";
+  }
+};
+
 function setToast(message, type) {
   createToast(message, {
     position: "top-right",
@@ -125,17 +163,25 @@ function setToast(message, type) {
   });
 }
 
-const updateUser = () => {
+const updateSeller = () => {
   if (isFormValid.value === true) {
-    const data = {
+    const userInfo = {
       firstname: settingsForm.value.firstname,
       lastname: settingsForm.value.lastname,
       password: settingsForm.value.password,
     };
-
-    SettingsLogic.updateUserInformation(data)
+    const shopInfo = {
+      shopLabel: settingsForm.value.shopName,
+      shopDescription: settingsForm.value.shopDescription,
+      shopEmailContact: settingsForm.value.shopEmail,
+      shopPhoneContact: settingsForm.value.shopPhone,
+    };
+    Promise.all([
+      SettingsLogic.updateUserInformation(userInfo),
+      SettingsLogic.updateShopInformation(sellerId, shopInfo),
+    ])
       .then((res) => {
-        if (res.status === 200) {
+        if (res[0].status === 200 && res[1].status === 200) {
           setToast("Vos informations ont été mises à jour", "success");
         }
       })
@@ -145,28 +191,37 @@ const updateUser = () => {
   }
 };
 
-const getUserInformation = () => {
-  SettingsLogic.getUserInformation()
+const getSellerInformation = () => {
+  Promise.all([
+    SettingsLogic.getUserInformation(),
+    SettingsLogic.getShopInformation(),
+  ])
     .then((res) => {
-      if (res.status === 200) {
-        const user = res.data[0];
-        settingsForm.value.username = `${user.firstname} ${user.lastname}`;
-        settingsForm.value.firstname = user.firstname;
-        settingsForm.value.lastname = user.lastname;
-        settingsForm.value.email = user.email;
-        settingsForm.value.password = "";
-        settingsForm.value.confirmPassword = "";
+      if (res[0].status === 200 && res[1].status === 200) {
+        if (res[0]?.data[0] && res[1]?.data[0]) {
+          // user information
+          settingsForm.value.username = `${res[0].data[0].firstname} ${res[0].data[0].lastname}`;
+          settingsForm.value.firstname = res[0].data[0].firstname;
+          settingsForm.value.lastname = res[0].data[0].lastname;
+
+          // shop information
+          sellerId = res[1].data[0].id;
+          settingsForm.value.shopName = res[1].data[0].shopLabel;
+          settingsForm.value.shopDescription = res[1].data[0].shopDescription;
+          settingsForm.value.shopEmail = res[1].data[0].shopEmailContact;
+          settingsForm.value.shopPhone = res[1].data[0].shopPhoneContact;
+        }
       }
     })
-    .catch(() =>
+    .catch(() => {
       setToast(
-        "Une erreur est survenue lors du chargement des paramètres",
+        "Une erreur est survenue lors du chargement des informations",
         "danger"
-      )
-    );
+      );
+    });
 };
 
-getUserInformation();
+getSellerInformation();
 </script>
 
 <template>
@@ -190,12 +245,14 @@ getUserInformation();
           />
         </div>
         <div class="ml-2 mb-5 mr-2">
-          <label class="block font-bold mb-2" for="lastname">Nom</label>
+          <label class="block font-bold mb-2" for="lastname"
+            >Nom de l'utilisateur</label
+          >
           <input
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="lastname"
             type="text"
-            placeholder="Nom"
+            placeholder="Nom de l'utilisateur"
             v-model="settingsForm.lastname"
             @input="isLastName"
           />
@@ -204,12 +261,14 @@ getUserInformation();
           {{ errors.lastname }}
         </p>
         <div class="ml-2 mb-5 mr-2">
-          <label class="block font-bold mb-2" for="firstname">Prénom</label>
+          <label class="block font-bold mb-2" for="firstname"
+            >Prénom de l'utilisateur</label
+          >
           <input
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="firstname"
             type="text"
-            placeholder="Prénom"
+            placeholder="Prénom de l'utilisateur"
             v-model="settingsForm.firstname"
             @input="isFirstName"
           />
@@ -218,17 +277,63 @@ getUserInformation();
           {{ errors.firstname }}
         </p>
         <div class="ml-2 mb-5 mr-2">
-          <label class="block font-bold mb-2" for="email">Adresse email</label>
+          <label class="block font-bold mb-2" for="shopName"
+            >Nom de la boutique</label
+          >
           <input
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
-            id="email"
-            type="email"
-            placeholder="Adresse email"
-            :value="settingsForm.email"
-            disabled
-            readonly
+            id="shopName"
+            type="text"
+            placeholder="Nom de la boutique"
+            v-model="settingsForm.shopName"
+            @input="isShopName"
           />
         </div>
+        <p class="messageErrors mb-3 ml-0" v-if="errors?.shopName">
+          {{ errors.shopName }}
+        </p>
+        <div class="ml-2 mb-5 mr-2">
+          <label class="block mb-2" for="shopDescription"
+            >Description de la boutique</label
+          >
+          <textarea
+            placeholder="Description de la boutique"
+            class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
+            id="shopDescription"
+            type="text"
+            v-model="shopDescription"
+          ></textarea>
+        </div>
+        <div class="ml-2 mb-5 mr-2">
+          <label class="block font-bold mb-2" for="shopEmail"
+            >Email de la boutique</label
+          >
+          <input
+            class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
+            id="shopEmail"
+            type="text"
+            disabled
+            readonly
+            placeholder="Email de la boutique"
+            :value="settingsForm.shopEmail"
+          />
+        </div>
+        <div class="ml-2 mb-5 mr-2">
+          <label class="block font-bold mb-2" for="shopPhone"
+            >Téléphone de la boutique</label
+          >
+          <input
+            class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
+            id="shopPhone"
+            type="text"
+            placeholder="Téléphone de la boutique"
+            v-model="settingsForm.shopPhone"
+            @input="isShopPhone"
+          />
+        </div>
+        <p class="messageErrors mb-3 ml-0" v-if="errors?.shopPhone">
+          {{ errors.shopPhone }}
+        </p>
         <div class="ml-2 mb-5 mr-2">
           <label class="block font-bold mb-2" for="password"
             >Mot de passe</label
@@ -263,7 +368,7 @@ getUserInformation();
         </p>
         <button
           class="btn mt-2"
-          @click="updateUser"
+          @click="updateSeller"
           :disabled="!isFormValid"
           :style="setValidFormClass"
         >

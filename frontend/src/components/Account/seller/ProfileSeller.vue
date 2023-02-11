@@ -27,50 +27,33 @@ function setToast(message, type) {
 }
 
 const getSellerInformation = () => {
-  const user = JSON.parse(localStorage.getItem("app-user"));
-  const sellerInformation = ProfileLogic.getUserInformation(user?.id)
-    .then((response) => {
-      if (response.status === 200) {
-        return response.data;
+  Promise.all([
+    ProfileLogic.getUserInformation(),
+    ProfileLogic.getShopInformation(),
+  ])
+    .then((res) => {
+      if (res[0].status === 200 && res[1].status === 200) {
+        if (res[0]?.data[0] && res[1]?.data[0]) {
+          // user information
+          username.value = `${res[0].data[0].firstname} ${res[0].data[0].lastname}`;
+          firstName.value = res[0].data[0].firstname;
+          lastName.value = res[0].data[0].lastname;
+
+          // shop information
+          shopName.value = res[1].data[0].shopLabel;
+          shopDescription.value = res[1].data[0].shopDescription;
+          shopEmail.value = res[1].data[0].shopEmailContact;
+          email.value = res[1].data[0].shopEmailContact;
+          shopPhone.value = res[1].data[0].shopPhoneContact;
+        }
       }
     })
-    .catch(() =>
+    .catch(() => {
       setToast(
-        "Une erreur est survenue lors du chargement du vendeur",
+        "Une erreur est survenue lors du chargement des informations",
         "danger"
-      )
-    );
-
-  const shopInformation = ProfileLogic.getShopInformation()
-    .then((response) => {
-      if (response.status === 200) {
-        return response.data;
-      }
-    })
-    .catch(() =>
-      setToast(
-        "Une erreur est survenue lors du chargement de la boutique",
-        "danger"
-      )
-    );
-
-  Promise.all([sellerInformation, shopInformation]).then((values) => {
-    if (values.length) {
-      // user information
-      username.value = `${values[0]?.firstname} ${values[0]?.lastname}`;
-      firstName.value = values[0]?.firstname;
-      lastName.value = values[0]?.lastname;
-      email.value = values[0]?.email;
-
-      // shop information
-      if (values[1]?.[0]) {
-        shopName.value = values[1][0]?.shopLabel;
-        shopDescription.value = values[1][0]?.shopDescription;
-        shopEmail.value = values[1][0]?.shopEmailContact;
-        shopPhone.value = values[1][0]?.shopPhoneContact;
-      }
-    }
-  });
+      );
+    });
 };
 
 getSellerInformation();
@@ -115,18 +98,6 @@ getSellerInformation();
             id="firstName"
             type="text"
             :value="firstName"
-          />
-        </div>
-        <div>
-          <label class="block mb-2" for="email">Adresse email</label>
-          <input
-            disabled
-            readonly
-            placeholder="Adresse email"
-            class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
-            id="email"
-            type="email"
-            :value="email"
           />
         </div>
       </div>

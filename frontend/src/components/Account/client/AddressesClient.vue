@@ -132,29 +132,34 @@ const isPhone = () => {
 };
 
 const addAddress = () => {
-  AddressesLogic.createAddress(newAddress.value)
-    .then((response) => {
-      if (response.status === 201) {
-        addresses.value.push({
-          id: response.data.id,
-          firstname: response.data.firstname,
-          lastname: response.data.lastname,
-          phone: response.data.phone,
-          addressField: response.data.addressField,
-          addressFieldInformation: response.data.addressFieldInformation,
-          zipCode: response.data.zipCode,
-          city: response.data.city,
-          country: response.data.country,
-        });
-        setToast("Addresse ajoutée avec succès", "success");
-      }
-    })
-    .catch(() =>
-      setToast("Une erreur est survenue lors de l'ajout de l'adresse", "danger")
-    );
+  if (isFormValid.value === true) {
+    AddressesLogic.createAddress(newAddress.value)
+      .then((response) => {
+        if (response.status === 201) {
+          addresses.value.push({
+            id: response.data.id,
+            firstname: response.data.firstname,
+            lastname: response.data.lastname,
+            phone: response.data.phone,
+            addressField: response.data.addressField,
+            addressFieldInformation: response.data.addressFieldInformation,
+            zipCode: response.data.zipCode,
+            city: response.data.city,
+            country: response.data.country,
+          });
+          setToast("Addresse ajoutée avec succès", "success");
+        }
+      })
+      .catch(() =>
+        setToast(
+          "Une erreur est survenue lors de l'ajout de l'adresse",
+          "danger"
+        )
+      );
 
-  resetFormFields();
-  addingField.value = false;
+    resetFormFields();
+    addingField.value = false;
+  }
 };
 
 const editAddress = (index) => {
@@ -193,34 +198,37 @@ const setFormFields = () => {
 };
 
 const updateAddress = () => {
-  AddressesLogic.updateAddress(
-    addresses.value[addressIndex.value].id,
-    newAddress.value
-  )
-    .then((response) => {
-      if (response.status === 200) {
-        addresses.value[addressIndex.value].firstname = response.data.firstname;
-        addresses.value[addressIndex.value].lastname = response.data.lastname;
-        addresses.value[addressIndex.value].addressField =
-          response.data.addressField;
-        addresses.value[addressIndex.value].zipCode = response.data.zipCode;
-        addresses.value[addressIndex.value].city = response.data.city;
-        addresses.value[addressIndex.value].country = response.data.country;
-        addresses.value[addressIndex.value].phone = response.data.phone;
-        addresses.value[addressIndex.value].addressFieldInformation =
-          response.data.addressFieldInformation;
-        setToast("Addresse modifiée avec succès", "success");
-      }
-    })
-    .catch(() => {
-      setToast(
-        "Une erreur est survenue lors de la modification de l'adresse",
-        "danger"
-      );
-    });
+  if (isFormValid.value === true) {
+    AddressesLogic.updateAddress(
+      addresses.value[addressIndex.value].id,
+      newAddress.value
+    )
+      .then((response) => {
+        if (response.status === 200) {
+          addresses.value[addressIndex.value].firstname =
+            response.data.firstname;
+          addresses.value[addressIndex.value].lastname = response.data.lastname;
+          addresses.value[addressIndex.value].addressField =
+            response.data.addressField;
+          addresses.value[addressIndex.value].zipCode = response.data.zipCode;
+          addresses.value[addressIndex.value].city = response.data.city;
+          addresses.value[addressIndex.value].country = response.data.country;
+          addresses.value[addressIndex.value].phone = response.data.phone;
+          addresses.value[addressIndex.value].addressFieldInformation =
+            response.data.addressFieldInformation;
+          setToast("Addresse modifiée avec succès", "success");
+        }
+      })
+      .catch(() => {
+        setToast(
+          "Une erreur est survenue lors de la modification de l'adresse",
+          "danger"
+        );
+      });
 
-  resetFormFields();
-  editingField.value = false;
+    resetFormFields();
+    editingField.value = false;
+  }
 };
 
 const deleteAddress = (index) => {
@@ -483,7 +491,7 @@ getAddresses();
               type="text"
               v-model="newAddress.phone"
               id="phone"
-              placeholder="Numéro de téléphone"
+              placeholder="Téléphone"
               @input="isPhone"
             />
             <p class="messageErrors mb-3 ml-0" v-if="errors?.phone">
@@ -579,7 +587,7 @@ getAddresses();
               type="text"
               v-model="newAddress.phone"
               id="phone"
-              placeholder="Numéro de téléphone"
+              placeholder="Téléphone"
               @input="isPhone"
             />
             <p class="messageErrors mb-3 ml-0" v-if="errors?.phone">

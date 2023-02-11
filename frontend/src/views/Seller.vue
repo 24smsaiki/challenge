@@ -154,7 +154,7 @@ const onSubmit = () => {
           createToast(
             "Une erreur est survenue. Veuillez réessayer ultérieurement.",
             {
-              type: "error",
+              type: "danger",
               position: "top-right",
               timeout: 3000,
             }
