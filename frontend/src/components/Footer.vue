@@ -69,7 +69,7 @@ isSeller =
             >
           </li>
           <li
-            v-if="isAuth && isSeller"
+            v-if="!isAuth"
             class="footer__content__first-line__link-list__link"
           >
             <router-link to="/join-us">Devenir vendeur</router-link>
