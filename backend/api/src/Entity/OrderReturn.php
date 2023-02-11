@@ -11,15 +11,17 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Controller\OrderReturnController;
 use App\Repository\OrderReturnRepository;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true,security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')" , denormalizationContext: ['groups' => ['post']])]
+#[ApiResource(mercure: true,security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')" ,  denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: OrderReturnRepository::class)]
 
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/order/create/return',
         controller: OrderReturnController::class,
-        name: 'order_return'
+        name: 'order_return',
+        security: 'is_granted("ROLE_USER")'
     )
 ])]
 class OrderReturn
@@ -27,20 +29,21 @@ class OrderReturn
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['get'])]
     private ?int $id = null;
-
+    #[Groups(['get'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $reference = null;
-
+    
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Order $myOrder = null;
-
+    #[Groups(['get'])]
     #[ORM\Column(nullable: true)]
     private ?int $state = null;
-
+    #[Groups(['get'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $createdAt = null;
-
+    #[Groups(['get'])]
     #[ORM\OneToMany(mappedBy: 'myOrderReturn', targetEntity: OrderDetailsReturn::class)]
     private Collection $orderDetailsReturns;
 

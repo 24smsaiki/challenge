@@ -30,6 +30,7 @@ class Order
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['get'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]

@@ -5,25 +5,29 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\OrderDetailsReturnRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
-#[ApiResource(mercure: true, security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
+#[ApiResource(mercure: true, security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')",  denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: OrderDetailsReturnRepository::class)]
 class OrderDetailsReturn
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['get'])]
     private ?int $id = null;
 
    
-
+    #[Groups(['get'])]
     #[ORM\ManyToOne(inversedBy: 'orderDetailsReturns')]
     private ?Product $item = null;
 
+    #[Groups(['get'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $reason = null;
 
+    #[Groups(['get'])]
     #[ORM\ManyToOne(inversedBy: 'orderDetailsReturns')]
     private ?OrderReturn $myOrderReturn = null;
 
