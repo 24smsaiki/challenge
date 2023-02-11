@@ -51,7 +51,7 @@ class ManageRequestAccountSellerController extends AbstractController
                    
                     $em->persist($getSeller);
                     $em->flush();
-                    $emailContent = "<h3>votre compte vendeur a été validé vous pouvez désormais vous connecté avec l'adresse suivante : ".$email."<h3>";
+                    $emailContent = "<h3>Votre compte vendeur a été validé vous pouvez désormais vous connecté avec l'adresse suivante : ".$email."<h3>";
                     $emailSubject = "Votre compte est pret"; 
 
                     return new JsonResponse(['message' => 'seller request accepted', 'status' => 'success'], 201);
@@ -67,7 +67,7 @@ class ManageRequestAccountSellerController extends AbstractController
                 $em->persist($getSeller);
                 $em->flush();
 
-                $emailContent = "<h3>votre compte vendeur a été refusé vous pouvez contacter nos services pour plus d'inforamtions<h3>";
+                $emailContent = "<h3>Votre compte vendeur a été refusé vous pouvez contacter nos services pour plus d'inforamtions<h3>";
                 $emailSubject = "Compte refusé"; 
 
                 return new JsonResponse(['message' => 'seller request not Accepted', 'status' => 'success'], 201);
