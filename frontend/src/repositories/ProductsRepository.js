@@ -16,4 +16,8 @@ export default class ProductsRepository {
   static async updateProduct(id, body) {
     return await Request.make("put", `/products/${id}`, { ...body });
   }
+
+  static async deleteProduct(id) {
+    return await Request.make("delete", `/products/${id}`);
+  }
 }
