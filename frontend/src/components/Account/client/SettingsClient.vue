@@ -196,12 +196,8 @@ getUserInformation();
             :value="settingsForm.username"
             disabled
             readonly
-            @input="isUserName"
           />
         </div>
-        <p class="messageErrors mb-3 ml-0" v-if="errors?.username">
-          {{ errors.username }}
-        </p>
         <div class="ml-2 mb-5 mr-2">
           <label class="block font-bold mb-2" for="lastname">Nom</label>
           <input
