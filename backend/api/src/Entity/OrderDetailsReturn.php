@@ -31,6 +31,8 @@ class OrderDetailsReturn
     #[ORM\ManyToOne(inversedBy: 'orderDetailsReturns')]
     private ?OrderReturn $myOrderReturn = null;
 
+    // add value for total price of the details return 
+
     public function getId(): ?int
     {
         return $this->id;

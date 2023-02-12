@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\OrderDetailsReturn;
 use App\Entity\OrderReturn;
 use App\Entity\User;
 use App\Entity\Seller;
@@ -43,7 +44,12 @@ class ManageReturnByAdminController extends AbstractController
         switch ($finalState)
         {
             case 2: // return was accepted
-                // needs : email customer, total of the return, reference of the order origin 
+                // needs : the total price of the return  
+                $queryBuilder = $em->createQueryBuilder('or');
+                $queryBuilder->select('or')
+                ->from(OrderReturn::class, 'or')
+                ->innerJoin('', '');
+                
                 $totalReturn = strval(40); // to string before
                 $emailContent = "<h3>Votre retour pour la commande numéro : ".$orderReference."  a été accepté vous allez recevoir un virement de : ".$totalReturn."$ prochainement sur votre compte !"."<h3>";
                 $emailSubject = "Retour sur produit Accepté"; 

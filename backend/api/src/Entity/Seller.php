@@ -33,6 +33,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     )
 ])]
 
+#[UniqueEntity(fields: ['shopEmailContact'], message: 'Cet email est déjà utilisé.')]
 #[ORM\EntityListeners([SellerListener::class])]
 #[ORM\Entity(repositoryClass: SellerRepository::class)]
 
@@ -53,7 +54,6 @@ class Seller implements PasswordAuthenticatedUserInterface
     #[Groups(['post', 'get'])]
     private ?string $shopDescription = null;
 
-    #[UniqueEntity(fields: ['email'], message: 'Cet email est déjà utilisé.')]
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['post', 'get'])]
     private ?string $shopEmailContact = null;

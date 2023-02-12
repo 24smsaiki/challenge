@@ -43,12 +43,15 @@ class OrderReturn
     
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Order $myOrder = null;
+
     #[Groups(['get'])]
     #[ORM\Column(nullable: true)]
     private ?int $state = null;
+
     #[Groups(['get'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $createdAt = null;
+
     #[Groups(['get'])]
     #[ORM\OneToMany(mappedBy: 'myOrderReturn', targetEntity: OrderDetailsReturn::class)]
     private Collection $orderDetailsReturns;

@@ -45,6 +45,8 @@ class OrderReturnController extends AbstractController
             $returnOrder->setReference('return-'.uniqid());
             $returnOrder->setMyOrder($order);
             $returnOrder->setCreatedAt($now);
+
+            // $returnOrder->setTotalPrice($body["totalPrice"])
             
             foreach ($body['itemsToReturn'] as $item)
             {
