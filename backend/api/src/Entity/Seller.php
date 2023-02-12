@@ -3,21 +3,27 @@
 namespace App\Entity;
 
 use App\Entity\Product;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SellerRepository;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use App\EventListener\SellerListener;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\ManageRequestAccountSellerController;
-use App\Controller\ManageShopInfoController;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(mercure: true, security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
+#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
+#[Put(security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
+#[Post()]
+#[Delete(security: "is_granted('ROLE_ADMIN')")]
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/seller/request/answer/{id}',
@@ -47,6 +53,7 @@ class Seller implements PasswordAuthenticatedUserInterface
     #[Groups(['post', 'get'])]
     private ?string $shopDescription = null;
 
+    #[UniqueEntity(fields: ['email'], message: 'Cet email est déjà utilisé.')]
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['post', 'get'])]
     private ?string $shopEmailContact = null;

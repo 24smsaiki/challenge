@@ -2,15 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
 use App\EventListener\ProductListener;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
+#[Get(security: "is_granted('ROLE_ADMIN')")]
+#[GetCollection()]
+#[Post(security: "is_granted('ROLE_SELLER')")]
+#[Put(security: "is_granted('ROLE_SELLER')|| is_granted('ROLE_ADMIN')")]
+#[Delete(security: "is_granted('ROLE_SELLER')|| is_granted('ROLE_ADMIN')")]
+
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\EntityListeners([ProductListener::class])]
 

@@ -11,7 +11,7 @@ class UserChecker implements UserCheckerInterface
 {
     public function checkPreAuth(UserInterface $user)
     {
-        if (!$user instanceof User) {
+        if (!$user instanceof User || in_array("ROLE_ADMIN",$user->getRoles())) {
             return;
         }
         

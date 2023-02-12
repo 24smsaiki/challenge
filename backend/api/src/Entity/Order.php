@@ -3,17 +3,25 @@
 namespace App\Entity;
 
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
+use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
-use App\Controller\NewOrderController;
 use App\Repository\OrderRepository;
 use ApiPlatform\Metadata\ApiResource;
+use App\Controller\NewOrderController;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true, security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
+#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
+#[Get(security: "is_granted('ROLE_ADMIN')")]
+#[GetCollection(security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')")]
+#[Put(security: "is_granted('ROLE_ADMIN')")]
+#[Delete(security: "is_granted('ROLE_ADMIN')")]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 
@@ -21,7 +29,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Post(
         uriTemplate: '/order/pass',
         controller: NewOrderController::class,
-        name: 'order'  
+        name: 'order',
+        security : "is_granted('ROLE_USER')" 
     )
 ])]
 
@@ -54,7 +63,6 @@ class Order
     private ?float $total = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[Groups(['post', 'get'])]
     private ?User $customer = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]

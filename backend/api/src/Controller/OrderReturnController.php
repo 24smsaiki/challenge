@@ -32,7 +32,14 @@ class OrderReturnController extends AbstractController
         $now = new DateTime();
 
         $order = $this->managerRegistry->getManager()->getRepository(Order::class)->findOneByReference($body['orderReference']);
+        
         if($order->getState() === 5 && $order->getIsPaid() === true ){
+            
+            // set the state of the order first 
+            $order->setState(6);
+            $em->persist($order);
+            $em->flush();
+
             
             $returnOrder = new OrderReturn();
             $returnOrder->setReference('return-'.uniqid());
@@ -58,7 +65,9 @@ class OrderReturnController extends AbstractController
     
     
             return new JsonResponse(['message' => 'order return added.', 'status' => 'success'], 201);
-        } else {
+        }
+        else 
+        {
             return new JsonResponse(['message' => 'unable to create a return for not received order', 'status' => 'success'], 201);
         }
 

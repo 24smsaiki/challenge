@@ -55,14 +55,28 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if ( Order::class !== $resourceClass 
-        || $this->securityChecker->isGranted('ROLE_ADMIN') 
-        || null === $user = $this->securityChecker->getUser() ) {
+        if (Order::class !== $resourceClass) {
+            return;
+        }
+
+        // share operation between users and admin role
+        $rootAlias = $queryBuilder->getRootAliases()[0];
+        $user = $this->securityChecker->getUser();
+        if(null === $user){
             return;
         }
         
-        $rootAlias = $queryBuilder->getRootAliases()[0];
-        
+        // only with state pending
+        if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
+            $state = 0;
+            $queryBuilder
+                ->select($rootAlias)
+                ->where('o.state = :state')
+                ->setParameter('state', $state)
+            ;    
+            return;
+        }
+
         // here the orders for the users (select only those passed by the current user)
         if($this->securityChecker->isGranted('ROLE_USER')){
             $queryBuilder->andWhere(sprintf('%s.customer = :current_user', $rootAlias));

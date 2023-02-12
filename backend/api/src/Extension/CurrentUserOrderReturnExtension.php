@@ -59,13 +59,24 @@ final class CurrentUserOrderReturnExtension implements QueryCollectionExtensionI
             return;
         }
 
-        // share operation between user and seller
+        // share operation between user and seller role
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $user = $this->securityChecker->getUser();
 
         if(null === $user){
             return;
         }
+        // only with state pending
+        if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
+            $state = 1;
+            $queryBuilder
+                ->select($rootAlias)
+                ->where('o.state = :state')
+                ->setParameter('state', $state)
+            ;    
+            return;
+        }
+
         // only those related to orders passed by the current user 
         if($this->securityChecker->isGranted('ROLE_USER'))
         {
@@ -78,8 +89,5 @@ final class CurrentUserOrderReturnExtension implements QueryCollectionExtensionI
             return;
         }
         
-        if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
-            return;
-        }
     }
 }

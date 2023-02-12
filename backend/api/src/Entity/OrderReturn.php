@@ -2,15 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Controller\OrderReturnController;
 use App\Repository\OrderReturnRepository;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Controller\ManageReturnByAdminController;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(mercure: true,security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')" ,  denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
@@ -22,6 +23,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
         controller: OrderReturnController::class,
         name: 'order_return',
         security: 'is_granted("ROLE_USER")'
+    ),
+    new Post(
+        uriTemplate: '/ManageReturn',
+        controller: ManageReturnByAdminController::class,
+        security: "ROLE_ADMIN"
     )
 ])]
 class OrderReturn
