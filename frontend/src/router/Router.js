@@ -93,6 +93,24 @@ const router = createRouter({
       component: import("../views/Admin/Dashboard.vue"),
       meta: { requiresAuth: true },
     },
+    {
+      path: "/Admin/Orders",
+      name: "AdminOrders",
+      component: import("../views/Admin/Orders.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/Admin/Products",
+      name: "AdminProducts",
+      component: import("../views/Admin/Products.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/Admin/Users",
+      name: "AdminUsers",
+      component: import("../views/Admin/Users.vue"),
+      meta: { requiresAuth: true },
+    },
   ],
 });
 
