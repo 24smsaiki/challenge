@@ -51,8 +51,6 @@ const fetchRequests = async () => {
         });
 };
 
-
-
 onMounted(() => {
   fetchOrders();
   fetchCarriers();

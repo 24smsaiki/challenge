@@ -116,6 +116,12 @@ const router = createRouter({
       name: "AdminSellers",
       component: import("../views/Admin/Sellers.vue"),
       meta: { requiresAuth: true },
+    },
+    {
+      path: "/Admin/Carriers",
+      name: "AdminCarriers",
+      component: import("../views/Admin/Carriers.vue"),
+      meta: { requiresAuth: true },
     }
   ],
 });

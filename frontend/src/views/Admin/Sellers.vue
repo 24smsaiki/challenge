@@ -9,8 +9,6 @@ const sellers = ref([]);
 let columns = ref([]);
 
 UsersLogic.getSellers().then((response) => {
-    console.log(response, "users")
-    console.log(response, "users")
   sellers.value = response;
   columns = Object.keys(sellers.value[0]);
 });
