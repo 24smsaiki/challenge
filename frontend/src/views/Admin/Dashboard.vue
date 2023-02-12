@@ -339,57 +339,12 @@ onMounted(() => {
 									</tr>
 								</thead>
 								<tbody>
-									<!-- <tr
-										v-for="(request, index) in requestsPending"
-										:key="requestsPending.id"
-									>
-										<td class="pt-2">{{ index === 0 ? 1 : index + 1 }}</td>
-										<td class="pt-2">{{ fullName(request.clientId) }}</td>
-										<td class="pt-2">
-											{{
-												moment(request.createdAt).startOf("minute").fromNow()
-											}}
-										</td>
-										<td class="pt-2">
-											{{ request.message.substring(0, 30) }}...
-										</td>
-										<td class="pt-2">
-											<font-awesome-icon
-												icon="check"
-												style="color: blue; cursor: pointer"
-												@click="onClickAcceptRequest(request.id)"
-											/>
-											<font-awesome-icon
-												icon="xmark"
-												style="
-													color: #d71a1a;
-													margin-left: 5px;
-													cursor: pointer;
-												"
-												@click="onClickRejectRequest(request.id)"
-											/>
-										</td>
-									</tr> -->
                                     <tr v-for="(product) in products.slice(0,11)" :key="product.id">
                                         <td class="pt-2">{{ product.id }}</td>
                                         <td class="pt-2">{{ product.label }}</td>
                                         <td class="pt-2">{{ product.description.slice(0,40) }}...</td>
                                         <td class="pt-2">{{ product.price }} €</td>
-                                        <td class="pt-2">
-                                            <font-awesome-icon
-												icon="check"
-												style="color: blue; cursor: pointer"
-												
-											/>
-											<font-awesome-icon
-												icon="xmark"
-												style="
-													color: #d71a1a;
-													margin-left: 5px;
-													cursor: pointer;
-												"
-											/>
-                                        </td>
+                                    
                                     </tr>
 								</tbody>
 							</table>
@@ -421,21 +376,7 @@ onMounted(() => {
                                         <td class="pt-2">{{ order.reference }}</td>
                                         <td class="pt-2">{{ moment(order.createdAt).format('DD/MM/YYYY') }}</td>
                                         <td class="pt-2">{{ order.total }} €</td>
-                                        <td class="pt-2">
-                                            <font-awesome-icon
-												icon="check"
-												style="color: blue; cursor: pointer"
-												
-											/>
-											<font-awesome-icon
-												icon="xmark"
-												style="
-													color: #d71a1a;
-													margin-left: 5px;
-													cursor: pointer;
-												"
-											/>
-                                        </td>
+                                       
                                     </tr>
                                 </tbody>
                             </table>
