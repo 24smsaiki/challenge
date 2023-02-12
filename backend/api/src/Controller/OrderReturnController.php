@@ -43,11 +43,13 @@ class OrderReturnController extends AbstractController
             $returnOrder->setReference('return-'.uniqid());
             $returnOrder->setMyOrder($order);
             $returnOrder->setCreatedAt($now);
-            $returnOrder->setTotalPrice($body["totalPrice"]);
             
             foreach ($body['itemsToReturn'] as $item)
             {
-                $orderDetailsConcerned =  $em->getRepository(OrderDetails::class)->findOneById($body["idOrderDetailsConcerned"]);
+                // set the total of the orderReturn first
+                $returnOrder->setTotalPrice($item["totalPrice"]);
+                
+                $orderDetailsConcerned =  $em->getRepository(OrderDetails::class)->findOneById($item["idOrderDetailsConcerned"]);
                 // set the state of the order details those concern the orderReturn 
                 $orderDetailsConcerned->setState(1);
                 $em->persist($orderDetailsConcerned);
