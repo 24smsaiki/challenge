@@ -31,7 +31,11 @@ class ManageReturnByAdminController extends AbstractController
         $orderReturn = $this->managerRegistry->getRepository(OrderReturn::class)->findOneById($idReturn);
         $orderReference = "ref102301";
         // update orderReturn
+        $em = $this->managerRegistry->getManager();
         $orderReturn->setState($finalState);
+        $em->persist($orderReturn);
+        $em->flush();
+
 
 
         $emailContent = "";
