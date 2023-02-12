@@ -16,7 +16,6 @@ UsersLogic.getUsers().then((response) => {
         user.createdAt = moment(user.createdAt).format("DD/MM/YYYY");
         user.orders = user.orders.length;
         user.Address = user.Address.length;
-
     });
     
 
