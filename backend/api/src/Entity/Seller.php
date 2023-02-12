@@ -12,6 +12,7 @@ use App\Repository\SellerRepository;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
 use App\EventListener\SellerListener;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -32,6 +33,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         security: 'is_granted("ROLE_ADMIN")',
     )
 ])]
+#[GetCollection(security: "is_granted('ROLE_ADMIN')")]
+#[Get(security: "is_granted('ROLE_ADMIN')")]
 
 #[UniqueEntity(fields: ['shopEmailContact'], message: 'Cet email est déjà utilisé.')]
 #[ORM\EntityListeners([SellerListener::class])]
