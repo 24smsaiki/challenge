@@ -7,6 +7,9 @@ use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Controller\OrderReturnController;
 use App\Repository\OrderReturnRepository;
 use Doctrine\Common\Collections\Collection;
@@ -16,7 +19,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(mercure: true,security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')" ,  denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: OrderReturnRepository::class)]
-
+#[Get(security : "is_granted('ROLE_ADMIN')")]
+#[GetCollection(security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')")]
+#[Delete(security : "ROLE_ADMIN")]
+#[Put(security : "ROLE_ADMIN")]
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/order/create/return',

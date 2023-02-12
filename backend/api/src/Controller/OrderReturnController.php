@@ -33,14 +33,11 @@ class OrderReturnController extends AbstractController
         $now = new DateTime();
         
         $order = $em->getRepository(Order::class)->findOneByReference($body['orderReference']);
-        $orderDetailsConcerned =  $em->getRepository(OrderDetails::class)->findOneById($body["idOrderDetailsConcerned"]);
+        
         
         if($order->getState() === 5 && $order->getIsPaid() === true ){
             
-            // set the state of the order details those concern the orderReturn 
-            $orderDetailsConcerned->setState(1);
-            $em->persist($orderDetailsConcerned);
-            $em->flush();
+            
 
             $returnOrder = new OrderReturn();
             $returnOrder->setReference('return-'.uniqid());
@@ -50,6 +47,11 @@ class OrderReturnController extends AbstractController
             
             foreach ($body['itemsToReturn'] as $item)
             {
+                $orderDetailsConcerned =  $em->getRepository(OrderDetails::class)->findOneById($body["idOrderDetailsConcerned"]);
+                // set the state of the order details those concern the orderReturn 
+                $orderDetailsConcerned->setState(1);
+                $em->persist($orderDetailsConcerned);
+                $em->flush();
                 $findItem = $em->getRepository(Product::class)->findOneById($item['itemId']);
                 $orderDetailsReturn = new OrderDetailsReturn();
                 $orderDetailsReturn->setMyOrderReturn($returnOrder);
@@ -57,7 +59,6 @@ class OrderReturnController extends AbstractController
                 $orderDetailsReturn->setReason($item['reason']);
                 
                 $em->persist($orderDetailsReturn);
-    
             }    
             
             $returnOrder->setState(1);
