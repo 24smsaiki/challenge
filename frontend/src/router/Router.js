@@ -90,7 +90,7 @@ const router = createRouter({
     {
       path: "/Admin/Dashboard",
       name: "AdminDashboard",
-      component: import("../views/Admin/Dashboard.vue"),
+      component: import("../views/Admin/DashboardTest.vue"),
       meta: { requiresAuth: true },
     },
     {
@@ -122,7 +122,19 @@ const router = createRouter({
       name: "AdminCarriers",
       component: import("../views/Admin/Carriers.vue"),
       meta: { requiresAuth: true },
-    }
+    },
+    {
+      path: "/Admin/form",
+      name: "AdminForm",
+      component: import("../components/Admin/Form.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/Admin/Dashboard",
+      name: "AdminDashboard",
+      component: import("../views/Admin/Dashboard.vue"),
+      meta: { requiresAuth: true },
+    },
   ],
 });
 

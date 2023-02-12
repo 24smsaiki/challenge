@@ -36,6 +36,7 @@ services:
       - CLIENT_PORT=3000
       - CLIENT_HOST=0.0.0.0
       - VITE_PK_STRIPE=pk_test_51KgszjIllJ3lgbPzR5II75A0AUxiocWkPNRHFXD9HA4qcYxhjFl65ySVdgk0V33jTdl4YvUSa6KviiFsPucdXDPZ000bbTZaOw
+      - VITE_BASE_URL=localhost:3000/
 
   pwa:
     build:
