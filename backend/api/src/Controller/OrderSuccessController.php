@@ -32,10 +32,16 @@ class OrderSuccessController extends AbstractController
     public function __invoke($stripeSessionId)
     {
         $order = $this->managerRegistry->getManager()->getRepository(Order::class)->findOneByStripeSessionId($stripeSessionId);
+        foreach ($order->getOrderDetails() as $detail) {
+           $product =  $this->managerRegistry->getManager()->getRepository(Product::class)->findOneById($detail->getItem()->getId());
+           $newItemQuantity = ($product->getStockQuantity() - $detail->getQuantity());
+           $product->setStockQuantity($newItemQuantity);
+        }
         $order->setIsPaid(1);
         $order->setState(1);
         $em = $this->managerRegistry->getManager();
         $em->persist($order);
+        $em->persist($product);
         $em->flush();
         
         $content = "<h3>Felicition votre commande a bien été confirmé</h3>";

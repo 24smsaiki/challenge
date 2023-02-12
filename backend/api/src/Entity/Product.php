@@ -45,6 +45,9 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?seller $publisher = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $stockQuantity = null;
+
     # vérifier le problème l'extension Product ne renvoi pas ce qu'il faut  : message derreur undefined array key 'item'
 
 
@@ -164,6 +167,18 @@ class Product
     public function setPublisher(?seller $publisher): self
     {
         $this->publisher = $publisher;
+
+        return $this;
+    }
+
+    public function getStockQuantity(): ?int
+    {
+        return $this->stockQuantity;
+    }
+
+    public function setStockQuantity(?int $stockQuantity): self
+    {
+        $this->stockQuantity = $stockQuantity;
 
         return $this;
     }
