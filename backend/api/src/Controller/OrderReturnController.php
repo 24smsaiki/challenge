@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use DateTime;
 use App\Entity\Order;
+use App\Entity\OrderDetails;
 use App\Entity\Product;
 use App\Entity\OrderReturn;
 use App\Entity\OrderDetailsReturn;
@@ -30,23 +31,22 @@ class OrderReturnController extends AbstractController
         $em = $this->managerRegistry->getManager();
         $body = json_decode($request->getContent(),true);
         $now = new DateTime();
-
-        $order = $this->managerRegistry->getManager()->getRepository(Order::class)->findOneByReference($body['orderReference']);
+        
+        $order = $em->getRepository(Order::class)->findOneByReference($body['orderReference']);
+        $orderDetailsConcerned =  $em->getRepository(OrderDetails::class)->findOneById($body["idOrderDetailsConcerned"]);
         
         if($order->getState() === 5 && $order->getIsPaid() === true ){
             
-            // set the state of the order first 
-            $order->setState(6);
-            $em->persist($order);
+            // set the state of the order details those concern the orderReturn 
+            $orderDetailsConcerned->setState(1);
+            $em->persist($orderDetailsConcerned);
             $em->flush();
 
-            
             $returnOrder = new OrderReturn();
             $returnOrder->setReference('return-'.uniqid());
             $returnOrder->setMyOrder($order);
             $returnOrder->setCreatedAt($now);
-
-            // $returnOrder->setTotalPrice($body["totalPrice"])
+            $returnOrder->setTotalPrice($body["totalPrice"]);
             
             foreach ($body['itemsToReturn'] as $item)
             {

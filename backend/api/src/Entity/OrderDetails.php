@@ -34,6 +34,10 @@ class OrderDetails
     #[ORM\Column(nullable: true)]
     private ?float $totalPrice = null;
 
+    #[Groups(['get'])]
+    #[ORM\Column]
+    private ?int $state = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -83,6 +87,18 @@ class OrderDetails
     public function setTotalPrice(?float $totalPrice): self
     {
         $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function getState(): ?int
+    {
+        return $this->state;
+    }
+
+    public function setState(int $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

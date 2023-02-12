@@ -53,12 +53,14 @@ class NewOrderController extends AbstractController
 
         foreach ($body['orderItems'] as $item)
         {
+            // GET TOTAL PRICE FOR EACH ORDERITEM AND SET THE ORDERDETAILS
             $findItem = $em->getRepository(Product::class)->findOneById($item['itemId']);
             $orderDetails = new OrderDetails;
             $orderDetails->setMyOrder($order);
             $orderDetails->setItem($findItem);
             $orderDetails->setQuantity($item['quantity']);
             $orderDetails->setTotalPrice($findItem->getPrice()*$orderDetails->getQuantity());
+            $orderDetails->setState(0);
             $em->persist($orderDetails);
             
             $total += $orderDetails->getTotalPrice();

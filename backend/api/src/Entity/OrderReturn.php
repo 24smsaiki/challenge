@@ -56,6 +56,11 @@ class OrderReturn
     #[ORM\OneToMany(mappedBy: 'myOrderReturn', targetEntity: OrderDetailsReturn::class)]
     private Collection $orderDetailsReturns;
 
+    #[Groups(['post','get'])]
+    #[ORM\Column(nullable: true)]
+    private ?float $totalPrice = null;
+    // ADD TOTAL PRICE 
+
     public function __construct()
     {
         $this->orderDetailsReturns = new ArrayCollection();
@@ -141,6 +146,18 @@ class OrderReturn
                 $orderDetailsReturn->setMyOrderReturn(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?float
+    {
+        return $this->totalPrice;
+    }
+
+    public function setTotalPrice(?float $totalPrice): self
+    {
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }
