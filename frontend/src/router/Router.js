@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useProductStore } from "../stores/ProductStore";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -152,6 +153,8 @@ router.beforeEach((to, from, next) => {
     localStorage.removeItem("app-user");
     window.location.reload();
   }
+
+  useProductStore().fetchProducts();
 
   if (to.matched.some((record) => record.meta.requiresAuth) && !token) {
     next({ name: "Login" });
