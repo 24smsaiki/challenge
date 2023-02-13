@@ -2,19 +2,21 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
 use App\Controller\RegisterController;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Controller\ManageProfileClientController;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -24,6 +26,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ApiResource(mercure: true, security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[Get(security : "ROLE_ADMIN")]
+#[Delete(security : "ROLE_ADMIN")]
+#[Post(security : "ROLE_ADMIN")]
+#[Put(security : "ROLE_ADMIN")]
+#[GetCollection()]
+#[Post(security : "is_granted('')")]
 #[ApiResource(operations: [
     new Post(
         name: 'register',

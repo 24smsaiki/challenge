@@ -47,9 +47,6 @@ class OrderReturn
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $reference = null;
     
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?Order $myOrder = null;
-
     #[Groups(['get'])]
     #[ORM\Column(nullable: true)]
     private ?int $state = null;
@@ -65,11 +62,15 @@ class OrderReturn
     #[Groups(['post','get'])]
     #[ORM\Column(nullable: true)]
     private ?float $totalPrice = null;
-    // ADD TOTAL PRICE 
 
+    #[Groups(['get'])]
+    #[ORM\OneToMany(mappedBy: 'orderreturn', targetEntity: Order::class)]
+    private Collection $myOrder;
+    
     public function __construct()
     {
         $this->orderDetailsReturns = new ArrayCollection();
+        $this->myOrder = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,18 +86,6 @@ class OrderReturn
     public function setReference(?string $reference): self
     {
         $this->reference = $reference;
-
-        return $this;
-    }
-
-    public function getMyOrder(): ?Order
-    {
-        return $this->myOrder;
-    }
-
-    public function setMyOrder(?Order $myOrder): self
-    {
-        $this->myOrder = $myOrder;
 
         return $this;
     }
@@ -164,6 +153,36 @@ class OrderReturn
     public function setTotalPrice(?float $totalPrice): self
     {
         $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, order>
+     */
+    public function getMyOrder(): Collection
+    {
+        return $this->myOrder;
+    }
+
+    public function addMyOrder(Order $myOrder): self
+    {
+        if (!$this->myOrder->contains($myOrder)) {
+            $this->myOrder->add($myOrder);
+            $myOrder->setOrderreturn($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMyOrder(Order $myOrder): self
+    {
+        if ($this->myOrder->removeElement($myOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($myOrder->getOrderreturn() === $this) {
+                $myOrder->setOrderreturn(null);
+            }
+        }
 
         return $this;
     }

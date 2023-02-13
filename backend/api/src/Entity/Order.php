@@ -69,7 +69,7 @@ class Order
     #[Groups(['post', 'get'])]
     private ?Address $delivery = null;
 
-    #[ORM\OneToMany(mappedBy: 'myOrder', targetEntity: OrderDetails::class)]
+    #[ORM\OneToMany(mappedBy: 'myOrder', targetEntity: OrderDetails::class)]    
     #[Groups(['post', 'get'])]
     private ?Collection $orderDetails = null;
 
@@ -79,6 +79,9 @@ class Order
     #[Groups(['post', 'get'])]
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Carrier $carrier = null;
+
+    #[ORM\ManyToOne(inversedBy: 'myOrder')]
+    private ?OrderReturn $orderreturn = null;
 
     public function __construct()
     {
@@ -226,6 +229,18 @@ class Order
     public function setCarrier(?Carrier $carrier): self
     {
         $this->carrier = $carrier;
+
+        return $this;
+    }
+
+    public function getOrderreturn(): ?OrderReturn
+    {
+        return $this->orderreturn;
+    }
+
+    public function setOrderreturn(?OrderReturn $orderreturn): self
+    {
+        $this->orderreturn = $orderreturn;
 
         return $this;
     }
