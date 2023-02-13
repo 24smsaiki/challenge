@@ -246,13 +246,13 @@
                     <input
                       :type="addresses.length > 1 ? 'radio' : 'checkbox'"
                       :id="address.id"
-                      name="payment-method"
+                      name="payment-address"
                       :value="address.id"
                       v-model="picked_address"
                       :checked="picked_address === address.id"
                     />
                     <label
-                      :for="address.addressField"
+                      :for="address.id"
                       class="radio-label parent"
                       >{{ address.addressField }}
                     </label>
@@ -320,7 +320,7 @@
                     :checked="picked_carrier === carrier.id"
                   />
                   <label
-                    :for="carrier.label"
+                    :for="carrier.id"
                     :class="emptyFields.includes('shipping') ? 'red-label' : ''"
                     class="radio-label parent"
                     >{{ carrier.label }}
@@ -451,10 +451,6 @@
               <h4 class="price__detail__title">Livraison</h4>
               <p class="price__detail__value">{{ shipping }} €</p>
             </div>
-            <!-- <div class="price__detail">
-            <h4 class="price__detail__title">VAT (included)</h4>
-            <p class="price__detail__value">$ {{ separator(vat) }}</p>
-          </div> -->
             <div class="price__detail grand-total">
               <h4 class="price__detail__title">Grand total</h4>
               <p class="price__detail__value">
@@ -634,12 +630,13 @@ export default {
     },
     async getCarriers() {
       const carriers = await CarriersLogic.getCarriers();
-      this.carriers = carriers;
+      this.carriers = carriers.data;
     },
     async getAddresses() {
       try {
         const addresses = await AddressessLogic.getAddresses();
-        this.addresses = addresses;
+        this.addresses = addresses.data;
+        console.log(this.addresses, "addresses")
         if( this.addresses.length === 0) {
           this.newAddress = true;
         }
@@ -681,6 +678,7 @@ export default {
     //   return (0.2 * this.total).toFixed(2);
     // },
     shipping() {
+      console.log(this.carriers)
       let carrier = this.carriers.find(
         (carrier) => carrier.id === this.picked_carrier
       );

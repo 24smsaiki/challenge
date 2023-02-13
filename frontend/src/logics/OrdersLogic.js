@@ -48,4 +48,16 @@ export default class OrdersLogic {
   static async deleteOrder_detail(id) {
     return await OrdersRepository.deleteOrder_detail(id);
   }
+
+  static async getBackClientOrders() {
+    return await OrdersRepository.getBackClientOrders();
+  }
+
+  static async createOrdersReturn(body) {
+    return await OrdersRepository.createOrdersReturn(body);
+  }
+
+  static async getBackSellerOrders() {
+    return await OrdersRepository.getBackSellerOrders();
+  }
 }

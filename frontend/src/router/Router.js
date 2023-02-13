@@ -76,6 +76,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/account/backOrders",
+      name: "BackOrders",
+      component: import("../components/Account/Back.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/account/products",
       name: "Products",
       component: import("../components/Account/seller/ProductsSeller.vue"),
@@ -122,7 +128,7 @@ const router = createRouter({
       name: "AdminCarriers",
       component: import("../views/Admin/Carriers.vue"),
       meta: { requiresAuth: true },
-    }
+    },
   ],
 });
 

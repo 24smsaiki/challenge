@@ -376,7 +376,7 @@ getOrders();
               <div class="d-flex flex-column w-100">
                 <img
                   src="../../../assets/images/default-product.png"
-                  alt="product"
+                  alt="Default product"
                   class="w-20 h-20 object-cover mb-4"
                 />
                 <h2 class="text-gray-600 mb-4">
