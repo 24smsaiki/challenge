@@ -1,8 +1,8 @@
 import SettingsRepository from "../repositories/SettingsRepository";
 
 export default class SettingsLogic {
-  static async getUserInformation() {
-    return await SettingsRepository.getUserInformation();
+  static async getUserInformation(id) {
+    return await SettingsRepository.getUserInformation(id);
   }
 
   static async updateUserInformation(body) {

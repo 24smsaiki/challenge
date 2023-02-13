@@ -147,10 +147,11 @@ const updateUser = () => {
 };
 
 const getUserInformation = () => {
-  SettingsLogic.getUserInformation()
+  const user = JSON.parse(localStorage.getItem("app-user"));
+  SettingsLogic.getUserInformation(user?.id)
     .then((res) => {
       if (res.status === 200) {
-        const user = res.data[0];
+        const user = res.data;
         settingsForm.value.username = `${user.firstname} ${user.lastname}`;
         settingsForm.value.firstname = user.firstname;
         settingsForm.value.lastname = user.lastname;
