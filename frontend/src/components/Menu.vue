@@ -23,6 +23,9 @@ defineEmits(["toggle-menu-show"]);
           <router-link active-class="active" v-if="!isAuth" to="/register"
             >Inscription</router-link
           >
+          <router-link active-class="active" v-if="!isAuth" to="/join-us"
+            >Devenir vendeur</router-link
+          >
           <router-link active-class="active" v-if="!isAuth" to="/login"
             >Connexion</router-link
           >
