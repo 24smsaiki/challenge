@@ -75,10 +75,7 @@ class Seller implements PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['post'])]
     private ?string $password = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?bool $isDeclined = null;
-
+    
     #[ORM\Column(nullable: true)]
     private ?int $userId = null;
 
@@ -92,6 +89,10 @@ class Seller implements PasswordAuthenticatedUserInterface
     #[Groups(['post', 'get'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lastname = null;
+
+    #[Groups(['get'])]
+    #[ORM\Column]
+    private ?bool $is_pending = true;
 
 
 
@@ -192,18 +193,6 @@ class Seller implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getIsDeclined(): ?bool
-    {
-        return $this->isDeclined;
-    }
-
-    public function setIsDeclined(?bool $isDeclined): self
-    {
-        $this->isDeclined = $isDeclined;
-
-        return $this;
-    }
-
     public function getUserId(): ?int
     {
         return $this->userId;
@@ -266,6 +255,18 @@ class Seller implements PasswordAuthenticatedUserInterface
     public function setLastname(?string $lastname): self
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function isIsPending(): ?bool
+    {
+        return $this->is_pending;
+    }
+
+    public function setIsPending(bool $is_pending): self
+    {
+        $this->is_pending = $is_pending;
 
         return $this;
     }
