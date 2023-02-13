@@ -55,6 +55,7 @@ class NewOrderController extends AbstractController
         {
             // GET TOTAL PRICE FOR EACH ORDERITEM AND SET THE ORDERDETAILS
             $findItem = $em->getRepository(Product::class)->findOneById($item['itemId']);
+            $findItem->setStockQuantity($findItem->getStockQuantity() - $item['quantity']);
             $orderDetails = new OrderDetails;
             $orderDetails->setMyOrder($order);
             $orderDetails->setItem($findItem);
