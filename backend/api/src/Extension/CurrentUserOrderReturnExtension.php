@@ -81,8 +81,8 @@ final class CurrentUserOrderReturnExtension implements QueryCollectionExtensionI
         {
             $queryBuilder
                 ->select($rootAlias)
-                ->innerJoin('o.myOrder', 'or')
-                ->where('or.customer = :current_user')
+                ->innerJoin('o.myOrder', 'rd')
+                ->where('rd.customer = :current_user')
                 ->setParameter('current_user', $user)
             ;
             return;
