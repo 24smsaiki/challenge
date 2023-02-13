@@ -74,6 +74,7 @@ const acceptRequestSeller = async (id) => {
 const onAcceptSeller = async (id) => {
  await acceptRequestSeller(id).then(() => {
 	requests.value.filter((request) => request.id !== id);
+	sellers.value.push(requests.value.find((request) => request.id === id));
   });
 };
 
@@ -200,21 +201,21 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <div class="w-full md:w-1/2 xl:w-1/3 p-3">
+		<div class="w-full md:w-1/2 xl:w-1/3 p-3">
           <div class="bg-white border rounded shadow p-2">
             <div class="flex flex-row items-center">
               <div class="flex-shrink pr-4">
-                <div class="rounded p-3 bg-red-600">
+                <div class="rounded p-3 bg-purple-600">
                   <i class="fas fa-user"></i>
                 </div>
               </div>
               <div class="flex-1 text-right md:text-center">
                 <h5 class="font-bold uppercase color-orange">
-                  Nombre de vendeurs
+                  Demande de vendeurs
                 </h5>
                 <h3 class="font-bold text-3xl">
-                  {{ sellers ? sellers.length : null }}
-                  <span class="text-red-500"
+                  {{ requests ? requests.length : null }}
+                  <span class="text-purple-500"
                     ><i class="fa fa-caret-up"></i
                   ></span>
                 </h3>
@@ -235,8 +236,31 @@ onMounted(() => {
                   Demande de retour
                 </h5>
                 <h3 class="font-bold text-3xl">
-                  {{ requests ? requests.length : null }}
+                  {{ requestsReturn ? requestsReturn.length : null }}
                   <span class="text-purple-500"
+                    ><i class="fa fa-caret-up"></i
+                  ></span>
+                </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+		
+		<div class="w-full md:w-1/2 xl:w-1/3 p-3">
+          <div class="bg-white border rounded shadow p-2">
+            <div class="flex flex-row items-center">
+              <div class="flex-shrink pr-4">
+                <div class="rounded p-3 bg-red-600">
+                  <i class="fas fa-user"></i>
+                </div>
+              </div>
+              <div class="flex-1 text-right md:text-center">
+                <h5 class="font-bold uppercase color-orange">
+                  Nombre de vendeurs
+                </h5>
+                <h3 class="font-bold text-3xl">
+                  {{ sellers ? sellers.length : null }}
+                  <span class="text-red-500"
                     ><i class="fa fa-caret-up"></i
                   ></span>
                 </h3>
@@ -267,22 +291,6 @@ onMounted(() => {
                     <td class="pt-2">{{ user.email }}</td>
                     <td class="pt-2">
                       {{ user.firstname + " " + user.lastname }}
-                    </td>
-                    <td class="pt-2">
-                      <font-awesome-icon
-                        icon="check"
-                        style="color: blue; cursor: pointer"
-						
-                      />
-                      <font-awesome-icon
-                        icon="xmark"
-                        style="
-                          color: #d71a1a;
-                          margin-left: 5px;
-                          cursor: pointer;
-                        "
-						
-                      />
                     </td>
                   </tr>
                 </tbody>

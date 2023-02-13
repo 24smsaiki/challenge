@@ -61,7 +61,6 @@ const router = createRouter({
       path: "/join-us",
       name: "JoinUs",
       component: () => import("../views/Seller.vue"),
-      meta: { requiresAuth: true },
     },
     {
       path: "/account/orders",
