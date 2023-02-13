@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="card" @click="$router.push(`/product/${product.slug}`) ">
           <div class="card-img">
             <img
@@ -33,7 +33,7 @@
             <a href="#" class="cart">Add to Cart</a>
           </div>
         </div>
-</template>
+</template> -->
 
 <script>
 export default {

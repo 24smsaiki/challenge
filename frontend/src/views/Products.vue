@@ -47,7 +47,6 @@ ProductsLogic.getProducts()
         v-for="product in products"
         :key="product.id"
         :product="product"
-        @click="redirectToProduct(product)"
       />
     </div>
   </div>
