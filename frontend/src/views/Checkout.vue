@@ -598,6 +598,7 @@ export default {
         this.loading = true;
         await OrdersLogic.pass_order(order)
           .then((res) => {
+            res = res.data;
             this.sessionId = res.stripeSessionId;
             this.$refs.checkoutRef.redirectToCheckout();
           })
