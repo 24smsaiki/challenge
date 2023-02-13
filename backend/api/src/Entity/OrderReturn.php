@@ -69,7 +69,6 @@ class OrderReturn
     public function __construct()
     {
         $this->orderDetailsReturns = new ArrayCollection();
-        $this->myOrder = new ArrayCollection();
     }
 
     public function getId(): ?int
