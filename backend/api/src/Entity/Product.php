@@ -2,20 +2,65 @@
 
 namespace App\Entity;
 
+use Model\Operation;
+use Model\RequestBody;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
 use App\EventListener\ProductListener;
 use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Controller\CreateProductController;
 
+
+#[Vich\Uploadable]
 #[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
+#[ApiResource(operations: [
+    new Post(
+        uriTemplate: '/products',
+        controller: CreateProductController::class,
+        deserialize: false, 
+        openapiContext:[
+            'requestBody' => [
+                'content' => [
+                    'multipart/form-data' => [
+                        'properties' => [
+                            'image' => [
+                                'type' => 'string',
+                                'format' => 'binary'
+                            ],
+                            'label' => [
+                                'type' => 'string'
+                            ],
+                            'description' => [
+                                'type' => 'string'
+                            ],
+                            'price' => [
+                                'type' => 'float'
+                            ],
+                            'publisher' => [
+                                'type' => 'string'
+                            ],
+                            'stockQauntity' => [
+                                'type' => 'integer'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    )
+])]
+
 #[Get(security: "is_granted('ROLE_ADMIN')")]
 #[GetCollection()]
 #[Post(security: "is_granted('ROLE_SELLER')")]
@@ -55,9 +100,21 @@ class Product
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?seller $publisher = null;
-
+    #[Groups(['post'])]
     #[ORM\Column(nullable: true)]
     private ?int $stockQuantity = null;
+
+    #[Groups(['post'])]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imagePath = null;
+
+    #[Groups(['post'])]
+    #[Vich\UploadableField(mapping: "products_images", fileNameProperty: "imagePath")]
+    public ?File $image = null;
+
+    #[Groups(['post'])]
+    #[ApiProperty(types: ['https://schema.org/contentUrl'])]
+    public ?string $contentUrl = null;
 
     # vérifier le problème l'extension Product ne renvoi pas ce qu'il faut  : message derreur undefined array key 'item'
 
@@ -190,6 +247,18 @@ class Product
     public function setStockQuantity(?int $stockQuantity): self
     {
         $this->stockQuantity = $stockQuantity;
+
+        return $this;
+    }
+
+    public function getImagePath(): ?string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(?string $imagePath): self
+    {
+        $this->imagePath = $imagePath;
 
         return $this;
     }

@@ -14,7 +14,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use App\EventListener\SellerListener;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection; 
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\ManageRequestAccountSellerController;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
 #[Put(security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
 #[Post()]
-#[Delete(security: "is_granted('ROLE_ADMIN')")]
+#[Delete(security: "is_granted('ROLE_ADMIN')")] 
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/seller/request/answer/{id}',
@@ -31,7 +31,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         name: 'seller_request_answer',
         security: 'is_granted("ROLE_ADMIN")',
     )
-])]
+])]  
 
 #[UniqueEntity(fields: ['shopEmailContact'], message: 'Cet email est déjà utilisé.')]
 #[ORM\EntityListeners([SellerListener::class])]
