@@ -80,7 +80,8 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Carrier $carrier = null;
 
-    #[ORM\ManyToOne(inversedBy: 'myOrder')]
+    #[Groups(['get'])]
+    #[ORM\ManyToOne(inversedBy: 'myOrder',cascade: "persist")]
     private ?OrderReturn $orderreturn = null;
 
     public function __construct()
