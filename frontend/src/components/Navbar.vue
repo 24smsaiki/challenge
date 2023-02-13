@@ -31,6 +31,9 @@ defineEmits(["toggle-menu-show"]);
           <router-link active-class="active" v-if="!isAuth" to="/login"
             >Connexion</router-link
           >
+          <router-link active-class="active" v-if="!isAuth" to="/join-us"
+            >Devenir vendeur</router-link
+          >
           <a v-if="isAuth" @click="onLogout">Déconnexion</a>
         </li>
       </ul>
