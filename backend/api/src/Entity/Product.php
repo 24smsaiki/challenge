@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']], normalizationContext: ['groups' => ['get']])]
 #[Get(security: "is_granted('ROLE_ADMIN')")]
 #[GetCollection()]
-#[Post(security: "is_granted('ROLE_SELLER')")]
+#[Post(security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
 #[Put(security: "is_granted('ROLE_SELLER')|| is_granted('ROLE_ADMIN')")]
 #[Delete(security: "is_granted('ROLE_SELLER')|| is_granted('ROLE_ADMIN')")]
 
