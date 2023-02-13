@@ -26,12 +26,12 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ApiResource(mercure: true, denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[Get(security : "(is_granted('ROLE_USER') and object == user) || is_granted('ROLE_ADMIN')")]
-#[Delete(security : "ROLE_ADMIN")]
-#[Post(security : "ROLE_ADMIN")]
-#[Put(security : "ROLE_ADMIN")]
-#[GetCollection("is_granted('ROLE_ADMIN')")]
-#[Post(security : "is_granted('ROLE_ADMIN')")]
+#[Get(security: "(is_granted('ROLE_USER') and object == user) || is_granted('ROLE_ADMIN')")]
+#[Delete(security: "is_granted('ROLE_ADMIN')")]
+#[Post(security: "is_granted('ROLE_ADMIN')")]
+#[Put(security: "is_granted('ROLE_ADMIN')")]
+#[GetCollection(security: "is_granted('ROLE_ADMIN')")]
+#[Post(security: "is_granted('ROLE_ADMIN')")]
 #[ApiResource(operations: [
     new Post(
         name: 'register',

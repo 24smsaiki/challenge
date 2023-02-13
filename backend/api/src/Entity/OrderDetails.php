@@ -11,11 +11,11 @@ use ApiPlatform\Metadata\GetCollection;
 use App\Repository\OrderDetailsRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true,normalizationContext: ['groups' => ['get']])]
-#[Get(security : "is_granted(ROLE_ADMIN) || is_granted('ROLE_SELLER')")]
-#[GetCollection(security : "is_granted('ROLE_ADMIN') || is_granted('ROLE_SELLER')")]
-#[Put(security : "ROLE_ADMIN")]
-#[Delete(security : "ROLE_ADMIN")]
+#[ApiResource(mercure: true, normalizationContext: ['groups' => ['get']])]
+#[Get(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_SELLER')")]
+#[GetCollection(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_SELLER')")]
+#[Put(security: "is_granted('ROLE_ADMIN')")]
+#[Delete(security: "is_granted('ROLE_ADMIN')")]
 #[ORM\Entity(repositoryClass: OrderDetailsRepository::class)]
 
 class OrderDetails
