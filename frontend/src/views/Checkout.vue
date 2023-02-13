@@ -634,12 +634,13 @@ export default {
     },
     async getCarriers() {
       const carriers = await CarriersLogic.getCarriers();
-      this.carriers = carriers;
+      this.carriers = carriers.data;
     },
     async getAddresses() {
       try {
         const addresses = await AddressessLogic.getAddresses();
-        this.addresses = addresses;
+        this.addresses = addresses.data;
+        console.log(this.addresses, "addresses")
         if( this.addresses.length === 0) {
           this.newAddress = true;
         }
@@ -681,6 +682,7 @@ export default {
     //   return (0.2 * this.total).toFixed(2);
     // },
     shipping() {
+      console.log(this.carriers)
       let carrier = this.carriers.find(
         (carrier) => carrier.id === this.picked_carrier
       );
