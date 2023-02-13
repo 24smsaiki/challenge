@@ -3,16 +3,18 @@
     <div class="about__image"></div>
     <div class="about__text">
       <h2 class="about__text__heading">
-        Vous apporter <span>le meilleur</span> équipement audio
+        <span>GadjetMarket</span> vous apportera
+        <span>les meilleurs</span> produits
       </h2>
       <p class="about__text__description">
-        Situé au cœur de New York, Audiophile est le premier magasin pour
-        casques, écouteurs, haut-parleurs et accessoires audio haut de gamme.
-        Nous avoir une grande salle d'exposition et des salles de démonstration
-        de luxe à votre disposition pour parcourir et découvrir une large gamme
-        de nos produits. Arrêtez-vous dans notre magasin pour rencontrer
-        certaines des personnes fantastiques qui font d'Audiophile le meilleur
-        endroit pour acheter votre équipement audio portable.
+        Situé au cœur de New York, GadjetMarket est le premier magasin pour
+        casques, écouteurs, haut-parleurs et accessoires audio haut de gamme et
+        tout autre type de produit quelconques. Nous avoir une grande salle
+        d'exposition et des salles de démonstration de luxe à votre disposition
+        pour parcourir et découvrir une large gamme de nos produits.
+        Arrêtez-vous dans notre magasin pour rencontrer certaines des personnes
+        fantastiques qui font de GadjetMarket le meilleur endroit pour acheter
+        votre équipement.
       </p>
     </div>
   </section>
@@ -26,7 +28,7 @@ export default {
 
 <style lang="scss" scoped>
 .about {
-  margin: 12rem auto;
+  margin: 5rem auto;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -40,7 +42,7 @@ export default {
 
   @media (min-width: 1205px) {
     width: 111rem;
-    margin: 20rem auto;
+    margin: 10rem auto;
     flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;

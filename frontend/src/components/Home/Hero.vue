@@ -9,20 +9,14 @@
     <router-link
       active-class="active"
       class="hero__product-link"
-      to="/product/xx99-mark-two-headphones"
+      to="/products"
     >
       <button class="hero__product-link__btn default-btn">
-        Détail du produit
+        Visualiser les produits
       </button>
     </router-link>
   </section>
 </template>
-
-<script>
-export default {
-  name: "Hero",
-};
-</script>
 
 <style lang="scss" scoped>
 .hero {

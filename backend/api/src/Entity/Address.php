@@ -2,15 +2,25 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AddressRepository;
 use App\EventListener\AddressListener;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(mercure: true,security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')",denormalizationContext: ['groups' => ['post']])]
+#[Post(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]
+#[Get(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]
+#[GetCollection(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]  
+#[Delete(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]
+#[Put(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]    
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ORM\EntityListeners([AddressListener::class])]
 class Address
@@ -54,12 +64,12 @@ class Address
 
     #[ORM\ManyToOne(inversedBy: 'Address')]
     #[Groups(['post'])]
-    private ?User $customer = null;
+    public ?User $customer = null;
 
     #[ORM\OneToMany(mappedBy: 'delivery', targetEntity: Order::class)]
-    #[Groups(['post'])]
+    #[Groups(['post','get'])]
     private Collection $orders;
-
+    #[Groups(['get'])]
     #[ORM\Column(nullable: true)]
     private ?bool $is_deleted = false;
 

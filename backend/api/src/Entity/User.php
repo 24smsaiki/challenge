@@ -31,7 +31,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[Post(security : "ROLE_ADMIN")]
 #[Put(security : "ROLE_ADMIN")]
 #[GetCollection()]
-#[Post(security : "is_granted('')")]
+#[Post(security : "is_granted('ROLE_ADMIN')")]
 #[ApiResource(operations: [
     new Post(
         name: 'register',
@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[Groups(['post', 'get'])]
     #[NotBlank(message: 'Veuillez renseigner l\'email'), Email(message: 'Veuillez renseigner un email valide.')]

@@ -40,9 +40,6 @@ isSeller =
           >
             <router-link active-class="active" to="/">Panier</router-link>
           </li>
-          <li class="footer__content__first-line__link-list__link">
-            <router-link active-class="active" to="/">Contact</router-link>
-          </li>
           <li
             v-if="!isAuth"
             class="footer__content__first-line__link-list__link"
