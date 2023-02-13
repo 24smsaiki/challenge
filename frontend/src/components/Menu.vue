@@ -12,7 +12,9 @@ defineEmits(["toggle-menu-show"]);
       <ul class="navbar__desktop-menu ml-30">
         <li class="navbar__desktop-menu__link">
           <router-link active-class="active" to="/">Accueil</router-link>
-          <router-link active-class="active" to="/">Produits</router-link>
+          <router-link active-class="active" to="/products" v-if="isAuth"
+            >Produits</router-link
+          >
           <router-link active-class="active" v-if="isAuth" to="/account"
             >Compte</router-link
           >
