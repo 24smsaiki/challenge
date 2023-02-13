@@ -100,7 +100,7 @@ onMounted(() => {
     />
     <Footer
       v-if="
-        !$route.path.startsWith('/admin') && !$route.path == 'paymentRefused'
+        !$route.path.startsWith('/admin') && !$route.path !== 'paymentRefused'
       "
     ></Footer>
   </UserProvider>
