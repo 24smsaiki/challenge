@@ -74,11 +74,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Docker Compose
-      uses: docker/setup-docker-compose@v1
-      with:
-        docker-compose-version: ${{ env.DOCKER_COMPOSE_VERSION }}
-
     - name: Build and run tests
       working-directory: /github/workspace
       run: |
