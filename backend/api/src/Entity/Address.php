@@ -15,12 +15,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true,security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')",denormalizationContext: ['groups' => ['post']])]
+#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']])]
 #[Post(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]
 #[Get(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]
-#[GetCollection(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]  
+#[GetCollection(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]
 #[Delete(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]
-#[Put(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]    
+#[Put(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ORM\EntityListeners([AddressListener::class])]
 class Address
@@ -67,7 +67,7 @@ class Address
     public ?User $customer = null;
 
     #[ORM\OneToMany(mappedBy: 'delivery', targetEntity: Order::class)]
-    #[Groups(['post','get'])]
+    #[Groups(['post', 'get'])]
     private Collection $orders;
     #[Groups(['get'])]
     #[ORM\Column(nullable: true)]
@@ -76,7 +76,6 @@ class Address
     public function __construct()
     {
         $this->orders = new ArrayCollection();
-        
     }
 
     public function getId(): ?int
@@ -187,7 +186,7 @@ class Address
 
     public function setCustomer(?User $customer): self
     {
-        
+
         $this->customer = $customer;
 
         return $this;

@@ -64,8 +64,8 @@ use App\Controller\CreateProductController;
 #[Get(security: "is_granted('ROLE_ADMIN')")]
 #[GetCollection()]
 #[Post(security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
-#[Put(security: "is_granted('ROLE_SELLER')|| is_granted('ROLE_ADMIN')")]
-#[Delete(security: "is_granted('ROLE_SELLER')|| is_granted('ROLE_ADMIN')")]
+#[Put(security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
+#[Delete(security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\EntityListeners([ProductListener::class])]

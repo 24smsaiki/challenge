@@ -10,7 +10,6 @@ use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use App\Entity\OrderReturn;
-use App\Entity\Product;
 
 /**
  * This extension makes sure normal users can only access their own Orders

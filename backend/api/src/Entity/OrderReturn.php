@@ -17,12 +17,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use App\Controller\ManageReturnByAdminController;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true,security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')" ,  denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
+#[ApiResource(mercure: true, denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: OrderReturnRepository::class)]
-#[Get(security : "is_granted('ROLE_ADMIN')")]
+#[Get(security: "is_granted('ROLE_ADMIN')")]
 #[GetCollection(security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')")]
-#[Delete(security : "ROLE_ADMIN")]
-#[Put(security : "ROLE_ADMIN")]
+#[Delete(security: "is_granted('ROLE_ADMIN')")]
+#[Put(security: "is_granted('ROLE_ADMIN')")]
 #[ApiResource(operations: [
     new Post(
         uriTemplate: '/order/create/return',
@@ -33,7 +33,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     new Post(
         uriTemplate: '/ManageReturn',
         controller: ManageReturnByAdminController::class,
-        security: "ROLE_ADMIN"
+        security: "is_granted('ROLE_ADMIN')"
     )
 ])]
 class OrderReturn
@@ -46,7 +46,7 @@ class OrderReturn
     #[Groups(['get'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $reference = null;
-    
+
     #[Groups(['get'])]
     #[ORM\Column(nullable: true)]
     private ?int $state = null;
@@ -59,7 +59,7 @@ class OrderReturn
     #[ORM\OneToMany(mappedBy: 'myOrderReturn', targetEntity: OrderDetailsReturn::class)]
     private Collection $orderDetailsReturns;
 
-    #[Groups(['post','get'])]
+    #[Groups(['post', 'get'])]
     #[ORM\Column(nullable: true)]
     private ?float $totalPrice = null;
 
@@ -187,6 +187,4 @@ class OrderReturn
 
         return $this;
     }
-
-   
 }

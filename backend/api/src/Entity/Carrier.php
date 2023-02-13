@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(mercure: true,security: "is_granted('ROLE_ADMIN')",denormalizationContext: ['groups' => ['post']])]
+#[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']])]
 #[ORM\Entity(repositoryClass: CarrierRepository::class)]
 class Carrier
 {

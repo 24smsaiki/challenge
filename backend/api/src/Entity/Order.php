@@ -30,7 +30,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         uriTemplate: '/order/pass',
         controller: NewOrderController::class,
         name: 'order',
-        security : "is_granted('ROLE_USER')" 
+        security: "is_granted('ROLE_USER')"
     )
 ])]
 
@@ -69,7 +69,7 @@ class Order
     #[Groups(['post', 'get'])]
     private ?Address $delivery = null;
 
-    #[ORM\OneToMany(mappedBy: 'myOrder', targetEntity: OrderDetails::class)]    
+    #[ORM\OneToMany(mappedBy: 'myOrder', targetEntity: OrderDetails::class)]
     #[Groups(['post', 'get'])]
     private ?Collection $orderDetails = null;
 
@@ -261,5 +261,4 @@ class Order
 
         return $this;
     }
-    
 }
