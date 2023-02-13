@@ -83,7 +83,7 @@ jobs:
       run: cd ./backend/api && composer update --ignore-platform-reqs && composer install --ignore-platform-reqs
 
     - name: Run PHPUnit tests
-      run: ./vendor/bin/phpunit
+      run: php bin/phpunit
 
 
 
