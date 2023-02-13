@@ -31,7 +31,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[Post(security : "ROLE_ADMIN")]
 #[Put(security : "ROLE_ADMIN")]
 #[GetCollection()]
-#[Post(security : "is_granted('')")]
+#[Post(security : "is_granted('ROLE_ADMIN')")]
 #[ApiResource(operations: [
     new Post(
         name: 'register',
