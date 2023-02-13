@@ -35,6 +35,7 @@ class ManageRequestAccountSellerController extends AbstractController
                 if ($getSeller->getIsRequested() === true && $getSeller->getIsActif() === false) {
 
                     $getSeller->setIsActif(true);
+                    $getSeller->setIsPending(false);
                     $user = new User();
 
                     $user->setEmail($email);
@@ -63,7 +64,7 @@ class ManageRequestAccountSellerController extends AbstractController
             case 'declined_request':
                 $em = $this->managerRegistry->getManager();
                 $getSeller = $em->getRepository(Seller::class)->findOneById($id);
-                $getSeller->setIsDeclined(true);
+                $getSeller->setIsPending(false);
                 $em->persist($getSeller);
                 $em->flush();
 
