@@ -1,14 +1,7 @@
 <script setup>
 import { inject } from "vue";
-
 const isAuth = inject("ProviderIsAuth");
-function scrollToTop() {
-  window.scrollTo(0, 0);
-}
-let isSeller = false;
-isSeller =
-  JSON.parse(localStorage.getItem("app-user"))?.roles.indexOf("ROLE_SELLER") !==
-  -1;
+const scrollToTop = () => window.scrollTo(0, 0);
 </script>
 
 <template>
@@ -74,11 +67,10 @@ isSeller =
         </ul>
       </div>
       <p class="footer__content__text">
-        Audiophile est une solution tout-en-un pour répondre à vos besoins
-        audio. Nous sommes un petite équipe de mélomanes et de spécialistes du
-        son qui se consacrent à vous aidant à tirer le meilleur parti de l'audio
-        personnel. Venez visiter notre démo installation - nous sommes ouverts 7
-        jours sur 7.
+        GadgetMarket est une solution pour répondre à vos besoins. Nous sommes
+        un petite équipe de mélomanes et de spécialistes qui se consacrent à
+        vous aidant à tirer le meilleur parti de nos produits. Venez visiter
+        notre démo installation - nous sommes ouverts 7 jours sur 7.
       </p>
       <div class="footer__content__copyright-section">
         <p class="footer__content__copyright-section__copyright-text">
