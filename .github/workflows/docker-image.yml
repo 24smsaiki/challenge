@@ -16,9 +16,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - uses: actions/checkout@v3
+      - name: Build Docker Image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: moncefsaiki/challenge-api-vue:latest
       - name: Build the Docker image
-        run: docker build ./backend --tag moncefsaiki/challenge-api-vue:latest && docker push moncefsaiki/challenge-api-vue:latest
+
+        # run: docker build ./backend --tag moncefsaiki/challenge-api-vue:latest && docker push moncefsaiki/challenge-api-vue:latest
 
   deploy-api:
     runs-on: ubuntu-latest
@@ -66,7 +72,6 @@ jobs:
   #       run:
   #         sudo apt update && sudo apt install sshpass &&  sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER_FRONT }}@${{ secrets.APP_HOST_FRONT }}
   #         "cd /var/www/html/challenge/ && npm install && npm run build"
-
   
   # test-stage:
   #   runs-on: ubuntu-latest
