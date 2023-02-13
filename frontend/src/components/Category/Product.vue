@@ -15,46 +15,96 @@
         <span class="bold">Prix : </span>{{ product.price }} €
       </p>
       <p class="description">
-        <span class="bold">Description : </span>{{ product.description }}
+        <span class="bold">Description : </span>{{ product.description.slice(0, 30) }}...
       </p>
+      <button class="btn btn-primary" @click="addToCart">
+       Ajouter au panier
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import { useCartStore } from "../../stores/CartStore";
+import { useProductStore } from "../../stores/ProductStore";
+import { createToast } from "mosha-vue-toastify";
+
 export default {
+  emits: [["toggle-menu-show", "add-to-cart"]],
   name: "Product",
   props: { product: Object },
   computed: {
-    editSrc() {
-      return this.product.categoryImage.desktop.slice(2);
-    },
+    // editSrc() {
+    //   return this.product.categoryImage.desktop.slice(2);
+    // },
   },
   data() {
     return {
-      windowSize: null,
+      total: 0,
+     
     };
   },
   methods: {
-    setWindowSize() {
-      let windowWidth = window.innerWidth;
-      if (windowWidth < 768) {
-        this.windowSize = "mobile";
-      } else if (windowWidth < 1205) {
-        this.windowSize = "tablet";
-      } else {
-        this.windowSize = "desktop";
+    increaseTotal() {
+      this.total++;
+    },
+    decreaseTotal() {
+      if (this.total > 1) {
+        this.total--;
       }
     },
-  },
-  created() {
-    this.setWindowSize();
-    window.addEventListener("resize", this.setWindowSize);
+    addToCart() {
+      const data = {
+        productId: this.product.id,
+        addedQuantity: this.total,
+      };
+      useCartStore().addProduct(data);
+      // emit the event to the parent component
+      this.$emit("add-to-cart", data);
+
+      createToast("Produit ajouté au panier", {
+        position: "top-right",
+        timeout: 5000,
+        close: true,
+        type: "success",
+        showCloseButtonOnHover: false,
+        hideProgressBar: false,
+        closeButton: "button",
+        icon: true,
+        rtl: false,
+      });
+    },
+    resetTotal () {
+      this.total = 1;
+    },
+
   },
 };
 </script>
 
 <style scoped>
+
+.btn {
+  background-color: blue;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: 0.4s;
+  border-radius: 5px;
+}
+
+
+.btn-primary {
+  background-color: blue;
+  color: white;
+}
+
 .card {
   box-shadow: 0 0 5px #00000040;
   transition: 0.4s;

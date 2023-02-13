@@ -432,7 +432,7 @@
                 <img :src="editSrc(product)" :alt="product.name" />
                 <div class="products__item__left__info">
                   <h4>
-                    {{ product.slug.slice(0, product.slug.indexOf("-")) }}
+                    {{ product.label }}
                   </h4>
                   <p>$ {{ separator(product.price) }}</p>
                 </div>

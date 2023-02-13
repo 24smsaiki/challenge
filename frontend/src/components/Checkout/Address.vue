@@ -146,9 +146,6 @@
       toggleShowOrder() {
         this.showOrder = !this.showOrder;
       },
-      editedSlug(product) {
-        return product.slug.slice(0, product.slug.indexOf("-"));
-      },
       goHomeHandler() {
         this.$emit("toggle-menu-show", "confirmation");
         this.$emit("empty-cart");
