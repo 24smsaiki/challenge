@@ -19,8 +19,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[Post(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]
 #[Get(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]
 #[GetCollection(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]  
-#[Delete(security: "is_granted('ROLE_ADMIN')")]
-#[Put(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]    
+#[Delete(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]
+#[Put(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]    
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
 #[ORM\EntityListeners([AddressListener::class])]
 class Address

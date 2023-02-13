@@ -47,12 +47,12 @@ security:
         #- { path: ^/order_returns, roles: ROLE_ADMIN }
         - { path: ^/seller/request/answer, roles: ROLE_ADMIN }
 
-        - { path: ^/shop, roles: ROLE_SELLER }
+        #- { path: ^/shop, roles: ROLE_SELLER }
         #- { path: ^/products, roles: ROLE_USER }
         
-        - { path: ^/order/create/return, roles: ROLE_USER }
-        - { path: ^/order/pass, roles: ROLE_USER }
-        - { path: ^/addresses, roles: ROLE_USER }
+        #- { path: ^/order/create/return, roles: ROLE_USER }
+        #- { path: ^/order/pass, roles: ROLE_USER }
+        #- { path: ^/addresses, roles: ROLE_USER }
 
 when@test:
     security:
