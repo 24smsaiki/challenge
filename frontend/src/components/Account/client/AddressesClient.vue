@@ -231,20 +231,22 @@ const updateAddress = () => {
   }
 };
 
-const deleteAddress = (index) => {
-  AddressesLogic.deleteAddress(addresses.value[index].id)
-    .then((response) => {
-      if (response.status === 204) {
-        addresses.value.splice(index, 1);
-        setToast("Addresse supprimée avec succès", "success");
-      }
-    })
-    .catch(() => {
-      setToast(
-        "Une erreur est survenue lors de la suppression de l'adresse",
-        "danger"
-      );
-    });
+const deleteAddress = (index, address) => {
+  if (address.orders.length === 0) {
+    AddressesLogic.deleteAddress(addresses.value[index].id)
+      .then((response) => {
+        if (response.status === 204) {
+          addresses.value.splice(index, 1);
+          setToast("Addresse supprimée avec succès", "success");
+        }
+      })
+      .catch(() => {
+        setToast(
+          "Une erreur est survenue lors de la suppression de l'adresse",
+          "danger"
+        );
+      });
+  }
 };
 
 const isFormValid = computed(() => {
@@ -385,7 +387,11 @@ getAddresses();
                 >
                   Éditer
                 </button>
-                <button @click="deleteAddress(index)" class="btn color-red">
+                <button
+                  @click="deleteAddress(index, address)"
+                  class="btn color-red"
+                  v-if="address.orders.length === 0"
+                >
                   Supprimer
                 </button>
               </div>
