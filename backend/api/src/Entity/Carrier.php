@@ -4,12 +4,16 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\CarrierRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']])]
+#[Get()]
+#[GetCollection(security: "is_granted('ROLE_ADMIN')")]
 #[ORM\Entity(repositoryClass: CarrierRepository::class)]
 class Carrier
 {
