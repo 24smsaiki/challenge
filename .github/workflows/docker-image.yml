@@ -17,12 +17,12 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build Docker Image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        push: true
-        tags: moncefsaiki/challenge-api-vue:latest
-      - name: Build the Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: moncefsaiki/challenge-api-vue:latest
+       
 
         # run: docker build ./backend --tag moncefsaiki/challenge-api-vue:latest && docker push moncefsaiki/challenge-api-vue:latest
 
