@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: ["master"]
+    branches: ["feat/unit"]
 
 jobs:
   build-docker-image:
@@ -66,3 +66,17 @@ jobs:
         run:
           sudo apt update && sudo apt install sshpass &&  sshpass -e ssh -o stricthostkeychecking=no ${{ secrets.APP_USER_FRONT }}@${{ secrets.APP_HOST_FRONT }}
           "cd /var/www/html/challenge/ && npm install && npm run build"
+  test-stage:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup Docker
+      uses: docker://docker:19.03.12
+
+    - name: Build and run tests with Docker Compose
+      run: |
+        cd ./backend && docker-compose up -d && 
+        docker-compose exec app vendor/bin/phpunit
