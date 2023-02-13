@@ -14,6 +14,12 @@ const router = createRouter({
       component: import("../views/NotFound.vue"),
     },
     {
+      path: "/category/:category",
+      name: "Category",
+      component: import("../views/Category.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/product/:product",
       name: "Product",
       component: import("../views/Product.vue"),
@@ -132,12 +138,6 @@ const router = createRouter({
       path: "/Admin/Dashboard",
       name: "AdminDashboard",
       component: import("../views/Admin/Dashboard.vue"),
-      meta: { requiresAuth: true },
-    },
-    {
-      path: "/paymentRefused",
-      name: "Payment",
-      component: import("../components/Checkout/Payment.vue"),
       meta: { requiresAuth: true },
     },
   ],

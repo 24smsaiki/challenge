@@ -23,14 +23,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-#[ApiResource(mercure: true, denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
+#[ApiResource(mercure: true, security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')", denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[Get(security : "(is_granted('ROLE_USER') and object == user) || is_granted('ROLE_ADMIN')")]
+#[Get(security : "ROLE_ADMIN")]
 #[Delete(security : "ROLE_ADMIN")]
 #[Post(security : "ROLE_ADMIN")]
 #[Put(security : "ROLE_ADMIN")]
-#[GetCollection("is_granted('ROLE_ADMIN')")]
+#[GetCollection()]
 #[Post(security : "is_granted('ROLE_ADMIN')")]
 #[ApiResource(operations: [
     new Post(

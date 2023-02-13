@@ -2,18 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Put;
-use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\GetCollection;
 use App\Repository\OrderDetailsReturnRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
-#[ApiResource(mercure: true, denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
-#[GetCollection(security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
+#[ApiResource(mercure: true, security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')",  denormalizationContext: ['groups' => 'post'], normalizationContext: ['groups' => 'get'])]
 #[ORM\Entity(repositoryClass: OrderDetailsReturnRepository::class)]
 class OrderDetailsReturn
 {
