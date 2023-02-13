@@ -76,6 +76,8 @@ jobs:
 
     - name: Build and run tests
       run: |
+        cd /backend
+        docker-compose up -d
         docker-compose exec php sh -c "vendor/bin/phpunit -n"
 
 
