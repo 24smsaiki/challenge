@@ -123,6 +123,12 @@ const router = createRouter({
       component: import("../components/Checkout/Payment.vue"),
       meta: { requiresAuth: true },
     },
+    {
+      path: "/products",
+      name: "AllProducts",
+      component: import("../views/Products.vue"),
+      meta: { requiresAuth: true },
+    }
   ],
 });
 
