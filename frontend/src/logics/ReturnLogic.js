@@ -10,8 +10,8 @@ export default class ReturnLogic {
         return await ReturnRepository.getReturn(id);
     }
     
-    static async updateReturn(id, body) {
-        return await ReturnRepository.updateReturn(id, body);
+    static async updateReturn(body) {
+        return await ReturnRepository.updateReturn(body);
     }
     
 }

@@ -27,8 +27,19 @@ export default class UsersRepository {
     }
 
     static async getRequestSellers(idSeller) {
-        return await Request.make('post', `https://localhost/seller/${idSeller}/request/answer`);
+        return await Request.make('get', `https://localhost/seller/${idSeller}/request/answer`);
     }
 
+    static async declineRequestSellers(idSeller) {
+        return await Request.make('post', `/seller/request/answer/${idSeller}`, {
+            answer: 'declined_request'
+        });
+    }
+
+    static async acceptRequestSellers(idSeller) {
+        return await Request.make('post', `/seller/request/answer/${idSeller}`, {
+            answer: 'accepted_request'
+        });
+    }
     
 }

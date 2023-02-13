@@ -29,8 +29,16 @@ export default class UsersLogic {
 
     static async getRequestSellers() {
         return await UsersRepository.getSellers().then((result) => {
-        return result.data.filter(seller => seller.isActif === false);
+        return result.data.filter(seller => seller.is_pending === true);
         });
+    }
+
+    static async declineRequestSellers(idSeller) {
+        return await UsersRepository.declineRequestSellers(idSeller);
+    }
+
+    static async acceptRequestSellers(idSeller) {
+        return await UsersRepository.acceptRequestSellers(idSeller);
     }
         
     

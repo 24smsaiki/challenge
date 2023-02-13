@@ -3,8 +3,6 @@ import Header from "../../components/Admin/Header.vue";
 import Table from "../../components/Admin/Table.vue";
 import ProductsLogic from "../../logics/ProductsLogic";
 import { ref, reactive } from "vue";
-import Form from "../../components/Admin/Form.vue";
-import AuthLogic from "../../logics/AuthLogic";
 
 const products = ref([]);
 let columns = ref([]);
@@ -19,10 +17,11 @@ const errors = reactive({
 });
 
 const form = ref({
+    id: null,
     label: "",
     description: "",
     price: "",
-    image: "",
+    // image: "",
     coverImage: "",
 });
 
@@ -30,9 +29,9 @@ const isFormValid = () => {
     if(
         form.value.label !== "" &&
         form.value.description !== "" &&
-        form.value.price !== "" &&
-        form.value.image !== "" &&
-        form.value.coverImage !== ""
+        form.value.price !== "" 
+        // form.value.image !== "" &&
+        // form.value.coverImage !== ""
     ) {
         return true;
     } else {
@@ -40,14 +39,14 @@ const isFormValid = () => {
     }
 };
 
-const isImage = () => {
-    const file = form.value.coverImage;
-    if(file.type !== "image/jpeg" || file.type !== "image/png") {
-       errors.coverImage = "L'image doit être au format jpeg ou png.";
-    } else {
-        errors.coverImage = "";
-    }
-};
+// const isImage = () => {
+//     const file = form.value.coverImage;
+//     if(file.type !== "image/jpeg" || file.type !== "image/png") {
+//        errors.coverImage = "L'image doit être au format jpeg ou png.";
+//     } else {
+//         errors.coverImage = "";
+//     }
+// };
 
 const isLabel = () => {
     const label = form.value.label;
@@ -87,36 +86,57 @@ const onFileChange = (e) => {
 
 const onSubmit = (e) => {
     e.preventDefault();
+    
     if(isFormValid()) {
-        ProductsLogic.createProduct(form.value)
-        .then((response) => {
-            console.log(response);
-        });
+        if(form.value.id) {
+            ProductsLogic.updateProduct(form.value.id, form.value)
+            .then((response) => {
+                
+                isEditing.value = false;
+                products.value = products.value.map((product) => {
+                    if(product.id === response.data.id) {
+                        return response.data;
+                    } else {
+                        return product;
+                    }
+                });
+                resetForm();
+            });
+        } else {
+            ProductsLogic.createProduct(form.value)
+            .then((response) => {
+                isEditing.value = false;
+                products.value.push(response.data);
+                resetForm();
+            });
+        }
+       
     } 
 };
 
+// Permet de gérer si on est en mode édition/création ou non
 const onEdit = (data) => {
     isEditing.value = data;
-    console.log(isEditing.value, "isEditing");
 };
 
 const resetForm = () => {
+    form.value.id = "";
     form.value.label = "";
     form.value.description = "";
     form.value.price = "";
     form.value.image = "";
-    form.value.coverImage = "";
+    // form.value.coverImage = "";
     isEditing.value = false;
 };
 
 const editForm = (data) => {
     data = data[0];
+    form.value.id = data?.id;
     form.value.label = data.label;
     form.value.description = data.description;
     form.value.price = data.price;
-    form.value.image = data.image;
-    form.value.coverImage = data.coverImage;
-
+    // form.value.image = data.image;
+    // form.value.coverImage = data.coverImage;
     isEditing.value = true;
 };
 
@@ -204,7 +224,7 @@ ProductsLogic.getProducts().then((response) => {
                 <p class="messageErrors" v-if="errors.description">{{ errors.description }}</p>
             </div>
             </div>      
-      <div class="-mx-3 md:flex mb-6">
+      <!-- <div class="-mx-3 md:flex mb-6">
         <div class="md:w-full px-3">
             <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-description">
                 Image 
@@ -219,7 +239,7 @@ ProductsLogic.getProducts().then((response) => {
             />
             <p class="messageErrors" v-if="errors.image">{{ errors.image }}</p>
         </div>
-        </div>
+        </div> -->
         <button @click="onSubmit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Envoyer
         </button>

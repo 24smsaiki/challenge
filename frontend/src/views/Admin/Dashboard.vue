@@ -55,8 +55,42 @@ const fetchRequests = async () => {
 
 const fetchReturn = async () => {
   return await ReturnLogic.getReturns().then((response) => {
-    console.log(response, "response");
     requestsReturn.value = response.data;
+  });
+};
+
+const declineRequestSeller = async (id) => {
+  return await UsersLogic.declineRequestSellers(id).then(() => {
+	fetchRequests();
+  });
+};
+
+const acceptRequestSeller = async (id) => {
+  return await UsersLogic.acceptRequestSellers(id).then(() => {
+	fetchRequests();
+  });
+};
+
+const onAcceptSeller = async (id) => {
+ await acceptRequestSeller(id).then(() => {
+	requests.value.filter((request) => request.id !== id);
+  });
+};
+
+const onDeclineSeller = async (id) => {
+ await declineRequestSeller(id).then(() => {
+	requests.value.filter((request) => request.id !== id);
+  });
+};
+
+const onAcceptReturn = async (id) => {
+	const body = {
+		state: 2,
+		idReturn: id,
+		customerEmail: requestsReturn.value.find((request) => request.id === id).customerEmail,
+	}
+  return await ReturnLogic.updateReturn(body).then(() => {
+	requestsReturn.value.filter((request) => request.id !== id);
   });
 };
 
@@ -238,6 +272,7 @@ onMounted(() => {
                       <font-awesome-icon
                         icon="check"
                         style="color: blue; cursor: pointer"
+						
                       />
                       <font-awesome-icon
                         icon="xmark"
@@ -246,6 +281,7 @@ onMounted(() => {
                           margin-left: 5px;
                           cursor: pointer;
                         "
+						
                       />
                     </td>
                   </tr>
@@ -267,9 +303,9 @@ onMounted(() => {
               <div>
                 <h5 class="font-bold uppercase color-orange">Vendeurs</h5>
               </div>
-              <div>
+              <!-- <div>
                 <font-awesome-icon icon="circle-plus" style="cursor: pointer" />
-              </div>
+              </div> -->
             </div>
             <div class="p-5">
               <table class="w-full p-5 text-gray-700">
@@ -383,7 +419,7 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="seller in sellers" :key="seller.id">
+                  <tr v-for="seller in requests" :key="seller.id">
                     <td class="pt-2">{{ seller.id }}</td>
                     <td class="pt-2">
                       {{ seller.shopEmailContact.slice(0, 16) }}...
@@ -397,6 +433,7 @@ onMounted(() => {
                       <font-awesome-icon
                         icon="check"
                         style="color: blue; cursor: pointer"
+						@click="onAcceptSeller(seller.id)"
                       />
                       <font-awesome-icon
                         icon="xmark"
@@ -405,6 +442,7 @@ onMounted(() => {
                           margin-left: 5px;
                           cursor: pointer;
                         "
+						@click="onDeclineSeller(seller.id)"
                       />
                     </td>
                   </tr>

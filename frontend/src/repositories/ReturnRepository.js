@@ -10,8 +10,8 @@ export default class ReturnRepository {
             return await Request.make('get', `/returns/${id}`);
         }
         
-        static async updateReturn(id, body) {
-            return await Request.make('put', `/returns/${id}`, { ...body });
+        static async updateReturn(body) {
+            return await Request.make('post', `/ManageReturn/`, {...body });
         }
 
         
