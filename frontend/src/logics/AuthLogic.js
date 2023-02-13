@@ -20,8 +20,13 @@ export default class AuthLogic {
 
       AuthLogic.setToken(res.data.token);
       AuthLogic.setStorageUser(result);
-
       return result;
+    }).catch((err) => {
+     throw {
+        message: err.response.data.message,
+        status: err.response.status,
+      };
+
     });
   }
 

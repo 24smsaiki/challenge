@@ -20,12 +20,15 @@ const onSubmit = async () => {
     await login(form);
     redirectToHome();
   } catch (err) {
-    if (err.response.status === 401) {
+    console.log(err, "err");
+    if (err.status === 401 && err.message === "Invalid credentials.") {
       error.value = "Vérifiez vos identifiants";
+    } else if (err.status === 401) {
+      error.value = err.message;
     } else {
       error.value = "Une erreur est survenue";
     }
-  } finally {
+  }  finally {
     isLoading.value = false;
   }
 };
