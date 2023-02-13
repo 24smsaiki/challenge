@@ -1,27 +1,52 @@
 # Project Title
 
-- ....
-
-# Goal
-
-- ....
+- Mcarketplace
 
 ## Tech Stack
 
-- **Client:** ....
-- **Server:** ....
+- **Client:** Vue.js - Tailwind
+- **Server:** API Platform
+- **Others:** Docker
 
-## Requirement
+## Project installation
 
-- ....
+Clone the project
+
+```bash
+  https://github.com/moncefSaiki
+```
+
+Go to the project directory
+
+```bash
+  cd challenge
+```
 
 ## Installation
 
-- ....
+- Install project
 
-## Documentation
+```bash
+  docker-compose up -d --build
+```
 
-- ....
+- Install dependencies
+
+```bash
+  cd backend
+  docker compose exec php composer install
+  docker compose exec php bin/console d:s:u --force
+```
+
+- Stop the projet
+
+```bash
+  docker-compose down
+```
+
+## Project access
+
+⏳ http://localhost:3000/ ⏳
 
 ## Authors
 
