@@ -41,7 +41,7 @@ class OrderReturnController extends AbstractController
 
             $returnOrder = new OrderReturn();
             $returnOrder->setReference('return-'.uniqid());
-            $returnOrder->setMyOrder($order);
+            $returnOrder->addMyOrder($order);
             $returnOrder->setCreatedAt($now);
             
             foreach ($body['itemsToReturn'] as $item)

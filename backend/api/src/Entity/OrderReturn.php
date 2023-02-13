@@ -153,7 +153,6 @@ class OrderReturn
     public function setTotalPrice(?float $totalPrice): self
     {
         $this->totalPrice = $totalPrice;
-
         return $this;
     }
 
@@ -164,7 +163,7 @@ class OrderReturn
     {
         return $this->myOrder;
     }
-
+    
     public function addMyOrder(Order $myOrder): self
     {
         if (!$this->myOrder->contains($myOrder)) {
