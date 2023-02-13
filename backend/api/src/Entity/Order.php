@@ -80,15 +80,13 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Carrier $carrier = null;
 
-    #[Groups(['get'])]
-    #[ORM\ManyToOne(inversedBy: 'myOrder',cascade: "persist")]
-    private ?OrderReturn $orderreturn = null;
+    #[ORM\OneToMany(mappedBy: 'myOrder', targetEntity: OrderReturn::class)]
+    private Collection $orderreturns;
 
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
-
-
+        $this->orderreturns = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -234,18 +232,34 @@ class Order
         return $this;
     }
 
-    public function getOrderreturn(): ?OrderReturn
+    /**
+     * @return Collection<int, Orderreturn>
+     */
+    public function getOrderreturns(): Collection
     {
-        return $this->orderreturn;
+        return $this->orderreturns;
     }
 
-    public function setOrderreturn(?OrderReturn $orderreturn): self
+    public function addOrderreturn(OrderReturn $orderreturn): self
     {
-        $this->orderreturn = $orderreturn;
+        if (!$this->orderreturns->contains($orderreturn)) {
+            $this->orderreturns->add($orderreturn);
+            $orderreturn->setMyOrder($this);
+        }
 
         return $this;
     }
 
-    
+    public function removeOrderreturn(OrderReturn $orderreturn): self
+    {
+        if ($this->orderreturns->removeElement($orderreturn)) {
+            // set the owning side to null (unless already changed)
+            if ($orderreturn->getMyOrder() === $this) {
+                $orderreturn->setMyOrder(null);
+            }
+        }
+
+        return $this;
+    }
     
 }

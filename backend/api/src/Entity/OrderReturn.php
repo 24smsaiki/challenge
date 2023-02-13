@@ -63,10 +63,9 @@ class OrderReturn
     #[ORM\Column(nullable: true)]
     private ?float $totalPrice = null;
 
-    #[Groups(['get'])]
-    #[ORM\OneToMany(mappedBy: 'orderreturn', targetEntity: Order::class)]
-    private Collection $myOrder;
-    
+    #[ORM\ManyToOne(inversedBy: 'orderreturns')]
+    private ?Order $myOrder = null;
+
     public function __construct()
     {
         $this->orderDetailsReturns = new ArrayCollection();
@@ -156,14 +155,6 @@ class OrderReturn
         return $this;
     }
 
-    /**
-     * @return Collection<int, order>
-     */
-    public function getMyOrder(): Collection
-    {
-        return $this->myOrder;
-    }
-    
     public function addMyOrder(Order $myOrder): self
     {
         if (!$this->myOrder->contains($myOrder)) {
@@ -182,6 +173,18 @@ class OrderReturn
                 $myOrder->setOrderreturn(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMyOrder(): ?Order
+    {
+        return $this->myOrder;
+    }
+
+    public function setMyOrder(?Order $myOrder): self
+    {
+        $this->myOrder = $myOrder;
 
         return $this;
     }
