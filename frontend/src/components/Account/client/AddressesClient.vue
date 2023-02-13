@@ -146,6 +146,7 @@ const addAddress = () => {
             zipCode: response.data.zipCode,
             city: response.data.city,
             country: response.data.country,
+            orders: response.data.orders,
           });
           setToast("Addresse ajoutée avec succès", "success");
         }
