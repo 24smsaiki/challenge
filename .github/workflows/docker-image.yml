@@ -19,7 +19,7 @@ jobs:
       - name: Build Docker Image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./backend
           push: true
           tags: moncefsaiki/challenge-api-vue:latest
        
