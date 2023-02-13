@@ -19,7 +19,7 @@ jobs:
 
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build ./backend/api/ --file backend/api/Dockerfile --tag moncefsaiki/challenge-api-vue:latest && docker push moncefsaiki/challenge-api-vue:latest
+        run: docker build ./backend/api/ --file backend/api/Dockerfile backend/pwa/Dockerfile --tag moncefsaiki/challenge-api-vue:latest && docker push moncefsaiki/challenge-api-vue:latest
     
   deploy-api : 
     runs-on: ubuntu-latest
