@@ -23,8 +23,13 @@ isSeller =
               >Accueil</router-link
             >
           </li>
-          <li class="footer__content__first-line__link-list__link">
-            <router-link active-class="active" to="/">Produits</router-link>
+          <li
+            v-if="isAuth"
+            class="footer__content__first-line__link-list__link"
+          >
+            <router-link active-class="active" to="/products"
+              >Produits</router-link
+            >
           </li>
           <li
             v-if="isAuth"

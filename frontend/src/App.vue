@@ -1,3 +1,87 @@
+<script setup>
+import Footer from "./components/Footer.vue";
+import Cart from "./components/Cart.vue";
+import data from "./data.json";
+import UserProvider from "./components/Providers/UserProvider.vue";
+import { ref, onMounted } from "vue";
+import Menu from "./components/Menu.vue";
+
+const showMenu = ref(false);
+const showCart = ref(false);
+const showConfirmation = ref(false);
+const scrollTop = ref(false);
+const cart = ref([]);
+const products = ref(data); // TODO make this API
+
+const toggleMenu = (myVar) => {
+  if (myVar === "logo") {
+    showMenu.value = false;
+    showCart.value = false;
+  } else if (myVar === "menu") {
+    showMenu.value = !showMenu.value;
+  } else if (myVar === "cart") {
+    showCart.value = !showCart.value;
+  } else if (myVar === "confirmation") {
+    showConfirmation.value = !showConfirmation.value;
+  }
+
+  scrollTop.value = !scrollTop.value;
+};
+
+const storeCart = () => {
+  localStorage.setItem("cart", JSON.stringify(cart.value));
+};
+
+const addToCart = (data) => {
+  let product = products.value.find((product) => product.id === data.productId);
+  if (cart.value.find((prod) => prod.id === product.id)) {
+    const index = cart.value.findIndex((prod) => prod.id === product.id);
+    cart.value[index] = {
+      ...cart.value[index],
+      addedQuantity: cart.value[index].addedQuantity + data.addedQuantity,
+    };
+  } else {
+    product = { ...product, addedQuantity: data.addedQuantity };
+    cart.value.push(product);
+  }
+  storeCart();
+};
+
+const changeQuantity = (data) => {
+  const index = cart.value.findIndex((prod) => prod.id === data.productId);
+
+  if (data.operation === "subtract") {
+    if (cart.value[index].addedQuantity === 1) {
+      cart.value = cart.value
+        .slice()
+        .filter((prod) => prod.id !== data.productId);
+    } else {
+      cart.value[index] = {
+        ...cart.value[index],
+        addedQuantity: cart.value[index].addedQuantity - 1,
+      };
+    }
+  } else if (data.operation === "add") {
+    cart.value[index] = {
+      ...cart.value[index],
+      addedQuantity: cart.value[index].addedQuantity + 1,
+    };
+  }
+
+  storeCart();
+};
+
+const emptyCart = () => {
+  cart.value = [];
+  storeCart();
+};
+
+onMounted(() => {
+  console.log(localStorage);
+  cart.value = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
+});
+</script>
+
 <template>
   <UserProvider>
     <Menu :show="showMenu" :scrollTop="scrollTop" ref="mobileMenu" />
