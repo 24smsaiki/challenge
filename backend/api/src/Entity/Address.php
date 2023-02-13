@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(mercure: true,security: "is_granted('ROLE_USER') || is_granted('ROLE_ADMIN')",denormalizationContext: ['groups' => ['post']])]
 #[Post(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]
-#[Get(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]
+#[Get(security: "is_granted('ROLE_ADMIN') || (is_granted('ROLE_USER') and object.customer == user)")]
 #[GetCollection(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]  
 #[Delete(security: "is_granted('ROLE_ADMIN')")]
 #[Put(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]    
@@ -64,10 +64,10 @@ class Address
 
     #[ORM\ManyToOne(inversedBy: 'Address')]
     #[Groups(['post'])]
-    private ?User $customer = null;
+    public ?User $customer = null;
 
     #[ORM\OneToMany(mappedBy: 'delivery', targetEntity: Order::class)]
-    #[Groups(['post'])]
+    #[Groups(['post','get'])]
     private Collection $orders;
     #[Groups(['get'])]
     #[ORM\Column(nullable: true)]
