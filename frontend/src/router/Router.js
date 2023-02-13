@@ -129,6 +129,12 @@ const router = createRouter({
       component: import("../views/Admin/Carriers.vue"),
       meta: { requiresAuth: true },
     },
+    {
+      path: "/paymentRefused",
+      name: "Payment",
+      component: import("../components/Checkout/Payment.vue"),
+      meta: { requiresAuth: true },
+    },
   ],
 });
 
