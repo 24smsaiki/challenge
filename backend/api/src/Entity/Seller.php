@@ -34,7 +34,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
     )
 ])]
 #[GetCollection(security: "is_granted('ROLE_ADMIN')")]
-#[Get(security: "is_granted('ROLE_SELLER') || is_granted('ROLE_ADMIN')")]
+#[Get(security: "(is_granted('ROLE_SELLER') and object.userId == user.id) || is_granted('ROLE_ADMIN')")]
 
 #[UniqueEntity(fields: ['shopEmailContact'], message: 'Cet email est déjà utilisé.')]
 #[ORM\EntityListeners([SellerListener::class])]
@@ -77,7 +77,7 @@ class Seller implements PasswordAuthenticatedUserInterface
     private ?string $password = null;
     
     #[ORM\Column(nullable: true)]
-    private ?int $userId = null;
+    public ?int $userId = null;
 
     #[ORM\OneToMany(mappedBy: 'publisher', targetEntity: Product::class)]
     private Collection $products;

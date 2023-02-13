@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[Groups(['post', 'get'])]
     #[NotBlank(message: 'Veuillez renseigner l\'email'), Email(message: 'Veuillez renseigner un email valide.')]
