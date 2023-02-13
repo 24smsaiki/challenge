@@ -22,6 +22,7 @@ jobs:
         run: docker build ./backend/api/ --file backend/api/Dockerfile  --tag moncefsaiki/challenge-api-vue:latest && docker push moncefsaiki/challenge-api-vue:latest
     
   deploy-api : 
+    needs: build-docker-image
     runs-on: ubuntu-latest
     env:
       SSHPASS: ${{ secrets.APP_PASS }}
@@ -46,6 +47,7 @@ jobs:
           composer2 update --ignore-platform-reqs && composer2 install --ignore-platform-reqs"
   
   deploy-front : 
+    needs: build-docker-image
     runs-on: ubuntu-latest
     env:
       SSHPASS: ${{ secrets.APP_PASS_FRONT }}
