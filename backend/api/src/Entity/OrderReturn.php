@@ -62,7 +62,8 @@ class OrderReturn
     #[Groups(['post', 'get'])]
     #[ORM\Column(nullable: true)]
     private ?float $totalPrice = null;
-
+    
+    #[Groups(['get'])]
     #[ORM\ManyToOne(inversedBy: 'orderreturns')]
     private ?Order $myOrder = null;
 

@@ -24,9 +24,13 @@ class ManageReturnByAdminController extends AbstractController
         $body = json_decode($this->requestStack->getCurrentRequest()->getContent(),true);
         $idReturn = $body["idReturn"];
         $finalState = $body["state"];
-        $customerEmail = $body["customerEmail"];
+        
         $orderReturn = $this->managerRegistry->getRepository(OrderReturn::class)->findOneById($idReturn);
+
+        $myOrder = $orderReturn->getMyOrder();
+        $customerEmail = $myOrder->getCustomer()->getEmail();
         $orderReference = $orderReturn->getReference();
+        
         // update orderReturn
         $em = $this->managerRegistry->getManager();
         $orderReturn->setState($finalState);
