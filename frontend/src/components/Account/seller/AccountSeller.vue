@@ -18,7 +18,8 @@ import Profile from "./ProfileSeller.vue";
 #account,
 #orders,
 #products,
-#profile {
+#profile,
+#ordersBack {
   height: 700px;
   margin: 25px;
   display: flex;

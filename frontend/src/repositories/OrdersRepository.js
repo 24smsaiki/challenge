@@ -48,4 +48,16 @@ export default class OrdersRepository {
   static async deleteOrder_detail(id) {
     return await Request.make("delete", `/order_details/${id}`);
   }
+
+  static async getBackClientOrders() {
+    return await Request.make("get", "/order_returns");
+  }
+
+  static async createOrdersReturn(body) {
+    return await Request.make("post", "/order/create/return", { ...body });
+  }
+
+  static async getBackSellerOrders() {
+    return await Request.make("get", "/order_details_returns");
+  }
 }

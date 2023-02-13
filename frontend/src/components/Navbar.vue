@@ -25,7 +25,6 @@ defineEmits(["toggle-menu-show"]);
           <router-link active-class="active" v-if="isAuth" to="/account"
             >Compte</router-link
           >
-          <router-link active-class="active" to="/">Contact</router-link>
           <router-link active-class="active" v-if="!isAuth" to="/register"
             >Inscription</router-link
           >

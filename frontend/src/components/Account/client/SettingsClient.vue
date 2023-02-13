@@ -136,6 +136,7 @@ const updateUser = () => {
     SettingsLogic.updateUserInformation(data)
       .then((res) => {
         if (res.status === 200) {
+          settingsForm.value.username = `${settingsForm.value.firstname} ${settingsForm.value.lastname}`;
           setToast("Vos informations ont été mises à jour", "success");
         }
       })
