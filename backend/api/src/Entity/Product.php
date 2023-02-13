@@ -34,7 +34,7 @@ use App\Controller\CreateProductController;
                 'content' => [
                     'multipart/form-data' => [
                         'properties' => [
-                            'image' => [
+                            'file' => [
                                 'type' => 'string',
                                 'format' => 'binary'
                             ],

@@ -19,7 +19,7 @@ class CreateProductController extends AbstractController
 
     public function __invoke(Request $request)
     {
-        $uploadedFile = $request->files->get('image');
+        $uploadedFile = $request->files->get('file');
         if (!$uploadedFile) {
             throw new BadRequestHttpException('"file" is required');
         }
