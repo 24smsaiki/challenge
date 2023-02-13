@@ -476,7 +476,7 @@
 </template>
 
 <script>
-import Header from "../components/Product/Header.vue";
+import Header from "../components/Header.vue";
 import Confirmation from "../components/Checkout/Confirmation.vue";
 import CarriersLogic from "../logics/CarriersLogic.js";
 import Address from "../components/Checkout/Address.vue";
