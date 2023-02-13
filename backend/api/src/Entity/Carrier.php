@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(mercure: true, denormalizationContext: ['groups' => ['post']])]
 #[Get()]
-#[GetCollection(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_SELLER')")]
+#[GetCollection(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_USER')")]
 #[ORM\Entity(repositoryClass: CarrierRepository::class)]
 class Carrier
 {
