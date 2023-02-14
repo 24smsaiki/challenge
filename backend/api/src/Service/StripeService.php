@@ -16,7 +16,7 @@ class StripeService
         $products_for_stripe[] = [
             'price_data' => [
               'currency' => 'eur',
-              'unit_amount' => ceil($order->getCarrier()->getFees()),
+              'unit_amount' => ceil($order->getCarrier()->getFees()*100),
               'product_data' => [
                 'name' => $order->getCarrier()->getLabel(),
               ],

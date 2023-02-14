@@ -70,7 +70,7 @@ class NewOrderController extends AbstractController
             $products_for_stripe[] = [
                 'price_data' => [
                   'currency' => 'eur',
-                  'unit_amount' => ceil($orderDetails->getTotalPrice()),
+                  'unit_amount' => ceil($orderDetails->getTotalPrice()*100),
                   'product_data' => [
                     'name' => $orderDetails->getItem()->getLabel(),
                     
