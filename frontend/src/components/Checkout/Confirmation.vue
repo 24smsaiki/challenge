@@ -22,16 +22,16 @@
           >
             <div class="product__left">
               <img
-                :src="editSrc(product)"
-                :alt="product.name"
-                class="product__left__image"
+               src="../../assets/images/default-product.png"
+                class="product__left__img"
+                alt="Default image"
               />
               <div class="product__left__info">
                 <h2 class="product__left__info__name">
-                  {{ editedSlug(product) }}
+                  {{ product.label }}
                 </h2>
                 <p class="product__left__info__price">
-                  $ {{ separator(product.price) }}
+                   {{ separator(product.product.price) }} €
                 </p>
               </div>
             </div>
@@ -89,9 +89,6 @@ export default {
     },
     toggleShowOrder() {
       this.showOrder = !this.showOrder;
-    },
-    editedSlug(product) {
-      return product.slug.slice(0, product.slug.indexOf("-"));
     },
     goHomeHandler() {
       this.$emit("toggle-menu-show", "confirmation");

@@ -11,12 +11,12 @@
     <div class="products">
       <div class="products__item" v-for="product in cart" :key="product.id">
         <div class="left">
-          <img :src="editSrc(product)" :alt="product.name" />
+          <img src="../assets/images/default-product.png" />
           <div class="products__item__info">
             <h4>
               {{ product.label }}
             </h4>
-            <p>$ {{ separator(product.price) }}</p>
+            <p>{{ separator(product.product.price) }}€ </p>
           </div>
         </div>
         <div class="products__item__quantity">
@@ -32,7 +32,7 @@
     </div>
     <div class="cart__total">
       <h4>Total</h4>
-      <p>${{ separator(total) }}</p>
+      <p>{{ separator(total) }} €</p>
     </div>
     <router-link
       class="cart__router-link"
@@ -50,12 +50,18 @@
 <script>
 export default {
   name: "Cart",
-  props: { show: Boolean, cart: Array },
+  props: { show: Boolean },
+  data() {
+    return {
+      cart: [],
+    };
+  },
   methods: {
     editSrc(product) {
       return product.image;
     },
     separator(numb) {
+      console.log(numb, "numb");
       var str = numb.toString().split(".");
       str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       return str.join(".");
@@ -67,15 +73,24 @@ export default {
       };
       this.$emit("change-quantity", data);
     },
+    
   },
   computed: {
     total() {
       let totalValue = 0;
       this.cart.forEach(
-        (product) => (totalValue += product.price * product.addedQuantity)
+        (product) => (totalValue += product.product.price * product.addedQuantity)
       );
+      console.log(totalValue, "totalValue");
+      
       return totalValue;
     },
+  },
+  mounted() {
+    this.cart = JSON.parse(localStorage.getItem("cart"))
+    ? JSON.parse(localStorage.getItem("cart"))
+    : [];
+    console.log(this.cart, "cart");
   },
 };
 </script>

@@ -56,6 +56,7 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?seller $publisher = null;
 
+    #[Groups(['get'])]
     #[ORM\Column(nullable: true)]
     private ?int $stockQuantity = null;
 

@@ -77,10 +77,11 @@ const emptyCart = () => {
 };
 
 onMounted(() => {
-  console.log(localStorage);
   cart.value = JSON.parse(localStorage.getItem("cart"))
     ? JSON.parse(localStorage.getItem("cart"))
     : [];
+
+    console.log(cart.value, "cart.value");
 });
 </script>
 

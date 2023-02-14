@@ -429,12 +429,12 @@
               :key="product.id"
             >
               <div class="products__item__left">
-                <img :src="editSrc(product)" :alt="product.name" />
+                <img src="../assets/images/default-product.png" :alt="product.name" />
                 <div class="products__item__left__info">
                   <h4>
-                    {{ product.label }}
+                    {{ product.product.label }}
                   </h4>
-                  <p>$ {{ separator(product.price) }}</p>
+                  <p>$ {{ separator(product.product.price) }}</p>
                 </div>
               </div>
               <p class="products__item__quantity">
@@ -590,7 +590,7 @@ export default {
           deliveryId: this.picked_address,
           orderItems: this.cart.map((product) => {
             return {
-              itemId: product.id,
+              itemId: product.product.id,
               quantity: product.addedQuantity,
             };
           }),
@@ -671,7 +671,7 @@ export default {
     total() {
       let totalValue = 0;
       this.cart.forEach(
-        (product) => (totalValue += product.price * product.addedQuantity)
+        (product) => (totalValue += product.product.price * product.addedQuantity)
       );
       return totalValue;
     },

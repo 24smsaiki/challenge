@@ -1,3 +1,61 @@
+<script setup>
+import { useCartStore } from "../../stores/CartStore";
+import { useProductStore } from "../../stores/ProductStore";
+import { createToast } from "mosha-vue-toastify";
+import { ref, defineEmits, computed, defineProps } from "vue";
+
+const props = defineProps({
+  product: {
+    type: Object,
+    required: true,
+  },
+});
+
+const emit = defineEmits(["toggle-menu-show", "add-to-cart"]);
+
+const total = ref(0);
+const cartStore = useCartStore();
+
+const increaseTotal = () => {
+  total.value++;
+};
+
+const decreaseTotal = () => {
+  if (this.total > 1) {
+    this.total--;
+  }
+};
+
+const addToCart = () => {
+ 
+  const data = {
+    productId: props.product.id,
+    addedQuantity: total.value,
+  };
+  console.log(props.product, "props.product");
+  console.log(data);
+  cartStore.addProduct(data);
+  // emit the event to the parent component
+    emit("add-to-cart", data);
+
+  createToast("Produit ajouté au panier", {
+    position: "top-right",
+    timeout: 5000,
+    close: true,
+    type: "success",
+    showCloseButtonOnHover: false,
+    hideProgressBar: false,
+    closeButton: "button",
+    icon: true,
+    rtl: false,
+  });
+};
+
+const resetTotal = () => {
+  this.total = 1;
+};
+</script>
+
 <template>
   <div class="card">
     <div class="card-img">
@@ -15,75 +73,50 @@
         <span class="bold">Prix : </span>{{ product.price }} €
       </p>
       <p class="description">
-        <span class="bold">Description : </span>{{ product.description.slice(0, 30) }}...
+        <span class="bold">Description : </span
+        >{{ product.description.slice(0, 30) }}...
       </p>
-      <button class="btn btn-primary" @click="addToCart">
-       Ajouter au panier
-      </button>
+      <div class="overview__text__btn-section">
+          <div class="overview__text__btn-section__number">
+            <button
+              class="overview__text__btn-section__number__less"
+              @click="decreaseTotal"
+            >
+              -
+            </button>
+            <p class="overview__text__btn-section__number__value">
+              {{ total }}
+            </p>
+            <button
+              class="overview__text__btn-section__number__more"
+              @click="increaseTotal"
+            >
+              +
+            </button>
+          </div>
+          <button
+            :class="[
+              'overview__text__btn-section__btn',
+              'default-btn',
+              justAdded ? 'just-added' : '',
+            ]"
+            @click="addToCart"
+          >
+            Ajouter au panier
+          </button>
+        </div>
     </div>
   </div>
 </template>
 
-<script>
-import { useCartStore } from "../../stores/CartStore";
-import { useProductStore } from "../../stores/ProductStore";
-import { createToast } from "mosha-vue-toastify";
-
-export default {
-  emits: [["toggle-menu-show", "add-to-cart"]],
-  name: "Product",
-  props: { product: Object },
-  computed: {
-    // editSrc() {
-    //   return this.product.categoryImage.desktop.slice(2);
-    // },
-  },
-  data() {
-    return {
-      total: 0,
-     
-    };
-  },
-  methods: {
-    increaseTotal() {
-      this.total++;
-    },
-    decreaseTotal() {
-      if (this.total > 1) {
-        this.total--;
-      }
-    },
-    addToCart() {
-      const data = {
-        productId: this.product.id,
-        addedQuantity: this.total,
-      };
-      useCartStore().addProduct(data);
-      // emit the event to the parent component
-      this.$emit("add-to-cart", data);
-
-      createToast("Produit ajouté au panier", {
-        position: "top-right",
-        timeout: 5000,
-        close: true,
-        type: "success",
-        showCloseButtonOnHover: false,
-        hideProgressBar: false,
-        closeButton: "button",
-        icon: true,
-        rtl: false,
-      });
-    },
-    resetTotal () {
-      this.total = 1;
-    },
-
-  },
-};
-</script>
-
 <style scoped>
 
+.overview__text__btn-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
 .btn {
   background-color: blue;
   border: none;
@@ -98,7 +131,6 @@ export default {
   transition: 0.4s;
   border-radius: 5px;
 }
-
 
 .btn-primary {
   background-color: blue;
