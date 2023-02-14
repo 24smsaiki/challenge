@@ -110,9 +110,12 @@ const gestStyleToReturnOrderDetail = (state) => {
 };
 
 const checkIfAllOrderDetailsAreDisabled = () => {
+  // console.log(orders.value[0], "orders");
+  // console.log(orders.value[1], "orders");
+  // console.log(orders.value[2], "orders");
   let count = 0;
   orders.value[0].orderDetails.forEach((orderDetail) => {
-    if (orderDetail.state === 1) {
+    if (orderDetail.state === 1 && orders.value.state !== 5) {
       count += 1;
     }
   });

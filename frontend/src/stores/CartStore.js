@@ -16,15 +16,16 @@ export const useCartStore = defineStore({
         }
     },
     actions: {
+        storeCart() {
+            localStorage.setItem('cart', JSON.stringify(this.cart));
+        },
         addProduct({productId, addedQuantity}) {
-            
             const productStore = useProductStore();
             const product = productStore.getProductById(productId);
-            const productFromCart = this.cart.find((item) => item.id === productId);
+            const productFromCart = this.cart.find((item) => item.product.id === productId);
 
             if(productFromCart) {
-                productFromCart.addedQuantity += addedQuantity;
-                return;
+                productFromCart.addedQuantity += addedQuantity;               
             } else {
                 this.cart.push({
                     product,
@@ -34,7 +35,7 @@ export const useCartStore = defineStore({
         this.storeCart();
         },
         removeProduct(productId) {
-           const productFromCartIndex = this.cart.findIndex((item) => item.id === productId);
+           const productFromCartIndex = this.cart.findIndex((item) => item.product.id === productId);
 
               if(productFromCartIndex !== -1) {
                     if(this.cart[productFromCartIndex].addedQuantity > 1) {
@@ -55,9 +56,6 @@ export const useCartStore = defineStore({
                 this.addProduct(data);
             }
             this.storeCart();
-        },
-        storeCart() {
-            localStorage.setItem('cart', JSON.stringify(this.cart));
         }
     },
     

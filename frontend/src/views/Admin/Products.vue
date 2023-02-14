@@ -68,7 +68,6 @@ const isDescription = () => {
 
 const isPrice = () => {
     const price = form.value.price;
-    console.log(price, "price");
     if(price <= 0) {
         errors.price = "Le prix doit être supérieur à 0.";
     } else {
@@ -80,7 +79,7 @@ const onFileChange = (e) => {
     const file = e.target.files[0];
     form.value.image = file;
     // save file in src/products
-    console.log(form.value.image);
+
     console.log(import.meta.env.VITE_BASE_URL, "VITE_BASE_URL");
 };
 

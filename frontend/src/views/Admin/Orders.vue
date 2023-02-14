@@ -89,7 +89,6 @@ const isCarrier = () => {
 };
 
 const onEdit = (data) => {
-    console.log(data, "data");
     isEditing.value = data;
 }
 

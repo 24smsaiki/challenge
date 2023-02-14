@@ -95,6 +95,20 @@ const onAcceptReturn = async (id) => {
   });
 };
 
+const DeliveryOrder = async (id) => {
+  const body = {
+    state: 5
+  }
+  return await OrdersLogic.updateOrder(id, body).then(() => {
+
+  orders.value.map((order) => {
+    if (order.id === id) {
+      order.state = 5;
+    }
+  });
+  });
+};
+
 onMounted(() => {
   fetchOrders();
   fetchCarriers();
@@ -400,11 +414,28 @@ onMounted(() => {
                       {{ moment(order.createdAt).format("DD/MM/YYYY") }}
                     </td>
                     <td class="pt-2">{{ order.total }} €</td>
+                    <td @click="DeliveryOrder(order.id)" class="pt-2" >
+                      <button v-if="order.state !== 5" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                        Livrer la commande
+                      </button>
+                      <span v-else class="bg-green-500 text-white font-bold py-2 px-4 rounded">
+                        Commande livrée
+                      </span>
+                    </td>
                   </tr>
+                  
                 </tbody>
               </table>
+            
+            </div>
+            <!-- Voir toutes les commandes -->
+            <div class="p-5">
+              <router-link to="/admin/orders" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Voir toutes les commandes
+              </router-link>
             </div>
           </div>
+          
         </div>
         <div class="w-full md:w-1/3 p-3">
           <div class="bg-white border rounded shadow">

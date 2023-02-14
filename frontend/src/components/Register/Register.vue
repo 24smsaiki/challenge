@@ -30,18 +30,6 @@ const onSubmit = async () => {
   }).finally(() => {
     isLoading.value = false;
   });
-  // try {
-  //   isLoading.value = true;
-  //   await register(form);
-  //   console.log(form);
-  //   error.value = "";
-  //   router.push({ name: "login" });
-    
-  // } catch (err) {
-  //   error.value = err?.response?.data?.errors[0].message;
-  // } finally {
-  //   isLoading.value = false;
-  // }
 };
 </script>
 

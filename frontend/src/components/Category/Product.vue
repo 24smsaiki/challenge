@@ -1,8 +1,7 @@
 <script setup>
 import { useCartStore } from "../../stores/CartStore";
-import { useProductStore } from "../../stores/ProductStore";
 import { createToast } from "mosha-vue-toastify";
-import { ref, defineEmits, computed, defineProps } from "vue";
+import { ref, defineEmits, computed, defineProps, inject } from "vue";
 
 const props = defineProps({
   product: {
@@ -11,8 +10,9 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["toggle-menu-show", "add-to-cart"]);
+const ProviderefreshCart = inject("ProviderefreshCart");
 
+const emit = defineEmits(["toggle-menu-show", "add-to-cart", "refresh-cart"]);
 const total = ref(0);
 const cartStore = useCartStore();
 
@@ -32,12 +32,10 @@ const addToCart = () => {
     productId: props.product.id,
     addedQuantity: total.value,
   };
-  console.log(props.product, "props.product");
-  console.log(data);
   cartStore.addProduct(data);
   // emit the event to the parent component
-    emit("add-to-cart", data);
-
+    // emit("add-to-cart", data);
+    ProviderefreshCart();
   createToast("Produit ajouté au panier", {
     position: "top-right",
     timeout: 5000,
