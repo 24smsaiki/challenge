@@ -231,12 +231,16 @@ getOrders();
                   </p>
                   <p class="text-gray-600">
                     <span class="font-bold">Total : </span>
-                    {{ orderDetail.totalPrice }} €
+                    {{ orderDetail.totalPrice * orderDetail.quantity }} €
                   </p>
+                 
                 </div>
               </div>
+             <!-- afficher le total -->
+              
             </div>
-            <button
+            <div class="d-flex justify-content-between">
+              <button
               class="btn"
               @click="makeBackOrder(order)"
               :disabled="checkIfAllOrderDetailsAreDisabled()"
@@ -244,6 +248,13 @@ getOrders();
             >
               Demander un retour
             </button>
+              <p class="text-gray-600">
+                <span class="font-bold text-green-900">Total : </span>
+              <span  class="font-bold text-green-900">{{ order.total }} €</span>
+              </p>
+          
+           
+            </div>
           </div>
         </div>
         <div v-if="isBackOrder">

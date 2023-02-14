@@ -230,13 +230,10 @@
               </div>
             </template> -->
 
-            <template v-if="addresses">
-            <!-- Indiquer que le compte n'a pas d'adresses associés -->
-           <div v-if="addresses.length === 0">
+            <template v-if="!addresses">
               <p class="empty-message">
                 Vous n'avez pas d'adresse associée à votre compte. Veuillez en ajouter une.
               </p>
-            </div>
             </template>
             <template v-else>
               <div class="checkout__form__input__item payment-method">

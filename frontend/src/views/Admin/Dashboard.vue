@@ -8,6 +8,7 @@ import ReturnLogic from "../../logics/ReturnLogic";
 import moment from "moment";
 import Header from "../../components/Admin/Header.vue";
 import router from "../../router/Router";
+import { createToast } from "mosha-vue-toastify";
 
 const orders = ref([]);
 const carriers = ref([]);
@@ -61,51 +62,88 @@ const fetchReturn = async () => {
 
 const declineRequestSeller = async (id) => {
   return await UsersLogic.declineRequestSellers(id).then(() => {
-	fetchRequests();
+    fetchRequests();
   });
 };
 
 const acceptRequestSeller = async (id) => {
   return await UsersLogic.acceptRequestSellers(id).then(() => {
-	fetchRequests();
+    fetchRequests();
   });
 };
 
 const onAcceptSeller = async (id) => {
- await acceptRequestSeller(id).then(() => {
-	requests.value.filter((request) => request.id !== id);
-	sellers.value.push(requests.value.find((request) => request.id === id));
+  await acceptRequestSeller(id).then(() => {
+    requests.value.filter((request) => request.id !== id);
+    sellers.value.push(requests.value.find((request) => request.id === id));
   });
 };
 
 const onDeclineSeller = async (id) => {
- await declineRequestSeller(id).then(() => {
-	requests.value.filter((request) => request.id !== id);
+  await declineRequestSeller(id).then(() => {
+    requests.value.filter((request) => request.id !== id);
   });
 };
 
 const onAcceptReturn = async (id) => {
-	const body = {
-		state: 2,
-		idReturn: id,
-		customerEmail: requestsReturn.value.find((request) => request.id === id).customerEmail,
-	}
+  const body = {
+    state: 2,
+    idReturn: id,
+  };
   return await ReturnLogic.updateReturn(body).then(() => {
-	requestsReturn.value.filter((request) => request.id !== id);
+    // remove the request from the list
+    requestsReturn.value.filter((request) => request.id !== id);
+    console.log(requestsReturn.value);
+    console.log(id);
+    console.log(requestsReturn.value.filter((request) => request.id !== id));
+    createToast("La demande de retour a été acceptée.", {
+      type: "success",
+      position: "top-right",
+      timeout: 3000,
+    });
+  }).catch(() => {
+    createToast("Une erreur est survenue.", {
+      type: "danger",
+      position: "top-right",
+      timeout: 3000,
+    });
   });
+
+};
+
+const onDeclineReturn = async (id) => {
+  const body = {
+    state: 3,
+    idReturn: id,
+  };
+  return await ReturnLogic.updateReturn(body)
+    .then(() => {
+      requestsReturn.value.filter((request) => request.id !== id);
+      createToast("La demande de retour a été refusée.", {
+        type: "success",
+        position: "top-right",
+        timeout: 3000,
+      });
+    })
+    .catch(() => {
+      createToast("Une erreur est survenue.", {
+        type: "danger",
+        position: "top-right",
+        timeout: 3000,
+      });
+    });
 };
 
 const DeliveryOrder = async (id) => {
   const body = {
-    state: 5
-  }
+    state: 5,
+  };
   return await OrdersLogic.updateOrder(id, body).then(() => {
-
-  orders.value.map((order) => {
-    if (order.id === id) {
-      order.state = 5;
-    }
-  });
+    orders.value.map((order) => {
+      if (order.id === id) {
+        order.state = 5;
+      }
+    });
   });
 };
 
@@ -122,7 +160,7 @@ onMounted(() => {
 
 <template>
   <!-- header -->
-<Header />
+  <Header />
 
   <section class="dashboard">
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
@@ -215,7 +253,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
-		<div class="w-full md:w-1/2 xl:w-1/3 p-3">
+        <div class="w-full md:w-1/2 xl:w-1/3 p-3">
           <div class="bg-white border rounded shadow p-2">
             <div class="flex flex-row items-center">
               <div class="flex-shrink pr-4">
@@ -259,8 +297,8 @@ onMounted(() => {
             </div>
           </div>
         </div>
-		
-		<div class="w-full md:w-1/2 xl:w-1/3 p-3">
+
+        <div class="w-full md:w-1/2 xl:w-1/3 p-3">
           <div class="bg-white border rounded shadow p-2">
             <div class="flex flex-row items-center">
               <div class="flex-shrink pr-4">
@@ -300,8 +338,8 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(user, index) in users" :key="user.id">
-                    <td class="pt-2">{{ index === 0 ? 1 : index + 1 }}</td>
+                  <tr v-for="user in users.slice(0, 9)" :key="user.id">
+                    <td class="pt-2">{{ user.id }}</td>
                     <td class="pt-2">{{ user.email }}</td>
                     <td class="pt-2">
                       {{ user.firstname + " " + user.lastname }}
@@ -374,7 +412,7 @@ onMounted(() => {
                 </thead>
                 <tbody>
                   <tr
-                    v-for="product in products.slice(0, 11)"
+                    v-for="product in products.slice(0, 9)"
                     :key="product.id"
                   >
                     <td class="pt-2">{{ product.id }}</td>
@@ -397,7 +435,7 @@ onMounted(() => {
               </div>
             </div>
             <div class="p-5">
-              <table class="w-full p-5 text-gray-700">
+              <table class="w-full p-5 text-gray-700" style="overflow: auto; max-height: 276px;">
                 <thead>
                   <tr>
                     <th class="text-left">#</th>
@@ -406,36 +444,42 @@ onMounted(() => {
                     <th class="text-left">Montant</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr v-for="order in orders.slice(0, 10)" :key="order.id">
+                <tbody >
+                  <tr v-for="order in orders" :key="order.id" >
                     <td class="pt-2">{{ order.id }}</td>
                     <td class="pt-2">{{ order.reference }}</td>
                     <td class="pt-2">
                       {{ moment(order.createdAt).format("DD/MM/YYYY") }}
                     </td>
                     <td class="pt-2">{{ order.total }} €</td>
-                    <td @click="DeliveryOrder(order.id)" class="pt-2" >
-                      <button v-if="order.state !== 5" class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                    <td @click="DeliveryOrder(order.id)" class="pt-2">
+                      <button
+                        v-if="order.state !== 5"
+                        class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+                      >
                         Livrer la commande
                       </button>
-                      <span v-else class="bg-green-500 text-white font-bold py-2 px-4 rounded">
+                      <span
+                        v-else
+                        class="bg-green-500 text-white font-bold py-2 px-4 rounded"
+                      >
                         Commande livrée
                       </span>
                     </td>
                   </tr>
-                  
                 </tbody>
               </table>
-            
             </div>
             <!-- Voir toutes les commandes -->
-            <div class="p-5">
-              <router-link to="/admin/orders" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <!-- <div class="p-5">
+              <router-link
+                to="/admin/orders"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
                 Voir toutes les commandes
               </router-link>
-            </div>
+            </div> -->
           </div>
-          
         </div>
         <div class="w-full md:w-1/3 p-3">
           <div class="bg-white border rounded shadow">
@@ -472,7 +516,7 @@ onMounted(() => {
                       <font-awesome-icon
                         icon="check"
                         style="color: blue; cursor: pointer"
-						@click="onAcceptSeller(seller.id)"
+                        @click="onAcceptSeller(seller.id)"
                       />
                       <font-awesome-icon
                         icon="xmark"
@@ -481,7 +525,7 @@ onMounted(() => {
                           margin-left: 5px;
                           cursor: pointer;
                         "
-						@click="onDeclineSeller(seller.id)"
+                        @click="onDeclineSeller(seller.id)"
                       />
                     </td>
                   </tr>
@@ -503,22 +547,28 @@ onMounted(() => {
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
-                    <th class="text-left">#</th>
-                    <th class="text-left">Nom</th>
-                    <th class="text-left">Email</th>
-                    <th class="text-left">Téléphone</th>
+                    <th class="text-left">Référence</th>
+                    <th class="text-left">Message</th>
+                    <th class="text-left">Date</th>
+                    <th class="text-left">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="request in requestsReturn">
-                    <td class="pt-2">{{ request.id }}</td>
-                    <td class="pt-2">{{ request.name }}</td>
-                    <td class="pt-2">{{ request.email }}</td>
-                    <td class="pt-2">{{ request.phone }}</td>
+                    <td class="pt-2">{{ request.reference }}</td>
+                    <td class="pt-2">
+                      {{ request.orderDetailsReturns[0].reason }}
+                    </td>
+                    <td class="pt-2">
+                      {{ moment(request.createdAt).format("DD/MM/YYYY") }}
+                    </td>
+                    <td class="pt-2">{{ request.totalPrice }}</td>
+
                     <td class="pt-2">
                       <font-awesome-icon
                         icon="check"
                         style="color: blue; cursor: pointer"
+                        @click="onAcceptReturn(request.id)"
                       />
                       <font-awesome-icon
                         icon="xmark"
@@ -527,6 +577,7 @@ onMounted(() => {
                           margin-left: 5px;
                           cursor: pointer;
                         "
+                        @click="onDeclineReturn(request.id)"
                       />
                     </td>
                   </tr>

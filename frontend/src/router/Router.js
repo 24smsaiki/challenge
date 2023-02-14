@@ -133,7 +133,7 @@ const router = createRouter({
       path: "/Admin/Dashboard",
       name: "AdminDashboard",
       component: import("../views/Admin/Dashboard.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresAdmin: true },
     },
     {
       path: "/products",
@@ -143,6 +143,14 @@ const router = createRouter({
     }
   ],
 });
+
+const isAdmin = () => {
+  const app = JSON.parse(localStorage.getItem("app-user"));
+  if (app?.roles === "ROLE_ADMIN") {
+    return true;
+  }
+  return false;
+};
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("app-token");
@@ -161,6 +169,13 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+
+  if (to.matched.some((record) => record.meta.requiresAdmin) || !isAdmin()) {
+    next({ name: "Home" });
+  } else {
+    next();
+  }
+
 });
 
 export default router;

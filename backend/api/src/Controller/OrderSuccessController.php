@@ -38,7 +38,6 @@ class OrderSuccessController extends AbstractController
            $product->setStockQuantity($newItemQuantity);
         }
         $order->setIsPaid(1);
-        $order->setState(1);
         $em = $this->managerRegistry->getManager();
         $em->persist($order);
         $em->persist($product);
@@ -47,7 +46,7 @@ class OrderSuccessController extends AbstractController
         $content = "<h3>Felicition votre commande a bien été confirmé</h3>";
         $this->mail->send($order->getCustomer()->getEmail(),'commande confirmée',$content);
 
-        return new JsonResponse(['message' => 'order success mail sent', 'status' => 'success'], 201);
+        return new JsonResponse(['message' => 'Votre commande a bien été effectué !', 'status' => 'success'], 201);
 
         
     }

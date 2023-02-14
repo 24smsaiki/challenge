@@ -12,8 +12,10 @@ const errors = reactive({
     label: "",
     description: "",
     price: "",
-    image: "",
-    coverImage: "",
+    // image: "",
+    // coverImage: "",
+    stockQuantity: "",
+
 });
 
 const form = ref({
@@ -21,15 +23,17 @@ const form = ref({
     label: "",
     description: "",
     price: "",
+    stockQuantity: "",
     // image: "",
-    coverImage: "",
+    // coverImage: "",
 });
 
 const isFormValid = () => {
     if(
         form.value.label !== "" &&
         form.value.description !== "" &&
-        form.value.price !== "" 
+        form.value.price !== "" &&
+        form.value.stockQuantity !== ""
         // form.value.image !== "" &&
         // form.value.coverImage !== ""
     ) {
@@ -83,6 +87,15 @@ const onFileChange = (e) => {
     console.log(import.meta.env.VITE_BASE_URL, "VITE_BASE_URL");
 };
 
+const isStockQuantity = () => {
+    const stockQuantity = form.value.stockQuantity;
+    if(stockQuantity <= 0) {
+        errors.stockQuantity = "La quantité doit être supérieure à 0.";
+    } else {
+        errors.stockQuantity = "";
+    }
+};
+
 const onSubmit = (e) => {
     e.preventDefault();
     
@@ -124,6 +137,7 @@ const resetForm = () => {
     form.value.description = "";
     form.value.price = "";
     form.value.image = "";
+    form.value.stockQuantity = "";
     // form.value.coverImage = "";
     isEditing.value = false;
 };
@@ -134,6 +148,7 @@ const editForm = (data) => {
     form.value.label = data.label;
     form.value.description = data.description;
     form.value.price = data.price;
+    form.value.stockQuantity = data.stockQuantity;
     // form.value.image = data.image;
     // form.value.coverImage = data.coverImage;
     isEditing.value = true;
@@ -174,7 +189,7 @@ ProductsLogic.getProducts().then((response) => {
             </button>
         </div>
       <div class="-mx-3 md:flex mb-6">
-        <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+        <div class="md:w-1/3 px-3 mb-6 md:mb-0">
             <label
                 class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
                 for="grid-label"
@@ -192,7 +207,7 @@ ProductsLogic.getProducts().then((response) => {
             <p class="messageErrors" v-if="errors.label">{{ errors.label }}</p>
          
         </div>
-        <div class="md:w-1/2 px-3">
+        <div class="md:w-1/3 px-3">
             <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-price">
                 Price
             </label>
@@ -206,6 +221,21 @@ ProductsLogic.getProducts().then((response) => {
             />
             <p class="messageErrors" v-if="errors.price">{{ errors.price }}</p>
         </div>
+        <div class="md:w-1/3 px-3">
+            <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-stockQuantity">
+                Stock Quantity
+            </label>
+            <input 
+                class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" 
+                id="grid-stockQuantity" 
+                type="number" 
+                v-model="form.stockQuantity"
+                placeholder="Stock Quantity"
+                @input="isStockQuantity"
+            />
+            <p class="messageErrors" v-if="errors.stockQuantity">{{ errors.stockQuantity }}</p>
+        </div>
+        
       </div>
         <div class="-mx-3 md:flex mb-6">
             <div class="md:w-full px-3">

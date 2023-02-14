@@ -74,7 +74,7 @@ const resetTotal = () => {
         <span class="bold">Description : </span
         >{{ product.description.slice(0, 30) }}...
       </p>
-      <div class="overview__text__btn-section">
+      <div v-if="!product.stockQuantity <= 0" class="overview__text__btn-section">
           <div class="overview__text__btn-section__number">
             <button
               class="overview__text__btn-section__number__less"
@@ -103,12 +103,17 @@ const resetTotal = () => {
             Ajouter au panier
           </button>
         </div>
+        <div class="mt-2 " v-else>
+          <p class="bold text-danger">Produit en rupture de stock</p>
+        </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-
+.text-danger {
+  color: red;
+}
 .overview__text__btn-section {
   display: flex;
   justify-content: space-between;
