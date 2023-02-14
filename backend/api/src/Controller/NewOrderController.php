@@ -60,17 +60,17 @@ class NewOrderController extends AbstractController
             $orderDetails->setMyOrder($order);
             $orderDetails->setItem($findItem);
             $orderDetails->setQuantity($item['quantity']);
-            $orderDetails->setTotalPrice($findItem->getPrice()*$orderDetails->getQuantity());
+            $orderDetails->setTotalPrice($findItem->getPrice());
             $orderDetails->setState(0);
             $em->persist($orderDetails);
             
-            $total += $orderDetails->getTotalPrice();
+            $total += $orderDetails->getTotalPrice()*$orderDetails->getQuantity();
 
             //set products to stripe
             $products_for_stripe[] = [
                 'price_data' => [
                   'currency' => 'eur',
-                  'unit_amount' => ceil($orderDetails->getTotalPrice()*100),
+                  'unit_amount' => ceil($orderDetails->getTotalPrice()),
                   'product_data' => [
                     'name' => $orderDetails->getItem()->getLabel(),
                     

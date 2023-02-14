@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Seller;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Post;
@@ -54,7 +55,7 @@ class Product
     private Collection $orderDetailsReturns;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    private ?seller $publisher = null;
+    private ?Seller $publisher = null;
 
     #[Groups(['get'])]
     #[ORM\Column(nullable: true)]
