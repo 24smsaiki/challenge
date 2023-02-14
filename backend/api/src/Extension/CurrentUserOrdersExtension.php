@@ -68,11 +68,11 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
         
         // only with state pending
         if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
-            $state = 0;
+            $isPaid = 1;
             $queryBuilder
                 ->select($rootAlias)
-                ->where('o.state = :state')
-                ->setParameter('state', $state)
+                ->where('o.isPaid = :isPaid')
+                ->setParameter('isPaid', $isPaid)
             ;    
             return;
         }
