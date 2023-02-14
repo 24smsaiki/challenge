@@ -65,18 +65,7 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
         if(null === $user){
             return;
         }
-        
-        // only with state pending
-        if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
-            $state = 0;
-            $queryBuilder
-                ->select($rootAlias)
-                ->where('o.state = :state')
-                ->setParameter('state', $state)
-            ;    
-            return;
-        }
-
+    
         // here the orders for the users (select only those passed by the current user)
         if($this->securityChecker->isGranted('ROLE_USER')){
             $queryBuilder->andWhere(sprintf('%s.customer = :current_user', $rootAlias));
