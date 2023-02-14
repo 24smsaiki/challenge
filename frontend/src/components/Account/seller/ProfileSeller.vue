@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
 import ProfileLogic from "../../../logics/ProfileLogic";
+import LocalStorage from "../../../services/localStorage";
 
 const username = ref("");
 const firstName = ref("");
@@ -11,6 +12,7 @@ const shopName = ref("");
 const shopDescription = ref("");
 const shopEmail = ref("");
 const shopPhone = ref("");
+const user = LocalStorage.get("user");
 
 function setToast(message, type) {
   createToast(message, {
@@ -28,7 +30,7 @@ function setToast(message, type) {
 
 const getSellerInformation = () => {
   Promise.all([
-    ProfileLogic.getUserInformation(),
+    ProfileLogic.getUserInformation(user.id),
     ProfileLogic.getShopInformation(),
   ])
     .then((res) => {
