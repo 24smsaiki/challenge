@@ -72,6 +72,7 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
             $queryBuilder
                 ->select($rootAlias)
                 ->where('o.isPaid = :isPaid')
+                ->orderBy('o.createdAt', 'DESC')
                 ->setParameter('isPaid', $isPaid)
             ;    
             return;
