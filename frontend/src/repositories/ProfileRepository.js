@@ -5,7 +5,7 @@ export default class ProfileRepository {
     return await Request.make("get", `/users/${id}`);
   }
 
-  static async getShopInformation(id) {
-    return await Request.make("get", `/sellers/${id}`);
+  static async getShopInformation() {
+    return await Request.make("get", `/sellers`);
   }
 }

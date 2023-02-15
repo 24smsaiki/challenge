@@ -33,7 +33,6 @@ const addToCart = () => {
       addedQuantity: total.value,
     };
     cartStore.addProduct(data);
-    emit("add-to-cart", data);
     ProvideRefreshCart();
     createToast("Produit ajouté au panier", {
       position: "top-right",

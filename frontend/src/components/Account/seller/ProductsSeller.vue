@@ -15,7 +15,7 @@ const newProduct = ref({
 const errors = ref({
   label: "",
   price: "",
-  stockQuantity: 0,
+  stockQuantity: "",
 });
 
 const addingField = ref(false);

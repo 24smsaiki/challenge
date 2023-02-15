@@ -192,17 +192,18 @@ const updateSeller = () => {
 };
 
 const getSellerInformation = () => {
+  const user = JSON.parse(localStorage.getItem("app-user"));
   Promise.all([
-    SettingsLogic.getUserInformation(),
+    SettingsLogic.getUserInformation(user?.id),
     SettingsLogic.getShopInformation(),
   ])
     .then((res) => {
       if (res[0].status === 200 && res[1].status === 200) {
-        if (res[0]?.data[0] && res[1]?.data[0]) {
+        if (res[0]?.data && res[1]?.data) {
           // user information
-          settingsForm.value.username = `${res[0].data[0].firstname} ${res[0].data[0].lastname}`;
-          settingsForm.value.firstname = res[0].data[0].firstname;
-          settingsForm.value.lastname = res[0].data[0].lastname;
+          settingsForm.value.username = `${res[0].data.firstname} ${res[0].data.lastname}`;
+          settingsForm.value.firstname = res[0].data.firstname;
+          settingsForm.value.lastname = res[0].data.lastname;
 
           // shop information
           sellerId = res[1].data[0].id;
@@ -301,7 +302,7 @@ getSellerInformation();
             class="appearance-none border rounded w-full py-2 px-3 focus:outline-none"
             id="shopDescription"
             type="text"
-            v-model="shopDescription"
+            v-model="settingsForm.shopDescription"
           ></textarea>
         </div>
         <div class="ml-2 mb-5 mr-2">

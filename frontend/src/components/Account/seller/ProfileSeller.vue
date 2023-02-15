@@ -30,15 +30,15 @@ const getSellerInformation = () => {
   const user = JSON.parse(localStorage.getItem("app-user"));
   Promise.all([
     ProfileLogic.getUserInformation(user?.id),
-    ProfileLogic.getShopInformation(user?.id),
+    ProfileLogic.getShopInformation(),
   ])
     .then((res) => {
       if (res[0].status === 200 && res[1].status === 200) {
-        if (res[0]?.data[0] && res[1]?.data[0]) {
+        if (res[0]?.data && res[1]?.data) {
           // user information
-          username.value = `${res[0].data[0].firstname} ${res[0].data[0].lastname}`;
-          firstName.value = res[0].data[0].firstname;
-          lastName.value = res[0].data[0].lastname;
+          username.value = `${res[0].data.firstname} ${res[0].data.lastname}`;
+          firstName.value = res[0].data.firstname;
+          lastName.value = res[0].data.lastname;
 
           // shop information
           shopName.value = res[1].data[0].shopLabel;
