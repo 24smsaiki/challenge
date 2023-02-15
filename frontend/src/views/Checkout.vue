@@ -130,10 +130,18 @@
           </h2>
           <section>
             <template v-if="!addresses?.length">
-              <p class="empty-message">
-                Vous n'avez pas d'adresse associée à votre compte. Veuillez en
-                ajouter une.
-              </p>
+              <div class="flex-column">
+                <p class="empty-message">
+                  Vous n'avez pas d'adresse associée à votre compte. Veuillez en
+                  ajouter une.
+                </p>
+                <p
+                  class="empty-message errorRed"
+                  v-if="emptyFields.includes('address')"
+                >
+                  Le champ de ne peut pas être vide.
+                </p>
+              </div>
             </template>
             <template v-else>
               <div class="checkout__form__input__item payment-method">
@@ -585,6 +593,11 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .back-link {
   font-size: 1.5rem;
   line-height: 2.5rem;
@@ -612,6 +625,10 @@ input::-webkit-inner-spin-button {
 
 .empty-border {
   border: 0.2rem solid #ce382c !important;
+}
+
+.errorRed {
+  color: #ce382c;
 }
 
 .checkout {

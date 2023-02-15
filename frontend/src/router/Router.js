@@ -78,7 +78,8 @@ const router = createRouter({
     {
       path: "/account/addresses",
       name: "Addresses",
-      component: () => import("../components/Account/client/AddressesClient.vue"),
+      component: () =>
+        import("../components/Account/client/AddressesClient.vue"),
       meta: { requiresAuth: true },
     },
     {
@@ -90,7 +91,8 @@ const router = createRouter({
     {
       path: "/account/products",
       name: "Products",
-      component: () => import("../components/Account/seller/ProductsSeller.vue"),
+      component: () =>
+        import("../components/Account/seller/ProductsSeller.vue"),
       meta: { requiresAuth: true },
     },
     {
@@ -110,20 +112,20 @@ const router = createRouter({
         } else {
           next({ name: "Home" });
         }
-      }
+      },
     },
     {
       path: "/Admin/Products",
       name: "AdminProducts",
       component: () => import("../views/Admin/Products.vue"),
-      meta: { requiresAuth: true},
+      meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (isAdmin()) {
           next();
         } else {
           next({ name: "Home" });
         }
-      }
+      },
     },
     {
       path: "/Admin/Users",
@@ -136,7 +138,7 @@ const router = createRouter({
         } else {
           next({ name: "Home" });
         }
-      }
+      },
     },
     {
       path: "/Admin/sellers",
@@ -149,7 +151,7 @@ const router = createRouter({
         } else {
           next({ name: "Home" });
         }
-      }
+      },
     },
     {
       path: "/Admin/Carriers",
@@ -162,7 +164,7 @@ const router = createRouter({
         } else {
           next({ name: "Home" });
         }
-      }
+      },
     },
     {
       path: "/Admin/form",
@@ -175,7 +177,7 @@ const router = createRouter({
         } else {
           next({ name: "Home" });
         }
-      }
+      },
     },
     {
       path: "/Admin/Dashboard",
@@ -188,7 +190,7 @@ const router = createRouter({
         } else {
           next({ name: "Home" });
         }
-      }
+      },
     },
     {
       path: "/products",
@@ -201,13 +203,12 @@ const router = createRouter({
 
 const isAdmin = () => {
   const app = JSON.parse(localStorage.getItem("app-user"));
-  
-  if(app?.roles.includes("ROLE_ADMIN")) {
+
+  if (app?.roles.includes("ROLE_ADMIN")) {
     return true;
   }
   return false;
 };
-
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("app-token");
@@ -226,8 +227,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
- 
-
 });
 
 export default router;
