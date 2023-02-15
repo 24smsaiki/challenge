@@ -1,4 +1,5 @@
 <script setup>
+import Header from "../Header.vue";
 import ProfileClient from "./client/ProfileClient.vue";
 import ProfileSeller from "./seller/ProfileSeller.vue";
 
@@ -19,6 +20,7 @@ if (app) {
 </script>
 
 <template>
+  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <ProfileClient v-if="isClient"></ProfileClient>
   <ProfileSeller v-if="isSeller"></ProfileSeller>
 </template>

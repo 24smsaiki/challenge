@@ -1,4 +1,5 @@
 <script setup>
+import Header from "../Header.vue";
 import SettingsClient from "./client/SettingsClient.vue";
 import SettingsSeller from "./seller/SettingsSeller.vue";
 
@@ -19,6 +20,7 @@ if (app) {
 </script>
 
 <template>
+  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <SettingsClient v-if="isClient"></SettingsClient>
   <SettingsSeller v-if="isSeller"></SettingsSeller>
 </template>

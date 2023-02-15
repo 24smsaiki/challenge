@@ -2,7 +2,6 @@
 import { createToast } from "mosha-vue-toastify";
 import { ref } from "vue";
 import OrdersLogic from "../../../logics/OrdersLogic";
-import Header from "../../Header.vue";
 import Sidebar from "../Sidebar.vue";
 
 function setToast(message, type) {
@@ -51,7 +50,6 @@ getBackClientOrders();
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <section id="ordersBack">
     <Sidebar />
     <div class="content">

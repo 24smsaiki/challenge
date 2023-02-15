@@ -1,5 +1,4 @@
 <script setup>
-import Header from "../../Header.vue";
 import Sidebar from "./SidebarClient.vue";
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
@@ -166,7 +165,6 @@ getOrders();
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <section id="orders">
     <Sidebar />
     <div class="content">
@@ -233,27 +231,25 @@ getOrders();
                     <span class="font-bold">Total : </span>
                     {{ orderDetail.totalPrice * orderDetail.quantity }} €
                   </p>
-                 
                 </div>
               </div>
-             <!-- afficher le total -->
-              
+              <!-- afficher le total -->
             </div>
             <div class="d-flex justify-content-between">
               <button
-              class="btn"
-              @click="makeBackOrder(order)"
-              :disabled="checkIfAllOrderDetailsAreDisabled()"
-              :style="checkIfAllOrderDetailsAreDisabledStyle()"
-            >
-              Demander un retour
-            </button>
+                class="btn"
+                @click="makeBackOrder(order)"
+                :disabled="checkIfAllOrderDetailsAreDisabled()"
+                :style="checkIfAllOrderDetailsAreDisabledStyle()"
+              >
+                Demander un retour
+              </button>
               <p class="text-gray-600">
                 <span class="font-bold text-green-900">Total : </span>
-              <span  class="font-bold text-green-900">{{ order.total }} €</span>
+                <span class="font-bold text-green-900"
+                  >{{ order.total }} €</span
+                >
               </p>
-          
-           
             </div>
           </div>
         </div>

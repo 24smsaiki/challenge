@@ -2,7 +2,6 @@
 import { createToast } from "mosha-vue-toastify";
 import { ref } from "vue";
 import OrdersLogic from "../../../logics/OrdersLogic";
-import Header from "../../Header.vue";
 import Sidebar from "./SidebarSeller.vue";
 
 // Only using to debug and test
@@ -341,7 +340,6 @@ getOrders();
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <section id="orders">
     <Sidebar />
     <div class="content">

@@ -1,4 +1,5 @@
 <script setup>
+import Header from "../Header.vue";
 import AccountClient from "./client/AccountClient.vue";
 import AccountSeller from "./seller/AccountSeller.vue";
 
@@ -19,6 +20,7 @@ if (app) {
 </script>
 
 <template>
+  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <AccountClient v-if="isClient"></AccountClient>
   <AccountSeller v-if="isSeller"></AccountSeller>
 </template>

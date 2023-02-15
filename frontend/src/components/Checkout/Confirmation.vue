@@ -22,7 +22,7 @@
           >
             <div class="product__left">
               <img
-               src="../../assets/images/default-product.png"
+                src="../../assets/images/default-product.png"
                 class="product__left__img"
                 alt="Default image"
               />
@@ -31,7 +31,7 @@
                   {{ product.label }}
                 </h2>
                 <p class="product__left__info__price">
-                   {{ separator(product.product.price) }} €
+                  {{ separator(product.product.price) }} €
                 </p>
               </div>
             </div>
@@ -144,7 +144,7 @@ export default {
     letter-spacing: 0.086rem;
 
     @media (min-width: 768px) {
-      width: 28.4rem;
+      // width: 28.4rem;
       font-size: 3.2rem;
       line-height: 3.6rem;
       letter-spacing: 0.114rem;
@@ -153,6 +153,7 @@ export default {
   }
 
   &__text {
+    text-align: center;
     margin-top: 1.6rem;
     font-weight: 500;
     font-size: 1.5rem;
@@ -165,6 +166,7 @@ export default {
   }
 
   &__order {
+    display: none !important;
     margin-top: 2.4rem;
     border-radius: 0.8rem;
     overflow: hidden;

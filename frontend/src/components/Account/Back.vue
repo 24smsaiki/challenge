@@ -1,4 +1,5 @@
 <script setup>
+import Header from "../Header.vue";
 import BackOrdersClient from "./client/BackOrdersClient.vue";
 import BackOrdersSeller from "./seller/BackOrdersSeller.vue";
 
@@ -19,6 +20,7 @@ if (app) {
 </script>
 
 <template>
+  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <BackOrdersClient v-if="isClient"></BackOrdersClient>
   <BackOrdersSeller v-if="isSeller"></BackOrdersSeller>
 </template>

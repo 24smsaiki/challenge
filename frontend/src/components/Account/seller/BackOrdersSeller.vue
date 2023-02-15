@@ -1,5 +1,4 @@
 <script setup>
-import Header from "../../Header.vue";
 import Sidebar from "./SidebarSeller.vue";
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
@@ -122,7 +121,6 @@ getBackSellerOrders();
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <section id="ordersBack">
     <Sidebar />
     <div class="content">

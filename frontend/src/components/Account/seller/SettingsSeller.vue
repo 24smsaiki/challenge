@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
 import { createToast } from "mosha-vue-toastify";
-import Header from "../../Header.vue";
 import Sidebar from "./SidebarSeller.vue";
 import SettingsLogic from "../../../logics/SettingsLogic";
 
@@ -226,7 +225,6 @@ getSellerInformation();
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <section id="settings">
     <Sidebar />
     <div class="content">

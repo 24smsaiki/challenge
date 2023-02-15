@@ -1,11 +1,9 @@
 <script setup>
-import Header from "../../Header.vue";
 import Sidebar from "./SidebarSeller.vue";
 import Profile from "./ProfileSeller.vue";
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
   <section id="account">
     <Sidebar />
     <div class="content">

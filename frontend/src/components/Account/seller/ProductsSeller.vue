@@ -1,9 +1,9 @@
 <script setup>
-import Header from "../../Header.vue";
 import Sidebar from "./SidebarSeller.vue";
 import { ref, computed } from "vue";
 import { createToast } from "mosha-vue-toastify";
 import ProductsLogic from "../../../logics/ProductsLogic";
+import Header from "../../Header.vue";
 
 const products = ref([]);
 const newProduct = ref({

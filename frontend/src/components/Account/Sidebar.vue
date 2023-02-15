@@ -1,4 +1,5 @@
 <script setup>
+import Header from "../Header.vue";
 import SidebarClient from "./client/SidebarClient.vue";
 import SidebarSeller from "./seller/SidebarSeller.vue";
 
@@ -19,6 +20,7 @@ if (app) {
 </script>
 
 <template>
+  <!-- <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header> -->
   <SidebarClient v-if="isClient"></SidebarClient>
   <SidebarSeller v-if="isSeller"></SidebarSeller>
 </template>
