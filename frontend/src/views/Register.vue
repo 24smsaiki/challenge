@@ -6,9 +6,6 @@ import { createToast } from "mosha-vue-toastify";
 
 const register = inject("ProviderRegister");
 const isLoading = ref(false);
-
-const redirectToHome = () => router.push({ name: "Home" });
-
 const form = reactive({
   email: "",
   password: "",
@@ -20,7 +17,6 @@ const form = reactive({
 const error = ref("");
 
 const onSubmit = async () => {
-  
   try {
     isLoading.value = true;
     await register(form);
@@ -31,15 +27,15 @@ const onSubmit = async () => {
     });
     router.push({ name: "Home" });
   } catch (err) {
-   if(err.status === 422) {
-    error.value = "Votre email est déjà utilisé.";
-   } else {
-    createToast("Une erreur est survenue.", {
-      type: "danger",
-      position: "top-right",
-      timeout: 3000,
-    });
-   }
+    if (err.status === 422) {
+      error.value = "Votre email est déjà utilisé.";
+    } else {
+      createToast("Une erreur est survenue.", {
+        type: "danger",
+        position: "top-right",
+        timeout: 3000,
+      });
+    }
   } finally {
     isLoading.value = false;
   }
@@ -47,7 +43,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"/>
+  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)" />
   <form @submit.prevent="onSubmit">
     <h3>Inscription</h3>
     <label for="email">Adresse mail</label>
