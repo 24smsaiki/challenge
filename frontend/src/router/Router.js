@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import { useProductStore } from "../stores/ProductStore";
 
 const router = createRouter({
@@ -18,6 +19,12 @@ const router = createRouter({
       path: "/product/:product",
       name: "Product",
       component: import("../views/Product.vue"),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/paymentRefused",
+      name: "Payment",
+      component: import("../components/Checkout/Payment.vue"),
       meta: { requiresAuth: true },
     },
     {
@@ -183,7 +190,7 @@ const router = createRouter({
       name: "AllProducts",
       component: import("../views/Products.vue"),
       meta: { requiresAuth: true },
-    }
+    },
   ],
 });
 
