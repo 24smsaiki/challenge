@@ -14,6 +14,7 @@ const login = (form) => {
   return AuthLogic.login({ ...form }).then((data) => {
     isAuth.value = !isAuth.value;
     user.value = data;
+    return user.value;
   });
 };
 
@@ -31,4 +32,5 @@ provide("ProviderLogout", logout);
 provide("ProviderIsAuth", isAuth);
 provide("ProviderLogin", login);
 provide("ProviderRegister", register);
+provide("ProviderUser", user)
 </script>

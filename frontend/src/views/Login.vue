@@ -2,6 +2,7 @@
 import { ref, reactive, inject } from "vue";
 import router from "../router/Router";
 import Header from "../components/Header.vue";
+import LocalStorage from "../services/localStorage";
 
 const form = reactive({
   email: "",
@@ -11,16 +12,32 @@ const form = reactive({
 const error = ref("");
 const isLoading = ref(false);
 const login = inject("ProviderLogin");
+let user = null
 
 const redirectToHome = () => router.push({ name: "Home" });
+
+const isAdmin = () => {
+  user = LocalStorage.get("user");
+
+  if (user?.roles.includes("ROLE_ADMIN")) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 const onSubmit = async () => {
   isLoading.value = true;
   try {
-    await login(form);
-    redirectToHome();
+    await login(form).then((res) => {
+      if(isAdmin()) {
+        router.push({ name: "AdminDashboard" });
+      } else {
+        console.log("user");
+        redirectToHome();
+      }
+    });
   } catch (err) {
-    console.log(err, "err");
     if (err.status === 401 && err.message === "Invalid credentials.") {
       error.value = "Vérifiez vos identifiants";
     } else if (err.status === 401) {

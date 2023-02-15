@@ -190,8 +190,6 @@ const router = createRouter({
 const isAdmin = () => {
   const app = JSON.parse(localStorage.getItem("app-user"));
   
-  // check in array if role is admin
-  
   if(app?.roles.includes("ROLE_ADMIN")) {
     return true;
   }
