@@ -62,7 +62,7 @@ getBackClientOrders();
         <router-link to="/" class="btn">Retour à l'accueil</router-link>
       </div>
       <div v-else>
-        <div v-for="order in ordersBack" :key="order.id" class="order">
+        <div v-for="order in ordersBack" :key="order.id" class="order mt-6">
           <div class="d-flex justify-content-between mb-4">
             <h1>Référence : {{ order.reference }}</h1>
             <p class="text-gray-600">

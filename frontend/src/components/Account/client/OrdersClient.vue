@@ -44,7 +44,7 @@ function getFormattedDate(dateTime) {
 }
 
 const makeBackOrder = (order) => {
-  if (!checkIfAllOrderDetailsAreDisabled()) {
+  if (!checkIfAllOrderDetailsAreDisabled(order)) {
     isBackOrder.value = true;
     currentBackOrder.value = order;
   }
@@ -71,7 +71,6 @@ const confirmBackOrder = (reference, order, id) => {
 const openModalStateChange = () => (modalIsOpen.value = false);
 const cancelModalStateChange = () => {
   modalIsOpen.value = false;
-  currentBackOrder.value = {};
 };
 
 const validateBackOrders = () => {
@@ -108,21 +107,14 @@ const gestStyleToReturnOrderDetail = (state) => {
   }
 };
 
-const checkIfAllOrderDetailsAreDisabled = () => {
-  // console.log(orders.value[0], "orders");
-  // console.log(orders.value[1], "orders");
-  // console.log(orders.value[2], "orders");
-  let count = 0;
-  orders.value[0].orderDetails.forEach((orderDetail) => {
-    if (orderDetail.state === 1 && orders.value.state !== 5) {
-      count += 1;
-    }
-  });
-  return count === orders.value[0].orderDetails.length;
+const checkIfAllOrderDetailsAreDisabled = (order) => {
+  if (order.state !== 5) {
+    return true;
+  }
 };
 
-const checkIfAllOrderDetailsAreDisabledStyle = () => {
-  if (checkIfAllOrderDetailsAreDisabled()) {
+const checkIfAllOrderDetailsAreDisabledStyle = (order) => {
+  if (checkIfAllOrderDetailsAreDisabled(order)) {
     return {
       cursor: "not-allowed",
       backgroundColor: "#e0e0e0",
@@ -239,8 +231,8 @@ getOrders();
               <button
                 class="btn"
                 @click="makeBackOrder(order)"
-                :disabled="checkIfAllOrderDetailsAreDisabled()"
-                :style="checkIfAllOrderDetailsAreDisabledStyle()"
+                :disabled="checkIfAllOrderDetailsAreDisabled(order)"
+                :style="checkIfAllOrderDetailsAreDisabledStyle(order)"
               >
                 Demander un retour
               </button>

@@ -249,7 +249,7 @@ class Order
         return $this;
     }
 
-    public function isIsPaid(): ?bool
+    public function getIsPaid(): ?bool
     {
         return $this->isPaid;
     }
