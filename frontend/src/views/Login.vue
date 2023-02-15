@@ -2,7 +2,7 @@
 import { ref, reactive, inject } from "vue";
 import router from "../router/Router";
 import Header from "../components/Header.vue";
-import LocalStorage from "../services/localStorage";
+import LocalStorage from "../services/LocalStorage";
 
 const form = reactive({
   email: "",

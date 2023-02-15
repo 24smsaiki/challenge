@@ -1,4 +1,4 @@
-import LocalStorage from "./localStorage";
+import LocalStorage from "./LocalStorage";
 import axios from "axios";
 
 const request = axios.create({

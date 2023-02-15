@@ -371,7 +371,7 @@ import CarriersLogic from "../logics/CarriersLogic.js";
 import Address from "../components/Checkout/Address.vue";
 import AddressessLogic from "../logics/AddressesLogic.js";
 import OrdersLogic from "../logics/OrdersLogic.js";
-import LocalStorage from "../services/localStorage";
+import LocalStorage from "../services/LocalStorage";
 import { StripeCheckout } from "@vue-stripe/vue-stripe";
 
 export default {

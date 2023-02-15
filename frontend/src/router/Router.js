@@ -8,55 +8,55 @@ const router = createRouter({
     {
       path: "/",
       name: "Home",
-      component: import("../views/Home.vue"),
+      component: () => import("../views/Home.vue"),
     },
     {
       path: "/:pathMatch(.*)*",
       name: "NotFound",
-      component: import("../views/NotFound.vue"),
+      component: () => import("../views/NotFound.vue"),
     },
     {
       path: "/product/:product",
       name: "Product",
-      component: import("../views/Product.vue"),
+      component: () => import("../views/Product.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/paymentRefused",
       name: "Payment",
-      component: import("../components/Checkout/Payment.vue"),
+      component: () => import("../components/Checkout/Payment.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/checkout",
       name: "Checkout",
-      component: import("../views/Checkout.vue"),
+      component: () => import("../views/Checkout.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/login",
       name: "Login",
-      component: import("../views/Login.vue"),
+      component: () => import("../views/Login.vue"),
     },
     {
       path: "/register",
       name: "Register",
-      component: import("../views/Register.vue"),
+      component: () => import("../views/Register.vue"),
     },
     {
       path: "/registerConfirmation/:token",
       name: "RegisterConfirmation",
-      component: import("../views/RegisterConfirmation.vue"),
+      component: () => import("../views/RegisterConfirmation.vue"),
     },
     {
       path: "/logout",
       name: "Logout",
-      component: import("../views/Logout.vue"),
+      component: () => import("../views/Logout.vue"),
     },
     {
       path: "/account",
       name: "Account",
-      component: import("../components/Account/Account.vue"),
+      component: () => import("../components/Account/Account.vue"),
       meta: { requiresAuth: true },
     },
     {
@@ -72,37 +72,37 @@ const router = createRouter({
     {
       path: "/account/orders",
       name: "Orders",
-      component: import("../components/Account/Orders.vue"),
+      component: () => import("../components/Account/Orders.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/account/addresses",
       name: "Addresses",
-      component: import("../components/Account/client/AddressesClient.vue"),
+      component: () => import("../components/Account/client/AddressesClient.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/account/backOrders",
       name: "BackOrders",
-      component: import("../components/Account/Back.vue"),
+      component: () => import("../components/Account/Back.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/account/products",
       name: "Products",
-      component: import("../components/Account/seller/ProductsSeller.vue"),
+      component: () => import("../components/Account/seller/ProductsSeller.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/account/settings",
       name: "Settings",
-      component: import("../components/Account/Settings.vue"),
+      component: () => import("../components/Account/Settings.vue"),
       meta: { requiresAuth: true },
     },
     {
       path: "/Admin/Orders",
       name: "AdminOrders",
-      component: import("../views/Admin/Orders.vue"),
+      component: () => import("../views/Admin/Orders.vue"),
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (isAdmin()) {
@@ -115,7 +115,7 @@ const router = createRouter({
     {
       path: "/Admin/Products",
       name: "AdminProducts",
-      component: import("../views/Admin/Products.vue"),
+      component: () => import("../views/Admin/Products.vue"),
       meta: { requiresAuth: true},
       beforeEnter: (to, from, next) => {
         if (isAdmin()) {
@@ -128,7 +128,7 @@ const router = createRouter({
     {
       path: "/Admin/Users",
       name: "AdminUsers",
-      component: import("../views/Admin/Users.vue"),
+      component: () => import("../views/Admin/Users.vue"),
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (isAdmin()) {
@@ -141,7 +141,7 @@ const router = createRouter({
     {
       path: "/Admin/sellers",
       name: "AdminSellers",
-      component: import("../views/Admin/Sellers.vue"),
+      component: () => import("../views/Admin/Sellers.vue"),
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (isAdmin()) {
@@ -154,7 +154,7 @@ const router = createRouter({
     {
       path: "/Admin/Carriers",
       name: "AdminCarriers",
-      component: import("../views/Admin/Carriers.vue"),
+      component: () => import("../views/Admin/Carriers.vue"),
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (isAdmin()) {
@@ -167,7 +167,7 @@ const router = createRouter({
     {
       path: "/Admin/form",
       name: "AdminForm",
-      component: import("../components/Admin/Form.vue"),
+      component: () => import("../components/Admin/Form.vue"),
       meta: { requiresAuth: true },
       beforeEnter: (to, from, next) => {
         if (isAdmin()) {
@@ -180,7 +180,7 @@ const router = createRouter({
     {
       path: "/Admin/Dashboard",
       name: "AdminDashboard",
-      component: import("../views/Admin/Dashboard.vue"),
+      component: () => import("../views/Admin/Dashboard.vue"),
       meta: { requiresAuth: true, requiresAdmin: true },
       beforeEnter: (to, from, next) => {
         if (isAdmin()) {
@@ -193,7 +193,7 @@ const router = createRouter({
     {
       path: "/products",
       name: "AllProducts",
-      component: import("../views/Products.vue"),
+      component: () => import("../views/Products.vue"),
       meta: { requiresAuth: true },
     },
   ],
