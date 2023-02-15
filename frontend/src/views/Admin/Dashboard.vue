@@ -61,37 +61,38 @@ const fetchReturn = async () => {
 
 const declineRequestSeller = async (id) => {
   return await UsersLogic.declineRequestSellers(id).then(() => {
-	fetchRequests();
+    fetchRequests();
   });
 };
 
 const acceptRequestSeller = async (id) => {
   return await UsersLogic.acceptRequestSellers(id).then(() => {
-	fetchRequests();
+    fetchRequests();
   });
 };
 
 const onAcceptSeller = async (id) => {
- await acceptRequestSeller(id).then(() => {
-	requests.value.filter((request) => request.id !== id);
-	sellers.value.push(requests.value.find((request) => request.id === id));
+  await acceptRequestSeller(id).then(() => {
+    requests.value.filter((request) => request.id !== id);
+    sellers.value.push(requests.value.find((request) => request.id === id));
   });
 };
 
 const onDeclineSeller = async (id) => {
- await declineRequestSeller(id).then(() => {
-	requests.value.filter((request) => request.id !== id);
+  await declineRequestSeller(id).then(() => {
+    requests.value.filter((request) => request.id !== id);
   });
 };
 
 const onAcceptReturn = async (id) => {
-	const body = {
-		state: 2,
-		idReturn: id,
-		customerEmail: requestsReturn.value.find((request) => request.id === id).customerEmail,
-	}
+  const body = {
+    state: 2,
+    idReturn: id,
+    customerEmail: requestsReturn.value.find((request) => request.id === id)
+      .customerEmail,
+  };
   return await ReturnLogic.updateReturn(body).then(() => {
-	requestsReturn.value.filter((request) => request.id !== id);
+    requestsReturn.value.filter((request) => request.id !== id);
   });
 };
 
@@ -108,7 +109,7 @@ onMounted(() => {
 
 <template>
   <!-- header -->
-<Header />
+  <Header />
 
   <section class="dashboard">
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
@@ -201,7 +202,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
-		<div class="w-full md:w-1/2 xl:w-1/3 p-3">
+        <div class="w-full md:w-1/2 xl:w-1/3 p-3">
           <div class="bg-white border rounded shadow p-2">
             <div class="flex flex-row items-center">
               <div class="flex-shrink pr-4">
@@ -245,8 +246,8 @@ onMounted(() => {
             </div>
           </div>
         </div>
-		
-		<div class="w-full md:w-1/2 xl:w-1/3 p-3">
+
+        <div class="w-full md:w-1/2 xl:w-1/3 p-3">
           <div class="bg-white border rounded shadow p-2">
             <div class="flex flex-row items-center">
               <div class="flex-shrink pr-4">
@@ -276,7 +277,7 @@ onMounted(() => {
             <div class="border-b p-3">
               <h5 class="font-bold uppercase color-orange">Utilisateurs</h5>
             </div>
-            <div class="p-5">
+            <div class="p-5 first-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -315,7 +316,7 @@ onMounted(() => {
                 <font-awesome-icon icon="circle-plus" style="cursor: pointer" />
               </div> -->
             </div>
-            <div class="p-5">
+            <div class="p-5 second-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -348,7 +349,7 @@ onMounted(() => {
                 <h5 class="font-bold uppercase color-orange">Produits</h5>
               </div>
             </div>
-            <div class="p-5">
+            <div class="p-5 third-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -382,7 +383,7 @@ onMounted(() => {
                 <h5 class="font-bold uppercase color-orange">Commandes</h5>
               </div>
             </div>
-            <div class="p-5">
+            <div class="p-5 fourth-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -415,7 +416,7 @@ onMounted(() => {
                 </h5>
               </div>
             </div>
-            <div class="p-5">
+            <div class="p-5 fifth-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -441,7 +442,7 @@ onMounted(() => {
                       <font-awesome-icon
                         icon="check"
                         style="color: blue; cursor: pointer"
-						@click="onAcceptSeller(seller.id)"
+                        @click="onAcceptSeller(seller.id)"
                       />
                       <font-awesome-icon
                         icon="xmark"
@@ -450,7 +451,7 @@ onMounted(() => {
                           margin-left: 5px;
                           cursor: pointer;
                         "
-						@click="onDeclineSeller(seller.id)"
+                        @click="onDeclineSeller(seller.id)"
                       />
                     </td>
                   </tr>
@@ -468,7 +469,7 @@ onMounted(() => {
                 </h5>
               </div>
             </div>
-            <div class="p-5">
+            <div class="p-5 sixth-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -479,7 +480,7 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="request in requestsReturn">
+                  <tr v-for="request in requestsReturn" :key="request.id">
                     <td class="pt-2">{{ request.id }}</td>
                     <td class="pt-2">{{ request.name }}</td>
                     <td class="pt-2">{{ request.email }}</td>
@@ -512,6 +513,16 @@ onMounted(() => {
 <style scoped>
 .dashboard {
   margin: 40px 50px 20px 50px;
+}
+
+.first-bloc,
+.second-bloc,
+.third-bloc,
+.fourth-bloc,
+.fifth-bloc,
+.sixth-bloc {
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .dashboard .fa-google-wallet,
