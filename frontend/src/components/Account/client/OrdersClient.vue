@@ -108,9 +108,15 @@ const gestStyleToReturnOrderDetail = (state) => {
 };
 
 const checkIfAllOrderDetailsAreDisabled = (order) => {
-  if (order.state !== 5) {
-    return true;
-  }
+  let count = 0;
+
+  order.orderDetails.forEach((orderDetail) => {
+    if (orderDetail.state === 1) {
+      count += 1;
+    }
+  });
+
+  return count === order.orderDetails.length || order.state !== 5;
 };
 
 const checkIfAllOrderDetailsAreDisabledStyle = (order) => {
@@ -225,7 +231,6 @@ getOrders();
                   </p>
                 </div>
               </div>
-              <!-- afficher le total -->
             </div>
             <div class="d-flex justify-content-between">
               <button

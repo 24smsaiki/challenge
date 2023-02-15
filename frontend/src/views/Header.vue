@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Navbar from "../Navbar.vue";
-import Heading from "./Heading.vue";
+import Navbar from "../components/Navbar.vue";
+import Heading from "../components/Category/Heading.vue";
 
 export default {
   name: "Hero",

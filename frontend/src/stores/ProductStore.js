@@ -1,5 +1,4 @@
 import ProductsLogic from "../logics/ProductsLogic";
-import data from "../data.json";
 import { defineStore } from "pinia";
 
 export const useProductStore = defineStore({

@@ -14,7 +14,7 @@
           <img src="../assets/images/default-product.png" />
           <div class="products__item__info">
             <h4>
-              {{ product.label }}
+              {{ product.product.label }}
             </h4>
             <p>{{ separator(product.product.price) }}€</p>
           </div>

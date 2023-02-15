@@ -1,230 +1,144 @@
 <script setup>
-import { ref, defineEmits, computed } from "vue";
-import Header from "../components/Product/Header.vue";
-import router from "../router/Router";
-import OthersCard from "../components/Product/OthersCard.vue";
-import { useProductStore } from "../stores/ProductStore.js";
-import { useCartStore } from "../stores/CartStore.js";
+import { useCartStore } from "../stores/CartStore";
 import { createToast } from "mosha-vue-toastify";
-import "mosha-vue-toastify/dist/style.css";
+import { ref, defineEmits, defineProps, inject } from "vue";
 
-const emit = defineEmits(["toggle-menu-show", "add-to-cart"]);
-const cartStore = useCartStore();
-const productStore = useProductStore();
-const total = ref(1);
-const justAdded = ref(false);
-const products = productStore.products;
-
-const currentProduct = computed(() => {
-  if (products.length === 0) return null;
-
-  return products.find(
-    (product) => product.slug === router.currentRoute._value.params.product
-  );
+const props = defineProps({
+  product: {
+    type: Object,
+    required: true,
+  },
 });
+
+const total = ref(0);
+const cartStore = useCartStore();
+const ProvideRefreshCart = inject("ProvideRefreshCart");
+
+defineEmits(["toggle-menu-show", "add-to-cart", "refresh-cart"]);
 
 const increaseTotal = () => {
   total.value++;
 };
+
 const decreaseTotal = () => {
   if (total.value > 1) {
     total.value--;
   }
 };
 
-const addToCartHandler = () => {
-  justAdded.value = true;
-  const toast = createToast("Product ajouté au panier", {
-    position: "top-right",
-    timeout: 7000,
-    close: true,
-    type: "success",
-    pauseOnFocusLoss: true,
-    pauseOnHover: true,
-    draggable: true,
-    draggablePercent: 0.6,
-    showCloseButtonOnHover: false,
-    hideProgressBar: false,
-    closeButton: "button",
-    icon: true,
-    rtl: false,
-  });
-  const data = {
-    productId: currentProduct.value.id,
-    addedQuantity: total.value,
-  };
-  cartStore.addProduct(data);
-  emit("add-to-cart", data);
-};
-
-const resetTotal = () => {
-  total.value = 1;
-  justAdded.value = false;
-};
-
-const editedText = computed(() => {
-  const paragraphs = [];
-  let myString = currentProduct.value.features;
-
-  while (myString.includes("\n\n")) {
-    let index = myString.indexOf("\n\n");
-    paragraphs.push(myString.slice(0, index));
-    myString = myString.slice(index + 2);
+const addToCart = () => {
+  if (total.value > 0) {
+    const data = {
+      productId: props.product.id,
+      addedQuantity: total.value,
+    };
+    cartStore.addProduct(data);
+    ProvideRefreshCart();
+    total.value = 0;
+    createToast("Produit ajouté au panier", {
+      position: "top-right",
+      timeout: 5000,
+      close: true,
+      type: "success",
+      showCloseButtonOnHover: false,
+      hideProgressBar: false,
+      closeButton: "button",
+      icon: true,
+      rtl: false,
+    });
   }
-
-  if (paragraphs.length > 0) {
-    paragraphs.push(myString);
-  } else {
-    paragraphs.push(currentProduct.value.features);
-  }
-
-  return paragraphs;
-});
+};
 </script>
 
 <template>
-  <Header @toggle-menu-show="$emit('toggle-menu-show', $event)"></Header>
-  <main>
-    <p class="back-link" @click="$router.back()">Go back</p>
-    <section class="overview">
+  <div class="card">
+    <div class="card-img">
       <img
-        :src="currentProduct.image"
-        :alt="currentProduct.title"
-        class="overview__image"
+        src="../assets/images/default-product.png"
+        class="img-fluid"
+        alt="Default image"
       />
-      <div class="overview__text">
-        <p class="overview__text__tag" v-show="currentProduct.new">
-          {{ currentProduct.name }}
-        </p>
-        <h2 class="overview__text__title">{{ currentProduct.title }}</h2>
-        <p class="overview__text__description">
-          {{ currentProduct.description }}
-        </p>
-        <p class="overview__text__price">{{ currentProduct.price }} €</p>
-        <div class="overview__text__btn-section">
-          <div class="overview__text__btn-section__number">
-            <button
-              class="overview__text__btn-section__number__less"
-              @click="decreaseTotal"
-            >
-              -
-            </button>
-            <p class="overview__text__btn-section__number__value">
-              {{ total }}
-            </p>
-            <button
-              class="overview__text__btn-section__number__more"
-              @click="increaseTotal"
-            >
-              +
-            </button>
-          </div>
+    </div>
+    <div class="product-info">
+      <h4 class="product-name">
+        <span class="bold">Nom : </span>{{ product.label }}
+      </h4>
+      <p class="price">
+        <span class="bold">Prix : </span>{{ product.price }} €
+      </p>
+      <p class="description">
+        <span class="bold">Description : </span
+        >{{ product.description.slice(0, 30) }}...
+      </p>
+      <div
+        v-if="!product.stockQuantity <= 0"
+        class="overview__text__btn-section"
+      >
+        <div class="overview__text__btn-section__number">
           <button
-            :class="[
-              'overview__text__btn-section__btn',
-              'default-btn',
-              justAdded ? 'just-added' : '',
-            ]"
-            @click="addToCartHandler"
+            class="overview__text__btn-section__number__less"
+            @click="decreaseTotal"
           >
-            Ajouter au panier
+            -
+          </button>
+          <p class="overview__text__btn-section__number__value">
+            {{ total }}
+          </p>
+          <button
+            class="overview__text__btn-section__number__more"
+            @click="increaseTotal"
+          >
+            +
           </button>
         </div>
-      </div>
-    </section>
-    <section class="details">
-      <div class="details__features">
-        <h3 class="details__features__heading">Caractéristiques</h3>
-        <p
-          class="details__features__text"
-          v-for="paragraph in editedText"
-          :key="paragraph"
+        <button
+          :class="[
+            'overview__text__btn-section__btn',
+            'default-btn',
+            justAdded ? 'just-added' : '',
+            total === 0 ? 'cursor-disabled' : '',
+          ]"
+          :disabled="total === 0"
+          @click="addToCart"
         >
-          {{ paragraph }}
-        </p>
+          Ajouter au panier
+        </button>
       </div>
-      <div class="details__box">
-        <h3 class="details__box__heading">Dans la boite</h3>
-        <ul class="details__box__list">
-          <li
-            class="details__box__list__item"
-            v-for="item in currentProduct.includes"
-            :key="item.item"
-          >
-            <p class="details__box__list__item__quantity">
-              {{ item.quantity }}x
-            </p>
-            <p class="details__box__list__item__name">{{ item.item }}</p>
-          </li>
-        </ul>
+      <div class="mt-2" v-else>
+        <p class="bold text-danger">Produit en rupture de stock</p>
       </div>
-    </section>
-    <section class="gallery">
-      <div class="gallery__left">
-        <img
-          :src="currentProduct.gallery.first"
-          :alt="`${currentProduct.title} presentation image`"
-          class="gallery__left__first"
-        />
-        <img
-          :src="currentProduct.gallery.second"
-          :alt="`${currentProduct.title} presentation image`"
-          class="gallery__left__second"
-        />
-      </div>
-      <div class="gallery__right">
-        <img
-          :src="currentProduct.gallery.third"
-          :alt="`${currentProduct.title} presentation image`"
-        />
-      </div>
-    </section>
-    <section class="others">
-      <h4 class="others__heading">Tu pourrais aussi aimer</h4>
-      <div class="others__container">
-        <OthersCard
-          v-for="product in currentProduct.others"
-          :key="product.id"
-          :product="product"
-          @reset-total="resetTotal"
-        />
-      </div>
-    </section>
-    <ProductNavigation />
-  </main>
+    </div>
+  </div>
 </template>
 
-<style lang="scss" scoped>
-main {
-  width: 32.7rem;
-  margin: 0 auto;
-
-  @media (min-width: 768px) {
-    width: 68.9rem;
-  }
-
-  @media (min-width: 1205px) {
-    width: 111rem;
-  }
+<style scoped>
+.cursor-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
-.back-link {
-  font-size: 1.5rem;
-  line-height: 2.5rem;
-  font-weight: 500;
-  color: #7d7d7d;
-  margin: 0 0 2.4rem 0;
-  display: block;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.text-danger {
+  color: red;
+}
 
-  &:hover {
-    color: rgba(216, 125, 74, 1);
-  }
+.overview__text__btn-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.disabled-btn {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .overview__text__btn-section__number__less {
   padding: 5px;
+}
+
+.default-btn {
+  font-size: 1.3rem !important;
+  padding: 0 !important;
 }
 
 .overview__text__btn-section__number {
@@ -232,7 +146,6 @@ main {
   display: flex;
   align-items: center;
 }
-
 .overview__text__btn-section__number__more {
   padding: 5px;
 }
@@ -245,335 +158,132 @@ main {
 .overview__text__btn-section__number__value {
   padding: 5px;
 }
+.btn {
+  background-color: blue;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: 0.4s;
+  border-radius: 5px;
+}
 
-.overview {
-  margin: 2.4rem auto 0 auto;
+.btn-primary {
+  background-color: blue;
+  color: white;
+}
+
+.card {
+  box-shadow: 0 0 5px #00000040;
+  transition: 0.4s;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 20%;
+  margin: 15px 20px;
+  height: 400px;
+}
+
+.card:hover {
+  box-shadow: 0 0 10px #00000040;
+  transform: scale(1.02);
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.card-img {
+  width: 200px;
+  padding: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
+  height: 60%;
+}
+
+.card-img img {
+  width: 70%;
+}
+
+.product-info {
   display: flex;
   flex-direction: column;
-  align-items: center;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-  }
-
-  @media (min-width: 1205px) {
-    margin-top: 5.6rem;
-  }
-
-  & * {
-    text-align: left;
-  }
-
-  &__image {
-    width: 100%;
-    border-radius: 0.8rem;
-    object-fit: cover;
-    object-position: center;
-
-    @media (min-width: 768px) {
-      height: 48rem;
-      width: 28.1rem;
-    }
-
-    @media (min-width: 1205px) {
-      width: 54rem;
-      height: 56rem;
-    }
-  }
-
-  &__text {
-    margin-top: 3.2rem;
-
-    @media (min-width: 768px) {
-      width: 33.95rem;
-      margin-top: 0;
-      margin-left: 6.9rem;
-    }
-
-    @media (min-width: 1205px) {
-      margin: 0;
-      margin-left: 12.5rem;
-      width: 44.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-
-      * {
-        text-align: left;
-      }
-    }
-
-    &__tag {
-      font-size: 1.4rem;
-      font-weight: 400;
-      line-height: 1.912rem;
-      letter-spacing: 1rem;
-      text-transform: uppercase;
-      color: rgba(216, 125, 74, 1);
-    }
-
-    &__title {
-      margin: 2.4rem 0;
-      font-weight: 700;
-      font-size: 2.8rem;
-      line-height: 3.825rem;
-      letter-spacing: 0.1rem;
-      text-transform: uppercase;
-
-      @media (min-width: 768px) {
-        font-size: 4rem;
-        line-height: 4.4rem;
-        letter-spacing: 0.143rem;
-      }
-    }
-
-    &__description {
-      margin-bottom: 2.4rem;
-      font-weight: 500;
-      font-size: 1.5rem;
-      line-height: 2.5rem;
-      color: #8d8d8d;
-    }
-
-    &__price {
-      font-weight: 700;
-      font-size: 1.8rem;
-      line-height: 2.459rem;
-      letter-spacing: 0.129rem;
-      margin-bottom: 3.1rem;
-    }
-
-    &__btn-section {
-      display: flex;
-      width: 100%;
-
-      &__number {
-        display: flex;
-        align-items: center;
-        background: #f1f1f1;
-        padding: 1.5rem;
-        width: 12rem;
-        justify-content: space-between;
-        margin-right: 1.6rem;
-
-        & * {
-          background: none;
-          border: none;
-          font-weight: 700;
-          font-size: 1.3rem;
-          line-height: 1.776rem;
-          letter-spacing: 0.1rem;
-        }
-
-        & button {
-          color: #b5b5b5;
-          transition: all 0.3s ease;
-
-          &:hover {
-            color: rgba(216, 125, 74, 1);
-          }
-        }
-      }
-    }
-  }
-}
-
-.details {
-  margin: 8.8rem auto 11.3rem auto;
+  padding: 1rem;
+  justify-content: center;
+  align-items: flex-start;
+  height: 40%;
   width: 100%;
-
-  @media (min-width: 1205px) {
-    display: flex;
-    align-items: flex-start;
-  }
-
-  h3 {
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 2.4rem;
-    line-height: 3.6rem;
-    letter-spacing: 0.086rem;
-
-    @media (min-width: 768px) {
-      font-size: 3.2rem;
-      letter-spacing: 0.114rem;
-    }
-  }
-
-  &__features {
-    @media (min-width: 1205px) {
-      width: 63.5rem;
-    }
-
-    &__text {
-      margin-top: 2.4rem;
-      font-weight: 500;
-      font-size: 1.5rem;
-      line-height: 2.5rem;
-      color: #7d7d7d;
-
-      @media (min-width: 1205px) {
-        margin-top: 3.2rem;
-      }
-    }
-  }
-
-  &__box {
-    margin-top: 11.3rem;
-
-    @media (min-width: 768px) {
-      display: flex;
-      align-items: flex-start;
-    }
-
-    @media (min-width: 1205px) {
-      width: 35rem;
-      margin: 0;
-      margin-left: 12.5rem;
-      display: block;
-    }
-
-    &__heading {
-      width: 35rem;
-    }
-
-    &__list {
-      margin-top: 2.4rem;
-
-      @media (min-width: 768px) {
-        margin-top: 0;
-      }
-
-      @media (min-width: 1205px) {
-        margin-top: 3.2rem;
-      }
-
-      * {
-        font-size: 1.5rem;
-        line-height: 2.5rem;
-      }
-
-      &__item {
-        display: flex;
-        align-items: center;
-
-        &__quantity {
-          font-weight: 700;
-          color: rgba(216, 125, 74, 1);
-        }
-
-        &__name {
-          font-weight: 500;
-          margin-left: 2.1rem;
-          color: #7d7d7d;
-          text-transform: capitalize;
-        }
-      }
-    }
-  }
+  font-size: 14px;
 }
 
-.gallery {
-  @media (min-width: 768px) {
-    display: flex;
-  }
-
-  img {
-    width: 100%;
-    border-radius: 0.8rem;
-    margin: 1rem 0;
-    object-fit: cover;
-    object-position: center;
-
-    @media (min-width: 768px) {
-      margin: 0;
-    }
-  }
-
-  &__left {
-    @media (min-width: 768px) {
-      width: 27.7rem;
-    }
-
-    @media (min-width: 1205px) {
-      width: 44.5rem;
-    }
-
-    img {
-      height: 17.4rem;
-
-      @media (min-width: 1205px) {
-        height: 28rem;
-      }
-    }
-
-    &__first {
-      margin-top: 0 !important;
-      @media (min-width: 768px) {
-        margin-bottom: 2rem !important;
-      }
-      @media (min-width: 1205px) {
-        margin-bottom: 3.2rem !important;
-      }
-    }
-  }
-
-  &__right {
-    img {
-      margin-bottom: 0 !important;
-      height: 36.8rem;
-
-      @media (min-width: 768px) {
-        width: 39.5rem;
-        margin-left: 1.8rem;
-      }
-
-      @media (min-width: 1205px) {
-        width: 64.5rem;
-        height: 59.2rem;
-        margin-left: 3rem;
-      }
-    }
-  }
+.product-name {
+  padding: 0;
+  margin: 0;
 }
 
-.others {
-  margin-top: 12rem;
+.price {
+  margin: 0;
+}
+
+.price span {
+  color: var(--green);
+}
+
+.stars {
+  list-style: none;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
   align-items: center;
-  margin-bottom: calc(12rem - 5.2rem);
+}
 
-  &__heading {
-    text-align: center;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 2.4rem;
-    line-height: 3.6rem;
-    letter-spacing: 0.086rem;
-    margin-bottom: 4rem;
-    @media (min-width: 768px) {
-      font-size: 3.2rem;
-      line-height: 3.6rem;
-      letter-spacing: 0.114rem;
-      margin-bottom: 5.6rem;
-    }
+.star {
+  color: var(--yellow);
+}
+
+.count {
+  color: var(--blue);
+  padding-left: 5px;
+}
+
+@media screen and (max-width: 750px) {
+  .card-img {
+    height: 40%;
   }
 
-  &__container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .product-info {
+    height: 60%;
     width: 100%;
-    @media (min-width: 768px) {
-      flex-direction: row;
-      align-items: flex-start;
-    }
   }
 }
 
-.just-added {
-  background: #f6af85;
+@media screen and (max-width: 500px) {
+  .card {
+    width: 80%;
+    justify-content: center;
+    height: 165px;
+  }
+
+  .card-img {
+    width: 40%;
+    height: auto;
+    padding: 0;
+  }
+
+  .product-info {
+    width: 60%;
+    padding-right: 0.5rem;
+    height: auto;
+  }
 }
 </style>

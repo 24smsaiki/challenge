@@ -1,5 +1,5 @@
 <script setup>
-import Product from "../components/Category/Product.vue";
+import Product from "./Product.vue";
 import Header from "../components/Header.vue";
 import ProductsLogic from "../logics/ProductsLogic";
 import { ref } from "vue";

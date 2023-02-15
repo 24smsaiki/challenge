@@ -15,17 +15,15 @@
       />
     </div>
   </div>
-  <ProductNavigation />
 </template>
 
 <script>
-import ProductNavigation from "../components/ProductNavigation.vue";
-import Header from "../components/Category/Header.vue";
-import Product from "../components/Category/Product.vue";
+import Header from "./Header.vue";
+import Product from "./Product.vue";
 import jsonData from "../data.json";
 export default {
   name: "Category",
-  components: { ProductNavigation, Header, Product },
+  components: { Header, Product },
   emits: ["toggle-menu-show"],
   data() {
     return {

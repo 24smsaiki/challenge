@@ -1,7 +1,6 @@
 <script setup>
 import Footer from "./components/Footer.vue";
 import Cart from "./components/Cart.vue";
-import data from "./data.json";
 import UserProvider from "./components/providers/UserProvider.vue";
 import { ref, onMounted, provide } from "vue";
 import Menu from "./components/Menu.vue";
@@ -12,7 +11,7 @@ const showCart = ref(false);
 const showConfirmation = ref(false);
 const scrollTop = ref(false);
 const cart = ref([]);
-const products = ref(data);
+const products = ref([]);
 const cartStore = useCartStore();
 
 const toggleMenu = (myVar) => {
@@ -119,7 +118,11 @@ onMounted(() => {
     />
     <!-- <Product @refresh-cart="refreshCart"/> -->
     <Footer
-      v-if=" !$route.path.startsWith('/admin') && !$route.path !== 'paymentRefused' && !$route.path !== 'paymentSuccess' "
+      v-if="
+        !$route.path.startsWith('/admin') &&
+        !$route.path !== 'paymentRefused' &&
+        !$route.path !== 'paymentSuccess'
+      "
     ></Footer>
   </UserProvider>
 </template>
