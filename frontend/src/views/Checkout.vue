@@ -590,7 +590,7 @@ input::-webkit-inner-spin-button {
   line-height: 2.5rem;
   font-weight: 500;
   color: #7d7d7d;
-  margin: 1.6rem auto 2.4rem auto;
+  margin: 0 auto 2.4rem auto;
   display: block;
   cursor: pointer;
   width: 32.7rem;
@@ -602,11 +602,9 @@ input::-webkit-inner-spin-button {
 
   @media (min-width: 768px) {
     width: 68.9rem;
-    margin-top: 3.3rem;
   }
 
   @media (min-width: 1205px) {
-    margin-top: 7.9rem;
     width: 111rem;
     padding-left: 1rem;
   }

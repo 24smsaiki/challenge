@@ -213,21 +213,13 @@ main {
   line-height: 2.5rem;
   font-weight: 500;
   color: #7d7d7d;
-  margin: 1.6rem 0 2.4rem 0;
+  margin: 0 0 2.4rem 0;
   display: block;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
     color: rgba(216, 125, 74, 1);
-  }
-
-  @media (min-width: 768px) {
-    margin-top: 3.3rem;
-  }
-
-  @media (min-width: 1205px) {
-    margin-top: 7.9rem;
   }
 }
 
