@@ -5,8 +5,6 @@ import data from "./data.json";
 import UserProvider from "./components/Providers/UserProvider.vue";
 import { ref, onMounted, provide } from "vue";
 import Menu from "./components/Menu.vue";
-import { useCartStore } from "./stores/CartStore";
-import Product from "./components/Category/Product.vue";
 
 const showMenu = ref(false);
 const showCart = ref(false);
@@ -14,8 +12,6 @@ const showConfirmation = ref(false);
 const scrollTop = ref(false);
 const cart = ref([]);
 const products = ref(data);
-
-
 
 const toggleMenu = (myVar) => {
   if (myVar === "logo") {
@@ -37,10 +33,11 @@ const storeCart = () => {
 };
 
 const addToCart = (data) => {
-
   let product = products.value.find((product) => product.id === data.productId);
   if (cart.value.find((prod) => prod.product.id === product.id)) {
-    const index = cart.value.findIndex((prod) => prod.product.id === product.id);
+    const index = cart.value.findIndex(
+      (prod) => prod.product.id === product.id
+    );
     cart.value[index] = {
       ...cart.value[index],
       addedQuantity: cart.value[index].addedQuantity + data.addedQuantity,
@@ -53,7 +50,9 @@ const addToCart = (data) => {
 };
 
 const changeQuantity = (data) => {
-  const index = cart.value.findIndex((prod) => prod.product.id === data.productId);
+  const index = cart.value.findIndex(
+    (prod) => prod.product.id === data.productId
+  );
 
   if (data.operation === "subtract") {
     if (cart.value[index].addedQuantity === 1) {
@@ -87,7 +86,7 @@ const refreshCart = () => {
     : [];
 };
 
-provide("ProviderefreshCart", refreshCart);
+provide("ProvideRefreshCart", refreshCart);
 
 onMounted(() => {
   cart.value = JSON.parse(localStorage.getItem("cart"))
