@@ -163,8 +163,6 @@ const onSubmit = () => {
           );
         } else {
           error.value = err.response.data.detail;
-          console.log("err", err);
-          console.log("error.value", error.value);
         }
       })
       .finally(() => {

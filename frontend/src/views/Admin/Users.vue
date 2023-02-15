@@ -80,7 +80,6 @@ const resetForm = () => {
 };
 
 const editForm = (data) => {
-    console.log(data, "data");
     form.value.id = data.id;
     form.value.email = data.email;
     form.value.firstname = data.firstname;
@@ -91,7 +90,6 @@ const editForm = (data) => {
 
 const onSubmit = () => {
     if(isFormValid()) {
-        console.log(form.value);
         if(!form.value.id) {
             UsersLogic.createUser(form.value).then((response) => {
                 if(response.status === 201) {

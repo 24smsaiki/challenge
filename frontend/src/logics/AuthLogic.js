@@ -13,6 +13,7 @@ export default class AuthLogic {
     // return result.message;
     await AuthRepository.register(body)
       .then((res) => {
+        log(res);
         return res;
       })
       .catch((err) => {

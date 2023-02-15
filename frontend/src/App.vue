@@ -5,6 +5,7 @@ import data from "./data.json";
 import UserProvider from "./components/providers/UserProvider.vue";
 import { ref, onMounted, provide } from "vue";
 import Menu from "./components/Menu.vue";
+import { useCartStore } from "./stores/CartStore";
 
 const showMenu = ref(false);
 const showCart = ref(false);
@@ -12,6 +13,7 @@ const showConfirmation = ref(false);
 const scrollTop = ref(false);
 const cart = ref([]);
 const products = ref(data);
+const cartStore = useCartStore();
 
 const toggleMenu = (myVar) => {
   if (myVar === "logo") {
@@ -78,6 +80,7 @@ const changeQuantity = (data) => {
 const emptyCart = () => {
   cart.value = [];
   storeCart();
+  cartStore.clearCart();
 };
 
 const refreshCart = () => {

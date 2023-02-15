@@ -34,6 +34,8 @@ const addToCart = () => {
     };
     cartStore.addProduct(data);
     ProvideRefreshCart();
+    total.value = 0;
+
     createToast("Produit ajouté au panier", {
       position: "top-right",
       timeout: 5000,

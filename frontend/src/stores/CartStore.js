@@ -18,12 +18,12 @@ export const useCartStore = defineStore({
     actions: {
         storeCart() {
             localStorage.setItem('cart', JSON.stringify(this.cart));
+            this.cart = JSON.parse(localStorage.getItem("cart"));
         },
         addProduct({productId, addedQuantity}) {
             const productStore = useProductStore();
             const product = productStore.getProductById(productId);
             const productFromCart = this.cart.find((item) => item.product.id === productId);
-
             if(productFromCart) {
                 productFromCart.addedQuantity += addedQuantity;               
             } else {
