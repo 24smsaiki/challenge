@@ -335,7 +335,7 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="user in users.slice(0, 9)" :key="user.id">
+                  <tr v-for="user in users" :key="user.id">
                     <td class="pt-2">{{ user.id }}</td>
                     <td class="pt-2">{{ user.email }}</td>
                     <td class="pt-2">
@@ -408,7 +408,7 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="product in products.slice(0, 9)" :key="product.id">
+                  <tr v-for="product in products" :key="product.id">
                     <td class="pt-2">{{ product.id }}</td>
                     <td class="pt-2">{{ product.label }}</td>
                     <td class="pt-2">
@@ -577,6 +577,49 @@ onMounted(() => {
                         @click="onDeclineReturn(request.id)"
                       />
                     </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- carriers -->
+        <div class="w-full md:w-1/3 p-3">
+          <div class="bg-white border rounded shadow">
+            <div class="border-b p-3 flex justify-between">
+              <div>
+                <h5 class="font-bold uppercase color-orange">Transporteurs</h5>
+              </div>
+            </div>
+            <div class="p-5">
+              <table class="w-full p-5 text-gray-700">
+                <thead>
+                  <tr>
+                    <th class="text-left">Nom</th>
+                    <th class="text-left">Prix</th>
+                    <!-- <th class="text-left">Actions</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="carrier in carriers" :key="carrier.id">
+                    <td class="pt-2">{{ carrier.label }}</td>
+                    <td class="pt-2">{{ carrier.fees }} €</td>
+                    <!-- <td class="pt-2">
+                      <font-awesome-icon
+                        icon="edit"
+                        style="color: blue; cursor: pointer"
+                        @click="onEditCarrier(carrier.id)"
+                      />
+                      <font-awesome-icon
+                        icon="trash"
+                        style="
+                          color: #d71a1a;
+                          margin-left: 5px;
+                          cursor: pointer;
+                        "
+                        @click="onDeleteCarrier(carrier.id)"
+                      />
+                    </td> -->
                   </tr>
                 </tbody>
               </table>

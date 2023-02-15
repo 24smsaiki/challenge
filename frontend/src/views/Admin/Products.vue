@@ -3,6 +3,7 @@ import Header from "../../components/Admin/Header.vue";
 import Table from "../../components/Admin/Table.vue";
 import ProductsLogic from "../../logics/ProductsLogic";
 import { ref, reactive } from "vue";
+import { createToast } from "mosha-vue-toastify";
 
 const products = ref([]);
 let columns = ref([]);
@@ -42,15 +43,6 @@ const isFormValid = () => {
         return false;
     }
 };
-
-// const isImage = () => {
-//     const file = form.value.coverImage;
-//     if(file.type !== "image/jpeg" || file.type !== "image/png") {
-//        errors.coverImage = "L'image doit être au format jpeg ou png.";
-//     } else {
-//         errors.coverImage = "";
-//     }
-// };
 
 const isLabel = () => {
     const label = form.value.label;
@@ -131,6 +123,7 @@ const onEdit = (data) => {
     isEditing.value = data;
 };
 
+// Remet à zéro le formulaire
 const resetForm = () => {
     form.value.id = "";
     form.value.label = "";
@@ -142,8 +135,9 @@ const resetForm = () => {
     isEditing.value = false;
 };
 
+// Rempli le formulaire avec les données de l'objet passé en paramètre
 const editForm = (data) => {
-    data = data[0];
+
     form.value.id = data?.id;
     form.value.label = data.label;
     form.value.description = data.description;
@@ -152,6 +146,26 @@ const editForm = (data) => {
     // form.value.image = data.image;
     // form.value.coverImage = data.coverImage;
     isEditing.value = true;
+};
+
+// Supprime un produit
+const onDelete = (data) => {
+    ProductsLogic.deleteProduct(data.id)
+    .then(() => {
+        products.value = products.value.filter((product) => product.id !== data.id);
+        createToast("Produit supprimé", {
+            type: "success",
+            position: "top-right",
+            timeout: 3000,
+        });
+        resetForm();
+    }).catch(() => {
+        createToast("Quelque chose s'est mal passé", {
+            type: "danger",
+            position: "top-right",
+            timeout: 3000,
+        });
+    })
 };
 
 ProductsLogic.getProducts().then((response) => {
@@ -163,7 +177,7 @@ ProductsLogic.getProducts().then((response) => {
 <template class="bg-gray-800 font-sans leading-normal tracking-normal mt-12">
   <Header />
 
-  <Table v-if="!isEditing" @onEdit="onEdit" :isEditing="isEditing" @editForm="editForm" :columns="columns" :data="products" />
+  <Table v-if="!isEditing" @onEdit="onEdit"  :isEditing="isEditing" @onDelete="onDelete" @editForm="editForm" :columns="columns" :data="products" />
   <template v-else>
     <div
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2"
