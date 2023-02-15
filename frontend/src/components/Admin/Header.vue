@@ -92,7 +92,12 @@ import router from "../../router/Router";
                     to="/admin/products"
                     class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                     >Produits</router-link>
-
+                  <!-- logout -->
+                  <router-link
+                    to="/logout"
+                    class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >Logout</router-link>
+                    
               </div>
             </div>
           </div>

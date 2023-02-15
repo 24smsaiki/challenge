@@ -18,6 +18,7 @@ const form = reactive({
 const error = ref("");
 
 const onSubmit = async () => {
+  debugger;
   return await register(form).then(() => {
     createToast("Un email de vérification a été envoyé.", {
       type: "success",

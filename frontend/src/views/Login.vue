@@ -33,7 +33,6 @@ const onSubmit = async () => {
       if(isAdmin()) {
         router.push({ name: "AdminDashboard" });
       } else {
-        console.log("user");
         redirectToHome();
       }
     });

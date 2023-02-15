@@ -10,8 +10,19 @@ export default class AuthLogic {
   }
 
   static async register(body) {
-    const result = await AuthRepository.register(body);
-    return result.message;
+      // const result = await AuthRepository.register(body);
+      // return result.message;
+      await AuthRepository.register(body).then((res) => {
+        return res;
+      }
+      ).catch((err) => {
+        throw {
+          message: err.response.data.message,
+          status: err.response.status,
+        };
+      }
+      );
+
   }
 
   static async login(body) {
