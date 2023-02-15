@@ -90,25 +90,22 @@ const onAcceptReturn = async (id) => {
     state: 2,
     idReturn: id,
   };
-  return await ReturnLogic.updateReturn(body).then(() => {
-    // remove the request from the list
-    requestsReturn.value.filter((request) => request.id !== id);
-    console.log(requestsReturn.value);
-    console.log(id);
-    console.log(requestsReturn.value.filter((request) => request.id !== id));
-    createToast("La demande de retour a été acceptée.", {
-      type: "success",
-      position: "top-right",
-      timeout: 3000,
+  return await ReturnLogic.updateReturn(body)
+    .then(() => {
+      requestsReturn.value.filter((request) => request.id !== id);
+      createToast("La demande de retour a été acceptée.", {
+        type: "success",
+        position: "top-right",
+        timeout: 3000,
+      });
+    })
+    .catch(() => {
+      createToast("Une erreur est survenue.", {
+        type: "danger",
+        position: "top-right",
+        timeout: 3000,
+      });
     });
-  }).catch(() => {
-    createToast("Une erreur est survenue.", {
-      type: "danger",
-      position: "top-right",
-      timeout: 3000,
-    });
-  });
-
 };
 
 const onDeclineReturn = async (id) => {
@@ -328,7 +325,7 @@ onMounted(() => {
             <div class="border-b p-3">
               <h5 class="font-bold uppercase color-orange">Utilisateurs</h5>
             </div>
-            <div class="p-5">
+            <div class="p-5 first-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -367,7 +364,7 @@ onMounted(() => {
                 <font-awesome-icon icon="circle-plus" style="cursor: pointer" />
               </div> -->
             </div>
-            <div class="p-5">
+            <div class="p-5 second-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -400,7 +397,7 @@ onMounted(() => {
                 <h5 class="font-bold uppercase color-orange">Produits</h5>
               </div>
             </div>
-            <div class="p-5">
+            <div class="p-5 third-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -411,10 +408,7 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    v-for="product in products.slice(0, 9)"
-                    :key="product.id"
-                  >
+                  <tr v-for="product in products.slice(0, 9)" :key="product.id">
                     <td class="pt-2">{{ product.id }}</td>
                     <td class="pt-2">{{ product.label }}</td>
                     <td class="pt-2">
@@ -434,8 +428,11 @@ onMounted(() => {
                 <h5 class="font-bold uppercase color-orange">Commandes</h5>
               </div>
             </div>
-            <div class="p-5">
-              <table class="w-full p-5 text-gray-700" style="overflow: auto; max-height: 276px;">
+            <div class="p-5 fourth-bloc">
+              <table
+                class="w-full p-5 text-gray-700"
+                style="overflow: auto; max-height: 276px"
+              >
                 <thead>
                   <tr>
                     <th class="text-left">#</th>
@@ -444,8 +441,8 @@ onMounted(() => {
                     <th class="text-left">Montant</th>
                   </tr>
                 </thead>
-                <tbody >
-                  <tr v-for="order in orders" :key="order.id" >
+                <tbody>
+                  <tr v-for="order in orders" :key="order.id">
                     <td class="pt-2">{{ order.id }}</td>
                     <td class="pt-2">{{ order.reference }}</td>
                     <td class="pt-2">
@@ -490,7 +487,7 @@ onMounted(() => {
                 </h5>
               </div>
             </div>
-            <div class="p-5">
+            <div class="p-5 fifth-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -536,14 +533,14 @@ onMounted(() => {
         </div>
         <div class="w-full md:w-1/3 p-3">
           <div class="bg-white border rounded shadow">
-            <div class="border-b p-3 flex justify-between">
+            <div class="border-b p-3 flex justify-between sixth-bloc">
               <div>
                 <h5 class="font-bold uppercase color-orange">
                   Demande de retour
                 </h5>
               </div>
             </div>
-            <div class="p-5">
+            <div class="p-5 sixth-bloc">
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
@@ -554,7 +551,7 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="request in requestsReturn">
+                  <tr v-for="request in requestsReturn" :key="request.id">
                     <td class="pt-2">{{ request.reference }}</td>
                     <td class="pt-2">
                       {{ request.orderDetailsReturns[0].reason }}
@@ -592,6 +589,16 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.first-bloc,
+.second-bloc,
+.third-bloc,
+.fourth-bloc,
+.fifth-bloc,
+.sixth-bloc {
+  max-height: 300px;
+  overflow: auto;
+}
+
 .dashboard {
   margin: 40px 50px 20px 50px;
 }
