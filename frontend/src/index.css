@@ -1,3 +1,4 @@
+@import "mosha-vue-toastify/dist/style.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
