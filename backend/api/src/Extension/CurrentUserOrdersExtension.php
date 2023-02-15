@@ -65,10 +65,10 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
         if(null === $user){
             return;
         }
-        
+        $isPaid = 1;
         // only with state pending
         if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
-            $isPaid = 1;
+           
             $queryBuilder
                 ->select($rootAlias)
                 ->where('o.isPaid = :isPaid')
@@ -80,7 +80,10 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
 
         // here the orders for the users (select only those passed by the current user)
         if($this->securityChecker->isGranted('ROLE_USER')){
-            $queryBuilder->andWhere(sprintf('%s.customer = :current_user', $rootAlias));
+            $queryBuilder->where(sprintf('%s.customer = :current_user', $rootAlias));
+            $queryBuilder->andWhere('o.isPaid = :isPaid');
+            $queryBuilder->orderBy('o.createdAt', 'DESC');
+            $queryBuilder->setParameter('isPaid', $isPaid);
             $queryBuilder->setParameter('current_user', $user); 
             
             return;
