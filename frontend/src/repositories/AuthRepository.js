@@ -12,4 +12,8 @@ export default class AuthRepository {
   static async registerSeller(body) {
     return await Request.make("post", "/sellers", { ...body });
   }
+
+  static async activateAccount(token) {
+    return await Request.make("get", `/user/activation/${token}`);
+  }
 }

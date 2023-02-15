@@ -16,7 +16,7 @@
             <h4>
               {{ product.label }}
             </h4>
-            <p>{{ separator(product.product.price) }}€ </p>
+            <p>{{ separator(product.product.price) }}€</p>
           </div>
         </div>
         <div class="products__item__quantity">
@@ -61,7 +61,6 @@ export default {
       return product.image;
     },
     separator(numb) {
-      console.log(numb, "numb");
       var str = numb.toString().split(".");
       str[0] = str[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       return str.join(".");
@@ -73,24 +72,22 @@ export default {
       };
       this.$emit("change-quantity", data);
     },
-    
   },
   computed: {
     total() {
       let totalValue = 0;
       this.cart.forEach(
-        (product) => (totalValue += product.product.price * product.addedQuantity)
+        (product) =>
+          (totalValue += product.product.price * product.addedQuantity)
       );
-      console.log(totalValue, "totalValue");
-      
+
       return totalValue;
     },
   },
   mounted() {
     this.cart = JSON.parse(localStorage.getItem("cart"))
-    ? JSON.parse(localStorage.getItem("cart"))
-    : [];
-    console.log(this.cart, "cart");
+      ? JSON.parse(localStorage.getItem("cart"))
+      : [];
   },
 };
 </script>

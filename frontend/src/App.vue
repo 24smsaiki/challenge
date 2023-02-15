@@ -80,14 +80,12 @@ onMounted(() => {
   cart.value = JSON.parse(localStorage.getItem("cart"))
     ? JSON.parse(localStorage.getItem("cart"))
     : [];
-
-    console.log(cart.value, "cart.value");
 });
 </script>
 
 <template>
   <UserProvider>
-    <Menu :show="showMenu" :scrollTop="scrollTop" ref="mobileMenu" />
+    <Menu :show="showMenu" :scrollTop="scrollTop" ref="mobileMenu"></Menu>
     <Cart
       :show="showCart"
       :cart="cart"
@@ -104,7 +102,9 @@ onMounted(() => {
     />
     <Footer
       v-if="
-        !$route.path.startsWith('/admin') && !$route.path !== 'paymentRefused'
+        !$route.path.startsWith('/admin') &&
+        !$route.path == 'paymentRefused' &&
+        !$route.path == 'paymentSuccess'
       "
     ></Footer>
   </UserProvider>

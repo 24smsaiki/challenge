@@ -251,9 +251,7 @@
                       v-model="picked_address"
                       :checked="picked_address === address.id"
                     />
-                    <label
-                      :for="address.id"
-                      class="radio-label parent"
+                    <label :for="address.id" class="radio-label parent"
                       >{{ address.addressField }}
                     </label>
                   </div>
@@ -429,7 +427,10 @@
               :key="product.id"
             >
               <div class="products__item__left">
-                <img src="../assets/images/default-product.png" :alt="product.name" />
+                <img
+                  src="../assets/images/default-product.png"
+                  :alt="product.name"
+                />
                 <div class="products__item__left__info">
                   <h4>
                     {{ product.product.label }}
@@ -637,8 +638,7 @@ export default {
       try {
         const addresses = await AddressessLogic.getAddresses();
         this.addresses = addresses.data;
-        console.log(this.addresses, "addresses")
-        if( this.addresses.length === 0) {
+        if (this.addresses.length === 0) {
           this.newAddress = true;
         }
       } catch (error) {
@@ -657,7 +657,7 @@ export default {
     if (this.$route.path !== "/checkout") {
       const id = this.$route.params.id;
       OrdersLogic.confirmOrder(id)
-        .then((res) => {
+        .then(() => {
           this.$emit("toggle-menu-show", "confirmation");
         })
         .catch((err) => {
@@ -671,7 +671,8 @@ export default {
     total() {
       let totalValue = 0;
       this.cart.forEach(
-        (product) => (totalValue += product.product.price * product.addedQuantity)
+        (product) =>
+          (totalValue += product.product.price * product.addedQuantity)
       );
       return totalValue;
     },
@@ -679,7 +680,6 @@ export default {
     //   return (0.2 * this.total).toFixed(2);
     // },
     shipping() {
-      console.log(this.carriers)
       let carrier = this.carriers.find(
         (carrier) => carrier.id === this.picked_carrier
       );

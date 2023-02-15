@@ -44,6 +44,11 @@ const router = createRouter({
       component: import("../views/Register.vue"),
     },
     {
+      path: "/registerConfirmation/:token",
+      name: "RegisterConfirmation",
+      component: import("../views/RegisterConfirmation.vue"),
+    },
+    {
       path: "/logout",
       name: "Logout",
       component: import("../views/Logout.vue"),

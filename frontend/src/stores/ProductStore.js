@@ -12,7 +12,6 @@ export const useProductStore = defineStore({
   }),
   getters: {
     getProductById: (state) => (id) => {
-      console.log(state.products);
       return state.products.find((product) => product.id === id);
     },
     getProductsByCategory: (state) => (category) => {
@@ -38,18 +37,16 @@ export const useProductStore = defineStore({
       //   this.loading = false;
       //   console.log(this.products, "products-finally")
       // }
-      return await ProductsLogic.getProducts().then((response) => {
-        this.products = response.data;
-        console.log(this.products, "products");
-      }
-      ).catch((error) => {
-        this.error = error;
-      }
-      ).finally(() => {
-        this.loading = false;
-        console.log(this.products, "products-finally");
-      }
-      );
+      return await ProductsLogic.getProducts()
+        .then((response) => {
+          this.products = response.data;
+        })
+        .catch((error) => {
+          this.error = error;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     async fetchProduct(id) {
       this.loading = true;

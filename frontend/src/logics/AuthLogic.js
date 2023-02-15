@@ -3,31 +3,41 @@ import LocalStorage from "../services/LocalStorage";
 import jwt_decode from "jwt-decode";
 
 export default class AuthLogic {
-
   static async registerSeller(body) {
     const result = await AuthRepository.registerSeller(body);
     return result.message;
   }
 
   static async register(body) {
-    const result = await AuthRepository.register(body);
-    return result.message;
+    // const result = await AuthRepository.register(body);
+    // return result.message;
+    await AuthRepository.register(body)
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        throw {
+          message: err.response.data.message,
+          status: err.response.status,
+        };
+      });
   }
 
   static async login(body) {
-    await AuthRepository.login({ ...body }).then((res) => {
-      const result = jwt_decode(res.data.token);
+    await AuthRepository.login({ ...body })
+      .then((res) => {
+        const result = jwt_decode(res.data.token);
 
-      AuthLogic.setToken(res.data.token);
-      AuthLogic.setStorageUser(result);
-      return result;
-    }).catch((err) => {
-     throw {
-        message: err.response.data.message,
-        status: err.response.status,
-      };
-
-    });
+        AuthLogic.setToken(res.data.token);
+        AuthLogic.setStorageUser(result);
+        return result;
+      })
+      .catch((err) => {
+        throw {
+          message: err.response.data.message,
+          status: err.response.status,
+        };
+      });
   }
 
   static logout() {
@@ -68,5 +78,9 @@ export default class AuthLogic {
 
   static setStorageUser(user) {
     LocalStorage.set("user", user);
+  }
+
+  static activateAccount(token) {
+    return AuthRepository.activateAccount(token);
   }
 }

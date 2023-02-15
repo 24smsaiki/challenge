@@ -1,7 +1,7 @@
 <template>
   <section class="hero">
     <p class="hero__product-tag">Nouveau produit</p>
-    <h1 class="hero__product-name">XX99 Mark II</h1>
+    <h1 class="hero__product-name">XX99 Mark</h1>
     <p class="hero__product-description">
       Faites l'expérience d'un son naturel et réaliste et d'une qualité de
       construction exceptionnelle conçue pour le passionné de musique.
@@ -53,6 +53,7 @@
   }
 
   &__product-name {
+    text-align: left;
     text-transform: uppercase;
     font-weight: 700;
     font-size: 3.6rem;

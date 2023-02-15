@@ -27,9 +27,10 @@ function setToast(message, type) {
 }
 
 const getSellerInformation = () => {
+  const user = JSON.parse(localStorage.getItem("app-user"));
   Promise.all([
-    ProfileLogic.getUserInformation(),
-    ProfileLogic.getShopInformation(),
+    ProfileLogic.getUserInformation(user?.id),
+    ProfileLogic.getShopInformation(user?.id),
   ])
     .then((res) => {
       if (res[0].status === 200 && res[1].status === 200) {
