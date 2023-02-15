@@ -5,7 +5,7 @@ export default class ProfileLogic {
     return await ProfileRepository.getUserInformation(id);
   }
 
-  static async getShopInformation() {
-    return await ProfileRepository.getShopInformation();
+  static async getShopInformation(id) {
+    return await ProfileRepository.getShopInformation(id);
   }
 }
