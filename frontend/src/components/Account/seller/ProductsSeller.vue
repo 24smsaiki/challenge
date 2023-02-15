@@ -10,10 +10,12 @@ const newProduct = ref({
   label: "",
   description: "",
   price: "",
+  stockQuantity: 0,
 });
 const errors = ref({
   label: "",
   price: "",
+  stockQuantity: 0,
 });
 
 const addingField = ref(false);
@@ -26,6 +28,7 @@ const resetFormFields = () => {
   newProduct.value.label = "";
   newProduct.value.description = "";
   newProduct.value.price = "";
+  newProduct.value.stockQuantity = 0;
 };
 
 function setToast(message, type) {
@@ -63,12 +66,24 @@ const isPrice = () => {
   }
 };
 
+const isQuantity = () => {
+  const stockQuantity = newProduct.value.stockQuantity;
+  const regex = new RegExp("^[0-9]{1,5}$");
+
+  if (!regex.test(stockQuantity) && stockQuantity !== 0) {
+    errors.value.stockQuantity = "La quantité n'est pas valide";
+  } else {
+    errors.value.stockQuantity = "";
+  }
+};
+
 const addProduct = () => {
   if (isFormValid.value === true) {
     const newProductFormat = {
       label: newProduct.value.label,
       description: newProduct.value.description,
       price: Number(newProduct.value.price),
+      stockQuantity: Number(newProduct.value.stockQuantity),
     };
 
     ProductsLogic.createProduct(newProductFormat)
@@ -79,6 +94,7 @@ const addProduct = () => {
             label: response.data.label,
             description: response.data.description,
             price: response.data.price,
+            stockQuantity: response.data.stockQuantity,
           });
           setToast("Produit ajoutée avec succès", "success");
         }
@@ -118,6 +134,8 @@ const setFormFields = () => {
   newProduct.value.label = products.value[productIndex.value].label;
   newProduct.value.description = products.value[productIndex.value].description;
   newProduct.value.price = products.value[productIndex.value].price;
+  newProduct.value.stockQuantity =
+    products.value[productIndex.value].stockQuantity;
 };
 
 const updateProduct = () => {
@@ -132,6 +150,9 @@ const updateProduct = () => {
           products.value[productIndex.value].description =
             response.data.description;
           products.value[productIndex.value].price = response.data.price;
+          products.value[productIndex.value].stockQuantity = Number(
+            response.data.stockQuantity
+          );
           setToast("Produit modifiée avec succès", "success");
         }
       })
@@ -167,8 +188,10 @@ const isFormValid = computed(() => {
   if (
     errors.value.label === "" &&
     errors.value.price === "" &&
+    errors.value.stockQuantity === "" &&
     newProduct.value.label !== "" &&
-    newProduct.value.price !== ""
+    newProduct.value.price !== "" &&
+    newProduct.value.stockQuantity !== 0
   ) {
     return true;
   } else {
@@ -237,6 +260,12 @@ getProducts();
               <div class="form-group mb-3 d-flex">
                 <label for="price" class="mr-3 font-bold">Prix :</label>
                 <p readonly disabled>{{ product.price }} €</p>
+              </div>
+              <div class="form-group mb-3 d-flex">
+                <label for="label" class="mr-3 font-bold">Quantité :</label>
+                <p readonly disabled>
+                  {{ product.stockQuantity }}
+                </p>
               </div>
               <div class="actions">
                 <button
@@ -316,6 +345,17 @@ getProducts();
             <p class="messageErrors mb-3 ml-0" v-if="errors?.price">
               {{ errors.price }}
             </p>
+            <input
+              class="form-control"
+              type="number"
+              v-model="newProduct.stockQuantity"
+              id="stockQuantity"
+              placeholder="Quantité"
+              @input="isQuantity"
+            />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.stockQuantity">
+              {{ errors.stockQuantity }}
+            </p>
             <button
               class="btn"
               @click="addProduct"
@@ -356,6 +396,17 @@ getProducts();
             />
             <p class="messageErrors mb-3 ml-0" v-if="errors?.price">
               {{ errors.price }}
+            </p>
+            <input
+              class="form-control"
+              type="number"
+              v-model="newProduct.stockQuantity"
+              id="stockQuantity"
+              placeholder="Quantité"
+              @input="isQuantity"
+            />
+            <p class="messageErrors mb-3 ml-0" v-if="errors?.stockQuantity">
+              {{ errors.stockQuantity }}
             </p>
             <button
               class="btn"
