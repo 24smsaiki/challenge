@@ -230,7 +230,7 @@
               </div>
             </template> -->
 
-            <template v-if="!addresses">
+            <template v-if="!addresses && addresses.length > 0">
               <p class="empty-message">
                 Vous n'avez pas d'adresse associée à votre compte. Veuillez en
                 ajouter une.
