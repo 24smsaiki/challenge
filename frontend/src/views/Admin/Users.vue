@@ -21,7 +21,6 @@ const errors = reactive({
 const form = ref({
     id: null,
     email: "",
-    isActif: "",
     firstname: "",
     lastname: "",
     roles: "",
@@ -31,7 +30,6 @@ const form = ref({
 const isFormValid = () => {
     if(
         form.value.email !== "" &&
-        form.value.isActif !== "" &&
         form.value.firstname !== "" &&
         form.value.lastname !== ""
     ) {
@@ -75,7 +73,6 @@ const onEdit = (data) => {
 const resetForm = () => {
     form.value.id = null;
     form.value.email = "";
-    form.value.isActif = "";
     form.value.firstname = "";
     form.value.lastname = "";
     form.value.roles = "";
@@ -83,20 +80,23 @@ const resetForm = () => {
 };
 
 const editForm = (data) => {
+    console.log(data, "data");
     form.value.id = data.id;
     form.value.email = data.email;
-    form.value.isActif = data.isActif;
     form.value.firstname = data.firstname;
     form.value.lastname = data.lastname;
     form.value.roles = data.roles;
+    isEditing.value = true;
 };
 
 const onSubmit = () => {
     if(isFormValid()) {
+        console.log(form.value);
+        if(!form.value.id) {
             UsersLogic.createUser(form.value).then((response) => {
                 if(response.status === 201) {
                     resetForm();
-                    getUsers();
+                    users.value.push(response.data);
                     createToast("L'utilisateur a bien été créé.", {
                         type: "success",
                         position: "top-right",
@@ -110,12 +110,38 @@ const onSubmit = () => {
                     timeout: 3000,
                 });
             });
+        } else {
+            UsersLogic.updateUser(form.value.id, form.value).then((response) => {
+                if(response.status === 200) {
+                    resetForm();
+                    users.value = users.value.map((user) => {
+                        if(user.id === response.data.id) {
+                            return response.data;
+                        } else {
+                            return user;
+                        }
+                    });
+                    createToast("L'utilisateur a bien été modifié.", {
+                        type: "success",
+                        position: "top-right",
+                        timeout: 3000,
+                    });
+                }
+            }).catch((error) => {
+                createToast("Une erreur est survenue.", {
+                    type: "danger",
+                    position: "top-right",
+                    timeout: 3000,
+                });
+            });
+        }
+            
     }
 };
 
 const onDelete = (data) => {
     UsersLogic.deleteUser(data.id).then((response) => {
-       getUsers();
+       users.value = users.value.filter((user) => user.id !== data.id);
        resetForm();       
        createToast("L'utilisateur a bien été supprimé.", {
            type: "success",
@@ -123,11 +149,19 @@ const onDelete = (data) => {
            timeout: 3000,
        });
     }).catch((error) => {
-        createToast("Une erreur est survenue.", {
-            type: "danger",
-            position: "top-right",
-            timeout: 3000,
-        });
+        if(error.response.status === 400) {
+            createToast("Vous ne pouvez pas supprimer cet utilisateur.", {
+                type: "danger",
+                position: "top-right",
+                timeout: 3000,
+            });
+        } else {
+            createToast("Une erreur est survenue.", {
+                type: "danger",
+                position: "top-right",
+                timeout: 3000,
+            });
+        }
     });
 };
 
@@ -189,24 +223,10 @@ UsersLogic.getUsers().then((response) => {
                 v-model="form.email"
                 placeholder="email"
                 @input="isEmail"
-                disabled
+                :disabled="form.email !== ''"
             />
             <p class="messageErrors" v-if="errors.email">{{ errors.email }}</p>
          
-        </div>
-        <div class="md:w-1/3 px-3">
-            <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-price">
-                Actif
-            </label>
-            <input 
-                class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" 
-                id="grid-Actif" 
-                type="number" 
-                v-model="form.isActif"
-                placeholder="Actif"
-                @input="isActif"
-            />
-            <p class="messageErrors" v-if="errors.isActif">{{ errors.isActif }}</p>
         </div>
         <div class="md:w-1/3 px-3">
             <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-stockQuantity">
@@ -221,6 +241,7 @@ UsersLogic.getUsers().then((response) => {
             >
                 <option value="ROLE_USER">ROLE_USER</option>
                 <option value="ROLE_ADMIN">ROLE_SELLER</option>
+                
             </select>
             <p class="messageErrors" v-if="errors.roles">{{ errors.roles }}</p>
         </div>
