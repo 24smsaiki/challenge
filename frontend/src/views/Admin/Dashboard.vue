@@ -91,7 +91,10 @@ const onAcceptReturn = async (id) => {
   };
   return await ReturnLogic.updateReturn(body)
     .then(() => {
-      requestsReturn.value.filter((request) => request.id !== id);
+      requestsReturn.value = requestsReturn.value.filter(
+        (request) => request.id !== id
+      );
+      
       createToast("La demande de retour a été acceptée.", {
         type: "success",
         position: "top-right",
