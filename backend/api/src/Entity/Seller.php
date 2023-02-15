@@ -33,7 +33,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
         security: 'is_granted("ROLE_ADMIN")',
     )
 ])]
-#[GetCollection(security: "is_granted('ROLE_ADMIN')")]
+#[GetCollection(security: "is_granted('ROLE_ADMIN') || is_granted('ROLE_SELLER')")]
 #[Get(security: "(is_granted('ROLE_SELLER') and object.userId == user.id) || is_granted('ROLE_ADMIN')")]
 
 #[UniqueEntity(fields: ['shopEmailContact'], message: 'Cet email est déjà utilisé.')]
