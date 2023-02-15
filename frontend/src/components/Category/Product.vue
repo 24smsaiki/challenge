@@ -186,7 +186,7 @@ const addToCart = () => {
   flex-direction: row;
   width: 20%;
   margin: 15px 20px;
-  height: 360px;
+  height: 400px;
 }
 
 .card:hover {

@@ -357,7 +357,7 @@ h2::after {
   flex-wrap: wrap;
   flex-direction: row;
   width: 20%;
-  height: 360px;
+  height: 400px;
 }
 .card:hover {
   box-shadow: 0 0 10px #00000040;
