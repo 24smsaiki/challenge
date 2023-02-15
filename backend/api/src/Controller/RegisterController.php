@@ -73,7 +73,7 @@ class RegisterController extends AbstractController
        
         $em->getRepository(User::class)->save($user, true);
         
-        $content = "<h3>voici le lien d'activation de votre compte"." https://localhost/user/activation/".$user->getToken()."</h3>";
+        $content = "<h3>voici le lien d'activation de votre compte"." https://localhost:3000/registerConfirmation/".$user->getToken()."</h3>";
         $this->mail->send($email,'Activation de compte',$content);
         
         return new JsonResponse(['message' => "Un mail d'activation vient d'être envoyé à votre mail", 'status' => 'success'], 201);
