@@ -27,25 +27,25 @@ const decreaseTotal = () => {
 };
 
 const addToCart = () => {
-  const data = {
-    productId: props.product.id,
-    addedQuantity: total.value,
-  };
-  cartStore.addProduct(data);
-  // emit the event to the parent component
-  // emit("add-to-cart", data);
-  ProvideRefreshCart();
-  createToast("Produit ajouté au panier", {
-    position: "top-right",
-    timeout: 5000,
-    close: true,
-    type: "success",
-    showCloseButtonOnHover: false,
-    hideProgressBar: false,
-    closeButton: "button",
-    icon: true,
-    rtl: false,
-  });
+  if (total.value > 0) {
+    const data = {
+      productId: props.product.id,
+      addedQuantity: total.value,
+    };
+    cartStore.addProduct(data);
+    ProvideRefreshCart();
+    createToast("Produit ajouté au panier", {
+      position: "top-right",
+      timeout: 5000,
+      close: true,
+      type: "success",
+      showCloseButtonOnHover: false,
+      hideProgressBar: false,
+      closeButton: "button",
+      icon: true,
+      rtl: false,
+    });
+  }
 };
 </script>
 
@@ -95,7 +95,9 @@ const addToCart = () => {
             'overview__text__btn-section__btn',
             'default-btn',
             justAdded ? 'just-added' : '',
+            total === 0 ? 'cursor-disabled' : '',
           ]"
+          :disabled="total === 0"
           @click="addToCart"
         >
           Ajouter au panier
@@ -109,9 +111,15 @@ const addToCart = () => {
 </template>
 
 <style scoped>
+.cursor-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .text-danger {
   color: red;
 }
+
 .overview__text__btn-section {
   display: flex;
   justify-content: space-between;
