@@ -57,6 +57,7 @@
     text-transform: uppercase;
     font-weight: 700;
     font-size: 3.6rem;
+    text-align: left;
     line-height: 4rem;
     letter-spacing: 0.129rem;
     margin: 1.6rem 0 2.4rem 0;

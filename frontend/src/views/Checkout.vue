@@ -130,7 +130,7 @@
           </h2>
 
           <section>
-            <template v-if="newAddress">
+            <!-- <template v-if="newAddress">
               <div class="checkout__form__input__item no-margin full-span">
                 <div class="input-texts" id="address-texts">
                   <label
@@ -228,9 +228,14 @@
                   spellcheck="false"
                 />
               </div>
-              <!-- add button save & return -->
-            </template>
+            </template> -->
 
+            <template v-if="!addresses">
+              <p class="empty-message">
+                Vous n'avez pas d'adresse associée à votre compte. Veuillez en
+                ajouter une.
+              </p>
+            </template>
             <template v-else>
               <div class="checkout__form__input__item payment-method">
                 <div class="methods">
@@ -332,22 +337,6 @@
                 >
                   Le champ de ne peut pas être vide.
                 </p>
-                <!-- <div
-                :class="[
-                  'radio-container',
-                  picked_carrier === 'cash' ? 'orange-border' : '',
-                ]"
-                @click="selectMethodCarrier('cash')"
-              >
-                <input
-                  type="radio"
-                  id="cash"
-                  name="payment-method"
-                  value="cash"
-                  v-model="picked_carrier"
-                />
-                <label for="cash" class="radio-label">Cash on Delivery</label>
-              </div> -->
               </div>
             </div>
             <div
@@ -676,9 +665,6 @@ export default {
       );
       return totalValue;
     },
-    // vat() {
-    //   return (0.2 * this.total).toFixed(2);
-    // },
     shipping() {
       let carrier = this.carriers.find(
         (carrier) => carrier.id === this.picked_carrier

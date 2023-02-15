@@ -73,7 +73,7 @@ class OrderReturnController extends AbstractController
         }
         else 
         {
-            return new JsonResponse(['message' => 'unable to create a return for not received order', 'status' => 'success'], 201);
+            return new JsonResponse(['message' => 'Impossible d\'éffectuer un retour sur une commande pas livré !', 'status' => 'success'], 422);
         }
 
         

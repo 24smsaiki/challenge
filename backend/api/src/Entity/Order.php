@@ -52,10 +52,6 @@ class Order
 
     #[ORM\Column(nullable: true)]
     #[Groups(['post', 'get'])]
-    private ?bool $isPaid = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['post', 'get'])]
     private ?int $state = null;
 
     #[ORM\Column(nullable: true)]
@@ -82,6 +78,9 @@ class Order
 
     #[ORM\OneToMany(mappedBy: 'myOrder', targetEntity: OrderReturn::class)]
     private Collection $orderreturns;
+
+    #[ORM\Column]
+    public ?bool $isPaid = null;
 
     public function __construct()
     {
@@ -114,18 +113,6 @@ class Order
     public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getIsPaid(): ?bool
-    {
-        return $this->isPaid;
-    }
-
-    public function setIsPaid(?bool $isPaid): self
-    {
-        $this->isPaid = $isPaid;
 
         return $this;
     }
@@ -258,6 +245,18 @@ class Order
                 $orderreturn->setMyOrder(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsPaid(): ?bool
+    {
+        return $this->isPaid;
+    }
+
+    public function setIsPaid(bool $isPaid): self
+    {
+        $this->isPaid = $isPaid;
 
         return $this;
     }

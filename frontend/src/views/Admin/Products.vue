@@ -3,6 +3,7 @@ import Header from "../../components/Admin/Header.vue";
 import Table from "../../components/Admin/Table.vue";
 import ProductsLogic from "../../logics/ProductsLogic";
 import { ref, reactive } from "vue";
+import { createToast } from "mosha-vue-toastify";
 
 const products = ref([]);
 let columns = ref([]);
@@ -12,8 +13,10 @@ const errors = reactive({
     label: "",
     description: "",
     price: "",
-    image: "",
-    coverImage: "",
+    // image: "",
+    // coverImage: "",
+    stockQuantity: "",
+
 });
 
 const form = ref({
@@ -21,15 +24,17 @@ const form = ref({
     label: "",
     description: "",
     price: "",
+    stockQuantity: "",
     // image: "",
-    coverImage: "",
+    // coverImage: "",
 });
 
 const isFormValid = () => {
     if(
         form.value.label !== "" &&
         form.value.description !== "" &&
-        form.value.price !== "" 
+        form.value.price !== "" &&
+        form.value.stockQuantity !== ""
         // form.value.image !== "" &&
         // form.value.coverImage !== ""
     ) {
@@ -38,15 +43,6 @@ const isFormValid = () => {
         return false;
     }
 };
-
-// const isImage = () => {
-//     const file = form.value.coverImage;
-//     if(file.type !== "image/jpeg" || file.type !== "image/png") {
-//        errors.coverImage = "L'image doit être au format jpeg ou png.";
-//     } else {
-//         errors.coverImage = "";
-//     }
-// };
 
 const isLabel = () => {
     const label = form.value.label;
@@ -68,7 +64,6 @@ const isDescription = () => {
 
 const isPrice = () => {
     const price = form.value.price;
-    console.log(price, "price");
     if(price <= 0) {
         errors.price = "Le prix doit être supérieur à 0.";
     } else {
@@ -80,8 +75,17 @@ const onFileChange = (e) => {
     const file = e.target.files[0];
     form.value.image = file;
     // save file in src/products
-    console.log(form.value.image);
+
     console.log(import.meta.env.VITE_BASE_URL, "VITE_BASE_URL");
+};
+
+const isStockQuantity = () => {
+    const stockQuantity = form.value.stockQuantity;
+    if(stockQuantity <= 0) {
+        errors.stockQuantity = "La quantité doit être supérieure à 0.";
+    } else {
+        errors.stockQuantity = "";
+    }
 };
 
 const onSubmit = (e) => {
@@ -119,25 +123,49 @@ const onEdit = (data) => {
     isEditing.value = data;
 };
 
+// Remet à zéro le formulaire
 const resetForm = () => {
     form.value.id = "";
     form.value.label = "";
     form.value.description = "";
     form.value.price = "";
     form.value.image = "";
+    form.value.stockQuantity = "";
     // form.value.coverImage = "";
     isEditing.value = false;
 };
 
+// Rempli le formulaire avec les données de l'objet passé en paramètre
 const editForm = (data) => {
-    data = data[0];
+
     form.value.id = data?.id;
     form.value.label = data.label;
     form.value.description = data.description;
     form.value.price = data.price;
+    form.value.stockQuantity = data.stockQuantity;
     // form.value.image = data.image;
     // form.value.coverImage = data.coverImage;
     isEditing.value = true;
+};
+
+// Supprime un produit
+const onDelete = (data) => {
+    ProductsLogic.deleteProduct(data.id)
+    .then(() => {
+        products.value = products.value.filter((product) => product.id !== data.id);
+        createToast("Produit supprimé", {
+            type: "success",
+            position: "top-right",
+            timeout: 3000,
+        });
+        resetForm();
+    }).catch(() => {
+        createToast("Quelque chose s'est mal passé", {
+            type: "danger",
+            position: "top-right",
+            timeout: 3000,
+        });
+    })
 };
 
 ProductsLogic.getProducts().then((response) => {
@@ -149,7 +177,7 @@ ProductsLogic.getProducts().then((response) => {
 <template class="bg-gray-800 font-sans leading-normal tracking-normal mt-12">
   <Header />
 
-  <Table v-if="!isEditing" @onEdit="onEdit" :isEditing="isEditing" @editForm="editForm" :columns="columns" :data="products" />
+  <Table v-if="!isEditing" @onEdit="onEdit"  :isEditing="isEditing" @onDelete="onDelete" @editForm="editForm" :columns="columns" :data="products" />
   <template v-else>
     <div
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2"
@@ -175,7 +203,7 @@ ProductsLogic.getProducts().then((response) => {
             </button>
         </div>
       <div class="-mx-3 md:flex mb-6">
-        <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+        <div class="md:w-1/3 px-3 mb-6 md:mb-0">
             <label
                 class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
                 for="grid-label"
@@ -193,7 +221,7 @@ ProductsLogic.getProducts().then((response) => {
             <p class="messageErrors" v-if="errors.label">{{ errors.label }}</p>
          
         </div>
-        <div class="md:w-1/2 px-3">
+        <div class="md:w-1/3 px-3">
             <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-price">
                 Price
             </label>
@@ -207,6 +235,21 @@ ProductsLogic.getProducts().then((response) => {
             />
             <p class="messageErrors" v-if="errors.price">{{ errors.price }}</p>
         </div>
+        <div class="md:w-1/3 px-3">
+            <label class="block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2" for="grid-stockQuantity">
+                Stock Quantity
+            </label>
+            <input 
+                class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4" 
+                id="grid-stockQuantity" 
+                type="number" 
+                v-model="form.stockQuantity"
+                placeholder="Stock Quantity"
+                @input="isStockQuantity"
+            />
+            <p class="messageErrors" v-if="errors.stockQuantity">{{ errors.stockQuantity }}</p>
+        </div>
+        
       </div>
         <div class="-mx-3 md:flex mb-6">
             <div class="md:w-full px-3">

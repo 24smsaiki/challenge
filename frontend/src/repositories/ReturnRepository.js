@@ -11,7 +11,7 @@ export default class ReturnRepository {
         }
         
         static async updateReturn(body) {
-            return await Request.make('post', `/ManageReturn/`, {...body });
+            return await Request.make('post', `/ManageReturn`, {...body });
         }
 
         

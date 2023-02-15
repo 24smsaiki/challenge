@@ -29,6 +29,8 @@ const errors = reactive({
   lastname: "",
 });
 
+const error = ref("");
+
 const isFormValid = () => {
   if (
     seller.shopLabel !== "" &&
@@ -147,10 +149,10 @@ const onSubmit = () => {
           timeout: 3000,
         });
       })
-      .catch((error) => {
+      .catch((err) => {
         loading.value = false;
 
-        if (error.response.status ? error.response.status === 500 : false) {
+        if (err.response.status && err.response.status === 500 ? true  : false) {
           createToast(
             "Une erreur est survenue. Veuillez réessayer ultérieurement.",
             {
@@ -159,6 +161,10 @@ const onSubmit = () => {
               timeout: 3000,
             }
           );
+        } else {
+          error.value = err.response.data.detail;
+          console.log("err", err);
+          console.log("error.value", error.value);
         }
       })
       .finally(() => {
@@ -319,7 +325,11 @@ const onSubmit = () => {
                 </p>
               </div>
             </div>
+            <p class="messageErrors mb-3 ml-0" v-if="errors">
+                {{ error }}
+              </p>
             <div class="btn-animate">
+            
               <button
                 @click.prevent="onSubmit"
                 class="btn-signin"

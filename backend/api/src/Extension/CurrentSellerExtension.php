@@ -3,19 +3,21 @@
 namespace App\Extension;
 
 
-use App\Entity\Order;
 use Doctrine\ORM\QueryBuilder;
 use ApiPlatform\Metadata\Operation;
 use Symfony\Component\Security\Core\Security;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
-use function PHPSTORM_META\map;
+use App\Entity\OrderDetails;
+use App\Entity\Product;
+use App\Entity\Seller;
+use Symfony\Component\Validator\Constraints\IsFalse;
 
 /**
  * This extension makes sure normal users can only access their own Orders
  */
-final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+final class CurrentSellerExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
     private $securityChecker;
     public function __construct(Security $security)
@@ -55,36 +57,30 @@ final class CurrentUserOrdersExtension implements QueryCollectionExtensionInterf
      */
     private function addWhere(QueryBuilder $queryBuilder, string $resourceClass): void
     {
-        if (Order::class !== $resourceClass) {
+        if (Seller::class !== $resourceClass){
             return;
         }
 
-        // share operation between users and admin role
+        // share operation between user and seller
         $rootAlias = $queryBuilder->getRootAliases()[0];
         $user = $this->securityChecker->getUser();
+        
         if(null === $user){
             return;
         }
-        
-        // only with state pending
-        if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
-            $isPaid = 1;
+        // here select only those product's published by the current seller
+        if($this->securityChecker->isGranted('ROLE_SELLER'))
+        {
             $queryBuilder
-                ->select($rootAlias)
-                ->where('o.isPaid = :isPaid')
-                ->orderBy('o.createdAt', 'DESC')
-                ->setParameter('isPaid', $isPaid)
-            ;    
+                ->select($rootAlias)    
+                ->where('o.userId = :current_user_id')
+                ->setParameter('current_user_id', $user->getId())
+            ;
             return;
         }
-
-        // here the orders for the users (select only those passed by the current user)
-        if($this->securityChecker->isGranted('ROLE_USER')){
-            $queryBuilder->andWhere(sprintf('%s.customer = :current_user', $rootAlias));
-            $queryBuilder->setParameter('current_user', $user); 
-            
+        
+        if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
             return;
         }
-
     }
 }

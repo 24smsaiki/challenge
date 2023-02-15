@@ -3,7 +3,7 @@ import Footer from "./components/Footer.vue";
 import Cart from "./components/Cart.vue";
 import data from "./data.json";
 import UserProvider from "./components/Providers/UserProvider.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, provide } from "vue";
 import Menu from "./components/Menu.vue";
 
 const showMenu = ref(false);
@@ -11,7 +11,7 @@ const showCart = ref(false);
 const showConfirmation = ref(false);
 const scrollTop = ref(false);
 const cart = ref([]);
-const products = ref(data); // TODO make this API
+const products = ref(data);
 
 const toggleMenu = (myVar) => {
   if (myVar === "logo") {
@@ -34,8 +34,10 @@ const storeCart = () => {
 
 const addToCart = (data) => {
   let product = products.value.find((product) => product.id === data.productId);
-  if (cart.value.find((prod) => prod.id === product.id)) {
-    const index = cart.value.findIndex((prod) => prod.id === product.id);
+  if (cart.value.find((prod) => prod.product.id === product.id)) {
+    const index = cart.value.findIndex(
+      (prod) => prod.product.id === product.id
+    );
     cart.value[index] = {
       ...cart.value[index],
       addedQuantity: cart.value[index].addedQuantity + data.addedQuantity,
@@ -48,13 +50,15 @@ const addToCart = (data) => {
 };
 
 const changeQuantity = (data) => {
-  const index = cart.value.findIndex((prod) => prod.id === data.productId);
+  const index = cart.value.findIndex(
+    (prod) => prod.product.id === data.productId
+  );
 
   if (data.operation === "subtract") {
     if (cart.value[index].addedQuantity === 1) {
       cart.value = cart.value
         .slice()
-        .filter((prod) => prod.id !== data.productId);
+        .filter((prod) => prod.product.id !== data.productId);
     } else {
       cart.value[index] = {
         ...cart.value[index],
@@ -76,6 +80,14 @@ const emptyCart = () => {
   storeCart();
 };
 
+const refreshCart = () => {
+  cart.value = JSON.parse(localStorage.getItem("cart"))
+    ? JSON.parse(localStorage.getItem("cart"))
+    : [];
+};
+
+provide("ProvideRefreshCart", refreshCart);
+
 onMounted(() => {
   cart.value = JSON.parse(localStorage.getItem("cart"))
     ? JSON.parse(localStorage.getItem("cart"))
@@ -92,14 +104,17 @@ onMounted(() => {
       @change-quantity="changeQuantity"
       @empty-cart="emptyCart"
       @toggle-menu-show="toggleMenu"
+      @refresh-cart="refreshCart"
     />
     <router-view
       @toggle-menu-show="toggleMenu"
       @add-to-cart="addToCart"
       @empty-cart="emptyCart"
+      @refresh-cart="refreshCart"
       :cart="cart"
       :showConfirmation="showConfirmation"
     />
+    <!-- <Product @refresh-cart="refreshCart"/> -->
     <Footer
       v-if="
         !$route.path.startsWith('/admin') &&

@@ -4,7 +4,6 @@ import Header from "../components/Header.vue";
 import ProductsLogic from "../logics/ProductsLogic";
 import { ref } from "vue";
 import { createToast } from "mosha-vue-toastify";
-import router from "../router/Router";
 
 const products = ref([]);
 
@@ -21,8 +20,6 @@ function setToast(message, type) {
     rtl: false,
   });
 }
-
-const redirectToProduct = (product) => router.push(`/product/${product.id}`);
 
 ProductsLogic.getProducts()
   .then((res) => {

@@ -1,7 +1,7 @@
 <script setup>
 import { useCartStore } from "../../stores/CartStore";
 import { createToast } from "mosha-vue-toastify";
-import { ref, defineEmits, defineProps } from "vue";
+import { ref, defineEmits, defineProps, inject } from "vue";
 
 const props = defineProps({
   product: {
@@ -10,10 +10,11 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["toggle-menu-show", "add-to-cart"]);
-
 const total = ref(0);
 const cartStore = useCartStore();
+const ProvideRefreshCart = inject("ProvideRefreshCart");
+
+defineEmits(["toggle-menu-show", "add-to-cart", "refresh-cart"]);
 
 const increaseTotal = () => {
   total.value++;
@@ -26,13 +27,14 @@ const decreaseTotal = () => {
 };
 
 const addToCart = () => {
-  if (total.value !== 0) {
+  if (total.value > 0) {
     const data = {
       productId: props.product.id,
       addedQuantity: total.value,
     };
     cartStore.addProduct(data);
     emit("add-to-cart", data);
+    ProvideRefreshCart();
     createToast("Produit ajouté au panier", {
       position: "top-right",
       timeout: 5000,
@@ -68,7 +70,10 @@ const addToCart = () => {
         <span class="bold">Description : </span
         >{{ product.description.slice(0, 30) }}...
       </p>
-      <div class="overview__text__btn-section">
+      <div
+        v-if="!product.stockQuantity <= 0"
+        class="overview__text__btn-section"
+      >
         <div class="overview__text__btn-section__number">
           <button
             class="overview__text__btn-section__number__less"
@@ -91,22 +96,34 @@ const addToCart = () => {
             'overview__text__btn-section__btn',
             'default-btn',
             justAdded ? 'just-added' : '',
-            total === 0 ? 'disabled-btn' : '',
+            total === 0 ? 'cursor-disabled' : '',
           ]"
+          :disabled="total === 0"
           @click="addToCart"
         >
           Ajouter au panier
         </button>
+      </div>
+      <div class="mt-2" v-else>
+        <p class="bold text-danger">Produit en rupture de stock</p>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.cursor-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.text-danger {
+  color: red;
+}
+
 .overview__text__btn-section {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-top: 1rem;
 }
 
@@ -118,10 +135,12 @@ const addToCart = () => {
 .overview__text__btn-section__number__less {
   padding: 5px;
 }
+
 .default-btn {
   font-size: 1.3rem !important;
   padding: 0 !important;
 }
+
 .overview__text__btn-section__number {
   width: 35%;
   display: flex;
@@ -130,14 +149,15 @@ const addToCart = () => {
 .overview__text__btn-section__number__more {
   padding: 5px;
 }
+
 .overview__text__btn-section__btn {
   height: 40px;
   width: 65%;
 }
+
 .overview__text__btn-section__number__value {
   padding: 5px;
 }
-
 .btn {
   background-color: blue;
   border: none;

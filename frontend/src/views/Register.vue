@@ -29,12 +29,6 @@ const onSubmit = async () => {
   } catch (err) {
     if (err.status === 422) {
       error.value = "Votre email est déjà utilisé.";
-    } else if (err.status === 204) {
-      createToast("L'utilisateur a bien été supprimé", {
-        type: "success",
-        position: "top-right",
-        timeout: 3000,
-      });
     } else {
       createToast("Une erreur est survenue.", {
         type: "danger",

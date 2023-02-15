@@ -231,6 +231,29 @@ main {
   }
 }
 
+.overview__text__btn-section__number__less {
+  padding: 5px;
+}
+
+.overview__text__btn-section__number {
+  width: 35%;
+  display: flex;
+  align-items: center;
+}
+
+.overview__text__btn-section__number__more {
+  padding: 5px;
+}
+
+.overview__text__btn-section__btn {
+  height: 40px;
+  width: 65%;
+}
+
+.overview__text__btn-section__number__value {
+  padding: 5px;
+}
+
 .overview {
   margin: 2.4rem auto 0 auto;
   width: 100%;
@@ -331,7 +354,7 @@ main {
 
     &__btn-section {
       display: flex;
-      align-items: center;
+      width: 100%;
 
       &__number {
         display: flex;

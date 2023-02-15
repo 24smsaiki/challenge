@@ -20,11 +20,17 @@
           </div>
         </div>
         <div class="products__item__quantity">
-          <button class="less" @click="changeQuantity('subtract', product.id)">
+          <button
+            class="less"
+            @click="changeQuantity('subtract', product.product.id)"
+          >
             -
           </button>
           <p class="value">{{ product.addedQuantity }}</p>
-          <button class="more" @click="changeQuantity('add', product.id)">
+          <button
+            class="more"
+            @click="changeQuantity('add', product.product.id)"
+          >
             +
           </button>
         </div>
@@ -50,12 +56,7 @@
 <script>
 export default {
   name: "Cart",
-  props: { show: Boolean },
-  data() {
-    return {
-      cart: [],
-    };
-  },
+  props: { show: Boolean, cart: Array },
   methods: {
     editSrc(product) {
       return product.image;
@@ -80,14 +81,8 @@ export default {
         (product) =>
           (totalValue += product.product.price * product.addedQuantity)
       );
-
       return totalValue;
     },
-  },
-  mounted() {
-    this.cart = JSON.parse(localStorage.getItem("cart"))
-      ? JSON.parse(localStorage.getItem("cart"))
-      : [];
   },
 };
 </script>

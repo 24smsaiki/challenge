@@ -57,9 +57,9 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Seller $publisher = null;
 
-    #[Groups(['get'])]
+    #[Groups(['post','get'])]
     #[ORM\Column(nullable: true)]
-    private ?int $stockQuantity = null;
+    private ?int $stockQuantity = 0;
 
     # vérifier le problème l'extension Product ne renvoi pas ce qu'il faut  : message derreur undefined array key 'item'
 

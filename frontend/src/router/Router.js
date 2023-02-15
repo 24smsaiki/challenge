@@ -100,52 +100,95 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/Admin/Dashboard",
-      name: "AdminDashboard",
-      component: import("../views/Admin/DashboardTest.vue"),
-      meta: { requiresAuth: true },
-    },
-    {
       path: "/Admin/Orders",
       name: "AdminOrders",
       component: import("../views/Admin/Orders.vue"),
       meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        if (isAdmin()) {
+          next();
+        } else {
+          next({ name: "Home" });
+        }
+      }
     },
     {
       path: "/Admin/Products",
       name: "AdminProducts",
       component: import("../views/Admin/Products.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true},
+      beforeEnter: (to, from, next) => {
+        if (isAdmin()) {
+          next();
+        } else {
+          next({ name: "Home" });
+        }
+      }
     },
     {
       path: "/Admin/Users",
       name: "AdminUsers",
       component: import("../views/Admin/Users.vue"),
       meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        if (isAdmin()) {
+          next();
+        } else {
+          next({ name: "Home" });
+        }
+      }
     },
     {
       path: "/Admin/sellers",
       name: "AdminSellers",
       component: import("../views/Admin/Sellers.vue"),
       meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        if (isAdmin()) {
+          next();
+        } else {
+          next({ name: "Home" });
+        }
+      }
     },
     {
       path: "/Admin/Carriers",
       name: "AdminCarriers",
       component: import("../views/Admin/Carriers.vue"),
       meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        if (isAdmin()) {
+          next();
+        } else {
+          next({ name: "Home" });
+        }
+      }
     },
     {
       path: "/Admin/form",
       name: "AdminForm",
       component: import("../components/Admin/Form.vue"),
       meta: { requiresAuth: true },
+      beforeEnter: (to, from, next) => {
+        if (isAdmin()) {
+          next();
+        } else {
+          next({ name: "Home" });
+        }
+      }
     },
     {
       path: "/Admin/Dashboard",
       name: "AdminDashboard",
       component: import("../views/Admin/Dashboard.vue"),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresAdmin: true },
+      beforeEnter: (to, from, next) => {
+        if (isAdmin()) {
+          next();
+        } else {
+          next({ name: "Home" });
+        }
+      }
     },
     {
       path: "/products",
@@ -155,6 +198,16 @@ const router = createRouter({
     },
   ],
 });
+
+const isAdmin = () => {
+  const app = JSON.parse(localStorage.getItem("app-user"));
+  
+  if(app?.roles.includes("ROLE_ADMIN")) {
+    return true;
+  }
+  return false;
+};
+
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("app-token");
@@ -173,6 +226,8 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+ 
+
 });
 
 export default router;

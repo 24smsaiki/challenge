@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, reactive } from "vue";
+import { ref, onMounted } from "vue";
 import OrdersLogic from "../../logics/OrdersLogic";
 import CarriersLogic from "../../logics/CarriersLogic";
 import ProductsLogic from "../../logics/ProductsLogic";
@@ -7,7 +7,7 @@ import UsersLogic from "../../logics/UsersLogic";
 import ReturnLogic from "../../logics/ReturnLogic";
 import moment from "moment";
 import Header from "../../components/Admin/Header.vue";
-import router from "../../router/Router";
+import { createToast } from "mosha-vue-toastify";
 
 const orders = ref([]);
 const carriers = ref([]);
@@ -88,11 +88,58 @@ const onAcceptReturn = async (id) => {
   const body = {
     state: 2,
     idReturn: id,
-    customerEmail: requestsReturn.value.find((request) => request.id === id)
-      .customerEmail,
   };
-  return await ReturnLogic.updateReturn(body).then(() => {
-    requestsReturn.value.filter((request) => request.id !== id);
+  return await ReturnLogic.updateReturn(body)
+    .then(() => {
+      requestsReturn.value.filter((request) => request.id !== id);
+      createToast("La demande de retour a été acceptée.", {
+        type: "success",
+        position: "top-right",
+        timeout: 3000,
+      });
+    })
+    .catch(() => {
+      createToast("Une erreur est survenue.", {
+        type: "danger",
+        position: "top-right",
+        timeout: 3000,
+      });
+    });
+};
+
+const onDeclineReturn = async (id) => {
+  const body = {
+    state: 3,
+    idReturn: id,
+  };
+  return await ReturnLogic.updateReturn(body)
+    .then(() => {
+      requestsReturn.value.filter((request) => request.id !== id);
+      createToast("La demande de retour a été refusée.", {
+        type: "success",
+        position: "top-right",
+        timeout: 3000,
+      });
+    })
+    .catch(() => {
+      createToast("Une erreur est survenue.", {
+        type: "danger",
+        position: "top-right",
+        timeout: 3000,
+      });
+    });
+};
+
+const DeliveryOrder = async (id) => {
+  const body = {
+    state: 5,
+  };
+  return await OrdersLogic.updateOrder(id, body).then(() => {
+    orders.value.map((order) => {
+      if (order.id === id) {
+        order.state = 5;
+      }
+    });
   });
 };
 
@@ -287,8 +334,8 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(user, index) in users" :key="user.id">
-                    <td class="pt-2">{{ index === 0 ? 1 : index + 1 }}</td>
+                  <tr v-for="user in users" :key="user.id">
+                    <td class="pt-2">{{ user.id }}</td>
                     <td class="pt-2">{{ user.email }}</td>
                     <td class="pt-2">
                       {{ user.firstname + " " + user.lastname }}
@@ -360,10 +407,7 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    v-for="product in products.slice(0, 11)"
-                    :key="product.id"
-                  >
+                  <tr v-for="product in products" :key="product.id">
                     <td class="pt-2">{{ product.id }}</td>
                     <td class="pt-2">{{ product.label }}</td>
                     <td class="pt-2">
@@ -384,7 +428,10 @@ onMounted(() => {
               </div>
             </div>
             <div class="p-5 fourth-bloc">
-              <table class="w-full p-5 text-gray-700">
+              <table
+                class="w-full p-5 text-gray-700"
+                style="overflow: auto; max-height: 276px"
+              >
                 <thead>
                   <tr>
                     <th class="text-left">#</th>
@@ -394,17 +441,40 @@ onMounted(() => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="order in orders.slice(0, 10)" :key="order.id">
+                  <tr v-for="order in orders" :key="order.id">
                     <td class="pt-2">{{ order.id }}</td>
                     <td class="pt-2">{{ order.reference }}</td>
                     <td class="pt-2">
                       {{ moment(order.createdAt).format("DD/MM/YYYY") }}
                     </td>
                     <td class="pt-2">{{ order.total }} €</td>
+                    <td @click="DeliveryOrder(order.id)" class="pt-2">
+                      <button
+                        v-if="order.state !== 5"
+                        class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Livrer la commande
+                      </button>
+                      <span
+                        v-else
+                        class="bg-green-500 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Commande livrée
+                      </span>
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
+            <!-- Voir toutes les commandes -->
+            <!-- <div class="p-5">
+              <router-link
+                to="/admin/orders"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Voir toutes les commandes
+              </router-link>
+            </div> -->
           </div>
         </div>
         <div class="w-full md:w-1/3 p-3">
@@ -462,7 +532,7 @@ onMounted(() => {
         </div>
         <div class="w-full md:w-1/3 p-3">
           <div class="bg-white border rounded shadow">
-            <div class="border-b p-3 flex justify-between">
+            <div class="border-b p-3 flex justify-between sixth-bloc">
               <div>
                 <h5 class="font-bold uppercase color-orange">
                   Demande de retour
@@ -473,22 +543,28 @@ onMounted(() => {
               <table class="w-full p-5 text-gray-700">
                 <thead>
                   <tr>
-                    <th class="text-left">#</th>
-                    <th class="text-left">Nom</th>
-                    <th class="text-left">Email</th>
-                    <th class="text-left">Téléphone</th>
+                    <th class="text-left">Référence</th>
+                    <th class="text-left">Message</th>
+                    <th class="text-left">Date</th>
+                    <th class="text-left">Total</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="request in requestsReturn" :key="request.id">
-                    <td class="pt-2">{{ request.id }}</td>
-                    <td class="pt-2">{{ request.name }}</td>
-                    <td class="pt-2">{{ request.email }}</td>
-                    <td class="pt-2">{{ request.phone }}</td>
+                    <td class="pt-2">{{ request.reference }}</td>
+                    <td class="pt-2">
+                      {{ request.orderDetailsReturns[0].reason }}
+                    </td>
+                    <td class="pt-2">
+                      {{ moment(request.createdAt).format("DD/MM/YYYY") }}
+                    </td>
+                    <td class="pt-2">{{ request.totalPrice }}</td>
+
                     <td class="pt-2">
                       <font-awesome-icon
                         icon="check"
                         style="color: blue; cursor: pointer"
+                        @click="onAcceptReturn(request.id)"
                       />
                       <font-awesome-icon
                         icon="xmark"
@@ -497,8 +573,52 @@ onMounted(() => {
                           margin-left: 5px;
                           cursor: pointer;
                         "
+                        @click="onDeclineReturn(request.id)"
                       />
                     </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- carriers -->
+        <div class="w-full md:w-1/3 p-3">
+          <div class="bg-white border rounded shadow">
+            <div class="border-b p-3 flex justify-between">
+              <div>
+                <h5 class="font-bold uppercase color-orange">Transporteurs</h5>
+              </div>
+            </div>
+            <div class="p-5">
+              <table class="w-full p-5 text-gray-700">
+                <thead>
+                  <tr>
+                    <th class="text-left">Nom</th>
+                    <th class="text-left">Prix</th>
+                    <!-- <th class="text-left">Actions</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="carrier in carriers" :key="carrier.id">
+                    <td class="pt-2">{{ carrier.label }}</td>
+                    <td class="pt-2">{{ carrier.fees }} €</td>
+                    <!-- <td class="pt-2">
+                      <font-awesome-icon
+                        icon="edit"
+                        style="color: blue; cursor: pointer"
+                        @click="onEditCarrier(carrier.id)"
+                      />
+                      <font-awesome-icon
+                        icon="trash"
+                        style="
+                          color: #d71a1a;
+                          margin-left: 5px;
+                          cursor: pointer;
+                        "
+                        @click="onDeleteCarrier(carrier.id)"
+                      />
+                    </td> -->
                   </tr>
                 </tbody>
               </table>
@@ -511,6 +631,16 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.first-bloc,
+.second-bloc,
+.third-bloc,
+.fourth-bloc,
+.fifth-bloc,
+.sixth-bloc {
+  max-height: 300px;
+  overflow: auto;
+}
+
 .dashboard {
   margin: 40px 50px 20px 50px;
 }

@@ -312,8 +312,6 @@ const getOrders = () => {
     .then((res) => {
       if (res.status === 200) {
         const response = res.data;
-        // const response = dataUsingToTest["hydra:member"];
-
         orders.value = response.reduce((acc, order) => {
           const reference = order.myOrder.reference;
 

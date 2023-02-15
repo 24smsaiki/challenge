@@ -104,7 +104,7 @@ const props = defineProps({
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
-                                @click="$emit('editForm', props.data)"
+                                @click="$emit('editForm', props.data[index])"
                               >
                                 <path
                                   stroke-linecap="round"
@@ -122,6 +122,7 @@ const props = defineProps({
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
+                                @click="$emit('onDelete', props.data[index])"
                               >
                                 <path
                                   stroke-linecap="round"
